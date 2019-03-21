@@ -1,22 +1,23 @@
 
+
 <!DOCTYPE html>
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>同步和异步 | Wenhao&#39;s Blog</title>
+  <title>Wenhao&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="同步和异步所谓同步，是指一个进程必需等待另一个进程的结果。 所谓异步，是指不需要等待其他进程，继续做自己的事件 静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的 &amp;lt;script&amp;gt;标签是同步加载的 加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write">
-<meta property="og:type" content="article">
-<meta property="og:title" content="同步和异步">
-<meta property="og:url" content="https://whuper.github.io/2017/03/16/同步和异步/index.html">
+  <meta name="description" content="百善孝为先，万恶淫为首 这句话其实是后人截取了其中的两小段之后拼凑而成。完整的语句应该是：“百善孝为先，论心不论迹，论迹寒门无孝子;万恶淫为首，论迹不论心，论心世上无完人。” 这句话的意思是，所有善事里，孝敬父母第一，但这个主要看心，不是看表面行为，如果非要有孝行才算孝子，那么贫寒的人家就没有孝子了。所有的恶事里，以好色为第一，但这个主要看行为，不是看心，如果连动色心都不允许的话，那这世上就没有好">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wenhao&#39;s Blog">
+<meta property="og:url" content="https://whuper.github.io/断章取义.html">
 <meta property="og:site_name" content="Wenhao&#39;s Blog">
-<meta property="og:description" content="同步和异步所谓同步，是指一个进程必需等待另一个进程的结果。 所谓异步，是指不需要等待其他进程，继续做自己的事件 静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的 &amp;lt;script&amp;gt;标签是同步加载的 加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write">
+<meta property="og:description" content="百善孝为先，万恶淫为首 这句话其实是后人截取了其中的两小段之后拼凑而成。完整的语句应该是：“百善孝为先，论心不论迹，论迹寒门无孝子;万恶淫为首，论迹不论心，论心世上无完人。” 这句话的意思是，所有善事里，孝敬父母第一，但这个主要看心，不是看表面行为，如果非要有孝行才算孝子，那么贫寒的人家就没有孝子了。所有的恶事里，以好色为第一，但这个主要看行为，不是看心，如果连动色心都不允许的话，那这世上就没有好">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-02T03:26:14.000Z">
+<meta property="og:updated_time" content="2019-03-21T12:04:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="同步和异步">
-<meta name="twitter:description" content="同步和异步所谓同步，是指一个进程必需等待另一个进程的结果。 所谓异步，是指不需要等待其他进程，继续做自己的事件 静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的 &amp;lt;script&amp;gt;标签是同步加载的 加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write">
+<meta name="twitter:title" content="Wenhao&#39;s Blog">
+<meta name="twitter:description" content="百善孝为先，万恶淫为首 这句话其实是后人截取了其中的两小段之后拼凑而成。完整的语句应该是：“百善孝为先，论心不论迹，论迹寒门无孝子;万恶淫为首，论迹不论心，论心世上无完人。” 这句话的意思是，所有善事里，孝敬父母第一，但这个主要看心，不是看表面行为，如果非要有孝行才算孝子，那么贫寒的人家就没有孝子了。所有的恶事里，以好色为第一，但这个主要看行为，不是看心，如果连动色心都不允许的话，那这世上就没有好">
   
   
     <link rel="icon" href="/images/favicon-16x16-next.png">
@@ -65,63 +66,56 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-同步和异步" class="article article-type-post" itemscope="" itemprop="blogPost">
+      <section id="main"><article id="page-" class="article article-type-page" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/03/16/同步和异步/" class="article-date">
-  <time datetime="2017-03-15T16:00:00.000Z" itemprop="datePublished">2017-03-16</time>
+    <a href="/断章取义.html" class="article-date">
+  <time datetime="2019-03-21T12:04:00.000Z" itemprop="datePublished">2019-03-21</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      同步和异步
-    </h1>
-  
-
-      </header>
-    
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><p>所谓同步，是指一个进程必需等待另一个进程的结果。</p>
-<p>所谓异步，是指不需要等待其他进程，继续做自己的事件</p>
-<p><strong>静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的</strong></p>
-<p><code>&lt;script&gt;</code>标签是同步加载的</p>
-<p>加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write方法），所以必须把控制权让给它。</p>
-<blockquote>
-<p>如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
-</blockquote>
-<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部</p>
-<p>defer属性</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有defer属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-浏览器完成解析HTML网页，此时再执行下载的脚本
-</code></pre><p>async属性</p>
-<p>async属性的作用是，使用另一个进程下载脚本，下载时不会阻塞渲染。(执行是同步的)</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有async属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-
-**脚本下载完成，浏览器暂停解析HTML网页，开始执行下载的脚本**
-
-脚本执行完毕，浏览器恢复解析HTML网页
-</code></pre><p>async属性可以保证脚本下载的同时，浏览器继续渲染。需要注意的是，一旦采用这个属性，<strong>就无法保证脚本的执行顺序</strong>。哪个脚本先下载结束，就先执行那个脚本。如果同时使用async和defer属性，后者不起作用，浏览器行为由async属性决定。</p>
-<h2 id="nodejs的异步非阻塞和python的同步"><a href="#nodejs的异步非阻塞和python的同步" class="headerlink" title="nodejs的异步非阻塞和python的同步"></a>nodejs的异步非阻塞和python的同步</h2><p>Node.js一直都标榜自己是non-blocking I/O，不标榜自己是Asynchronous I/O。<br>所以异步I/O并不是说Node.js的特色，非阻塞才是。<br>nodejs是单线程异步</p>
-<blockquote>
-<p>单线程指的是主线程是“单线程”的，所有阻塞的部分交给一个线程池处理，然后这个主线程通过一个队列跟线程池协作，于是对我们写到的js代码部分，不再关心线程问题，代码也主要由一堆callback回调构成，然后主线程在不停的循环过程中，适时调用这些代码。</p>
-</blockquote>
-<p>python可以用多线程实现异步</p>
+        <p>百善孝为先，万恶淫为首</p>
+<p>这句话其实是后人截取了其中的两小段之后拼凑而成。完整的语句应该是：“百善孝为先，论心不论迹，论迹寒门无孝子;万恶淫为首，论迹不论心，论心世上无完人。” 这句话的意思是，所有善事里，孝敬父母第一，但这个主要看心，不是看表面行为，如果非要有孝行才算孝子，那么贫寒的人家就没有孝子了。所有的恶事里，以好色为第一，但这个主要看行为，不是看心，如果连动色心都不允许的话，那这世上就没有好人了。</p>
+<p>贫贱夫妻百事哀</p>
+<p>这句话现在用来形容经济困难的夫妻会经常因为钱财发愁、争吵，继而影响夫妻感情。这句话出自唐朝著名诗人元稹的《遣悲怀》，原句是诚知此恨人人有，贫贱夫妻百事哀。这句话的意思是：夫妻之间的死别是避免不了的，但对于同贫贱共患难的夫妻来说，一旦永诀，是更为悲哀的。</p>
+<p>吾生也有涯，而知也无涯</p>
+<p>现在的人是这么理解这句话的：人的生命是有限的但是知识是无限的，我们应该利用有限的生命寻求更多的知识。这句话出自《庄子·内篇·养生主第三》，其完整的语句是：吾生也有涯，而知也无涯，以有涯随无涯，殆已。庄子的真实意思是：人生是有限的，但知识是无限的，用有限的人生追求无限的知识，必然会失败。</p>
+<p>酒肉穿肠过，佛祖心中留</p>
+<p>世人若学我，如同进魔道。</p>
+<p>父母在，不远游</p>
+<p>这句话出自《论语》中的《里仁》一篇，完整语句是：“父母在，不远游，游必有方。” 这句话的原意是：父母在世时，尽量不要出远门，如果必须的话，要安置好父母并告知出游理由。</p>
+<p>人不为己，天诛地灭</p>
+<p>这句话的真正意思是，如果人们不修身、没有修为，就会为天地所不容。其中的为读二声。现在这句话被人们曲解为：人如果不为自己着想，那么就会为天地所不容。</p>
+<p>相濡以沫</p>
+<p>这句话的原意是，泉水干涸了，鱼就共同困在陆地上用湿气相互滋润，用唾沫相互沾湿。现在常用这句话比喻同在困难的处境里，用微薄的力量互相帮助。相濡以沫出自《庄子·大宗师》，其完整的语句是，“泉涸，鱼相与处于陆，相呴以湿，相濡以沫，不如相忘于江湖。”作者的本意是，与其在死亡边缘才这样互相扶持，还不如大家找到一条水路，开开心心地回到广阔的江河湖海，回到各自的天地，彼此相忘，自由自在。</p>
+<p>闭门造车</p>
+<p>闭门造车这句成语现在是来形容固步自封，不与外界交流只凭主观办事。在今天来看，这是一个贬义词。其实这个成语还有后半句，原文是：“闭门造车，出门合辙”，其意思是，按照统一规格，即使关起门来制造车辆，使用起来也能和路上的车辙完全相合。</p>
+<hr>
+<p>闭门造车，<strong>出门合辙</strong></p>
+<p>泉涸，鱼相与处于陆，相呴以湿，<strong>相濡以沫</strong>，不如相忘于江湖。</p>
+<p>父母在，不远游 ，<strong>游必有方</strong></p>
+<p>酒肉穿肠过，佛祖心中留 , <strong>世人若学我，如同进魔道</strong>。</p>
+<p>吾生也有涯，而知也无涯，<strong>以有涯随无涯，殆已</strong>。</p>
+<p>百善孝为先，论心不论迹，论迹寒门无孝子; 万恶淫为首，论迹不论心，论心世上无完人。</p>
+<hr>
+<p>小丽好像看出了我的心思，笑嘻嘻地问我：“姐夫，待腻了吧？我带你去散散心好吗？”</p>
+<p>“上哪儿去？”</p>
+<p>“到野地里去。……”</p>
+<p>小丽喊：“快来呀，姐夫。”</p>
+<p>我不禁惊叫起来……连忙脱掉鞋袜。</p>
+<p>她淘气地笑着：“你真是贪心不足哇。”</p>
+<hr>
+<p>——节选自人教版《语文》课本第八册，《可爱的草塘》。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="cjtiobpbo000kmpog3kv6uu4t" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/断章取义.html" data-id="cjtiobp840000mpogwhnzbb64" class="article-share-link">Share</a>
       
 
       
@@ -131,25 +125,6 @@
   </div>
   
     
-<nav id="article-nav">
-  
-    <a href="/2017/03/30/mac-vim/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          mac-vim
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/03/12/匿名函数和闭包的误区/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">匿名函数和闭包的误区</div>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -261,3 +236,4 @@
 </div>
 </body>
 </html>
+
