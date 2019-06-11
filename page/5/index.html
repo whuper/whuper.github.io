@@ -63,6 +63,131 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-git" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/19/git/" class="article-date">
+  <time datetime="2018-12-18T16:00:00.000Z" itemprop="datePublished">2018-12-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/19/git/">同一台电脑git多帐号配置 VPN设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在同一台电脑上使用github和gitlab，主要的思想就是使用不同的仓库时，切换成不同的账号。不同账号的sshKey分别对应github和gitlab。接下来跟着我看看怎么做吧_</p>
+</blockquote>
+<h2 id="一、生成ssh密钥"><a href="#一、生成ssh密钥" class="headerlink" title="一、生成ssh密钥"></a>一、生成ssh密钥</h2><p>这里我们要做的事情就是分别对githubn和gitlab生成对应的密钥（默认情况下本地生成的秘钥位于/Users/用户名/.ssh/），并且配置git访问不同host时访问不同的密钥，流程如下：<br> <strong>1、</strong> 在gitbash中使用<code>ssh-keygen -t rsa -C &quot;wangwenh@**.com&quot;</code>生成对应的gitlab密钥：<em>id_rsa</em>和<em>id_rsa.pub</em><br> <strong>2、</strong> 将gitlab公钥即<em>id_rsa.pub</em>中的内容配置到公司的gitlab上<br> <strong>3、</strong> 在gitbash中使用<code>ssh-keygen -t rsa -C &quot;whuper@163.com&quot; -f ~/.ssh/github_rsa</code>生成对应的github密钥：<em>github_rsa</em>和<em>github_rsa.pub</em><br> <strong>4、</strong> 将github公钥即<em>github_rsa.pub</em>中的内容配置到自己的github上<br> <strong>5、</strong> 进入密钥生成的位置，创建一个<code>config</code>文件，添加配置：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gitlab</span></span><br><span class="line">Host gitlab</span><br><span class="line">    HostName git.xxx.com <span class="comment">#这里填你的gitlab的Host</span></span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br><span class="line"><span class="comment"># githab</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/github_rsa</span><br></pre></td></tr></table></figure>
+<h2 id="二、测试连接"><a href="#二、测试连接" class="headerlink" title="二、测试连接"></a>二、测试连接</h2><p>在密钥的生成位置/Users/用户名/.ssh/下使用gitbash运行<code>ssh -T git@hostName</code>命令测试sshkey对gitlab与github的连接：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">catalinaLi@catalinaLi MINGW64 ~/.ssh</span><br><span class="line">$ ssh -T git@gitlab</span><br><span class="line">Welcome to GitLab, catalinaLi!</span><br><span class="line"></span><br><span class="line">catalinaLi@catalinaLi MINGW64 ~/.ssh</span><br><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi catalinaLi! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+<p>如果出现上图结果就说明连接成功，如果不是这样的话就仔细看看第一步哪里做错了。</p>
+<h2 id="git使用vpn"><a href="#git使用vpn" class="headerlink" title="git使用vpn"></a>git使用vpn</h2><p>设置</p>
+<pre><code>git config --global http.proxy http://127.0.0.1:1087
+
+git config --global https.proxy https://127.0.0.1:1087
+</code></pre><p>取消</p>
+<pre><code>git config --global --unset http.proxy
+git config --global --unset https.proxy
+</code></pre><p>也可以在用户目录下直接编辑<code>.gitconfig</code>文件</p>
+<pre><code>1 [user]
+  2   name = whuper
+  3   email = whuper@163.com
+  4 [http]
+  5   proxy = http://127.0.0.1:1087
+  6 [https]
+  7   proxy = https://127.0.0.1:1087
+~                                          
+</code></pre><blockquote>
+<p>不过明明看到shadowsocks软件里默认设置的端口号是 1086<br>却要用1087才可以访问,还没有弄明白怎么回事</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/12/19/git/" data-id="cjwrtzo25000bk1ogmffop0lv" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ack" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/12/ack/" class="article-date">
+  <time datetime="2018-01-11T16:00:00.000Z" itemprop="datePublished">2018-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/12/ack/">vim安装ack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="vim安装ack-brew安装"><a href="#vim安装ack-brew安装" class="headerlink" title="vim安装ack(brew安装)"></a>vim安装ack(brew安装)</h1><h3 id="brew"><a href="#brew" class="headerlink" title="brew"></a>brew</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew update  更新brew；</span><br><span class="line"></span><br><span class="line">brew install &#123;应用名，如git&#125; 安装软件</span><br></pre></td></tr></table></figure>
+<p>Ack.vim主要用来在项目里全局搜索某个单词,比如搜索函数名的时候.</p>
+<p>实现类似Ctrl + shift + f 全局搜索的功能</p>
+<p>安装ack:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ack</span><br></pre></td></tr></table></figure>
+<p>安装ack.vim插件:</p>
+<p>进入./vim/bundle目录:<br>bundle安装</p>
+<p>在.vimrc中加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin ‘mileszs/ack.vim’</span><br></pre></td></tr></table></figure>
+<p>执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:BundleInstall</span><br></pre></td></tr></table></figure>
+<p>此时已可以使用ack命令;</p>
+<p>:Ack xxx * ,在项目里搜索xxx单词.<br>每次手动输入:Ack xxx还是很不方便的</p>
+<p>可以在.vimrc文件里设置快捷键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Leader&gt;f :Ack! -i&lt;Space&gt;</span><br></pre></td></tr></table></figure>
+<p>-i 参数表示忽略大小写. 以后在项目里,只需要按<code>,+f</code>,即可全局搜索单词了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="cjwrtzo1v0005k1ogi46urr9d" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-web实时通讯技术总结" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/11/web实时通讯技术总结/" class="article-date">
@@ -236,235 +361,7 @@ var server=http.createServer(function(req,res){
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cjtiobpc3000mmpogudy6et4m" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/11/terminal/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
-<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
-<p>例如：要找redis</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
-<p>mac 显示隐藏文件<br>打开终端，输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
-<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
-<p>Mac 更新系统后无法使用git</p>
-<p>解决方案：</p>
-<p>在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
-<p>如果需要禁止spotlight, 在终端中运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
-<p>开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
-<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
-<p>为了查看它的状态，可以运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="cjtiobpbc000cmpoggwvc4fig" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
-  <time datetime="2017-09-18T16:00:00.000Z" itemprop="datePublished">2017-09-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/19/回调-事件-promise和asyncawait/">回调函数 钩子(hook) promise和async await</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="回调-钩子-promise和async-await"><a href="#回调-钩子-promise和async-await" class="headerlink" title="回调-钩子 promise和async await"></a>回调-钩子 promise和async await</h2><h3 id="回调函数-callback"><a href="#回调函数-callback" class="headerlink" title="回调函数(callback)"></a>回调函数(callback)</h3><p>回调函数的英文解释为：</p>
-<blockquote>
-<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
-</blockquote>
-<p>翻译过来就是：回调函数是一个作为变量传递给另外一个函数的函数，它在主体函数执行完之后执行。</p>
-<p>function A有一个参数function B，function B会在function A执行完成之后被调用执行。</p>
-<h3 id="钩子函数-hook"><a href="#钩子函数-hook" class="headerlink" title="钩子函数(hook)"></a>钩子函数(hook)</h3><blockquote>
-<p>钩子的概念源于Windows的消息处理机制，通过设置钩子，应用程序可以对所有的消息事件进行拦截，然后执行钩子函数，对消息进行想要的处理方式。</p>
-</blockquote>
-<p><strong>钩子函数在捕获消息的第一时间执行</strong>，回调函数不是</p>
-<h3 id="钩子函数和回调函数"><a href="#钩子函数和回调函数" class="headerlink" title="钩子函数和回调函数"></a>钩子函数和回调函数</h3><ul>
-<li><p>js派函数监听事件 =&gt; 监听函数就是所谓的钩子函数=&gt;函数钩取事件：<strong>函数主动找事件</strong>=&gt;钩子函数</p>
-</li>
-<li><p>js预留函数给dom事件，dom事件调用js预留的函数 =&gt;事件派发给函数：<strong>事件调用函数</strong>=&gt;回调函数</p>
-</li>
-</ul>
-<h3 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h3><pre><code>let btn = document.getElementById(&quot;btn&quot;);
-btn.onclick = () =&gt; {
-    console.log(&quot;i&apos;m a hook&quot;);
-}
-</code></pre><h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><pre><code>btn.addEventListener(&quot;click&quot;,() =&gt;{
-    console.log(this.onclick);//undefined
-});
-</code></pre><p>JS由于自身的特殊性（单线程），上面的两段代码都是异步的。</p>
-<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>JavaScript的代码都是单线程执行的。</p>
-<p>导致JavaScript的所有网络操作，浏览器事件，都必须是异步执行。</p>
-<p>异步执行可以用回调函数实现,但是不好看，而且不利于代码复用</p>
-<p>所谓Promise ，简单说就是一个容器，里面保存着某个未来才回结束的事件(通常是一个异步操作）的结果。从语法上说，Promise是一个对象，从它可以获取异步操作的消息。</p>
-<p>Promise 对象的状态不受外界影响</p>
-<p>三种状态:</p>
-<ul>
-<li>pending：进行中</li>
-<li>fulfilled :已经成功</li>
-<li>rejected 已经失败</li>
-</ul>
-<p>状态改变：<br>Promise对象的状态改变，只有两种可能：</p>
-<ul>
-<li>从pending变为fulfilled</li>
-<li>从pending变为rejected。</li>
-</ul>
-<p>这两种情况只要发生，状态就凝固了，不会再变了，这时就称为resolved（已定型）</p>
-<p>基本用法<br>ES6规定，Promise对象是一个构造函数，用来生成Promise实例</p>
-<pre><code>const promist = new Promise(function(resolve,reject){
-    if(/*异步操作成功*/){
-        resolve(value);
-    }else{
-        reject(error);
-    }
-})
-</code></pre><p>resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<br>reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
-<p>Promise 实例生成以后，可以用then 方法分别指定resolved状态和rejected状态的回调函数。</p>
-<pre><code>promise.then(function(value){
-//success
-},function(error){
-//failure
-});
-</code></pre><h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><ul>
-<li>async/await是写异步代码的新方式，以前的方法有回调函数和Promise。</li>
-<li>async/await是基于Promise实现的，它不能用于普通的回调函数。</li>
-<li>async/await与Promise一样，是非阻塞的。</li>
-<li>async/await使得异步代码看起来像同步代码，这正是它的魔力所在。</li>
-</ul>
-<h4 id="Async-Await语法"><a href="#Async-Await语法" class="headerlink" title="Async/Await语法"></a>Async/Await语法</h4><p>示例中，getJSON函数返回一个promise，这个promise成功resolve时会返回一个json对象。我们只是调用这个函数，打印返回的JSON对象，然后返回”done”。</p>
-<p>使用Promise是这样的:</p>
-<pre><code>const makeRequest = () =&gt;
-  getJSON()
-    .then(data =&gt; {
-      console.log(data)
-      return &quot;done&quot;
-    })
-
-makeRequest()
-</code></pre><p>使用Async/Await是这样的:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  console.log(await getJSON())
-  return &quot;done&quot;
-}
-
-makeRequest()
-</code></pre><p><strong>区别</strong>:</p>
-<ul>
-<li><p>函数前面多了一个aync关键字。await关键字只能用在aync定义的函数内。async函数会隐式地返回一个promise，该promise的reosolve值就是函数return的值。(示例中reosolve值就是字符串”done”)</p>
-</li>
-<li><p>不能在最外层代码中使用await，因为不在async函数内。</p>
-</li>
-</ul>
-<h3 id="为什么Async-Await更好？"><a href="#为什么Async-Await更好？" class="headerlink" title="为什么Async/Await更好？"></a>为什么Async/Await更好？</h3><h4 id="1-简洁"><a href="#1-简洁" class="headerlink" title="1.简洁"></a>1.简洁</h4><p>由示例可知，使用Async/Await明显节约了不少代码。</p>
-<ul>
-<li>不需要写.then，</li>
-<li>不需要写匿名函数处理Promise的resolve值，</li>
-<li>不需要定义多余的data变量，还避免了嵌套代码。</li>
-</ul>
-<p>这些小的优点会迅速累计起来，这在之后的代码示例中会更加明显。</p>
-<h4 id="2-错误处理"><a href="#2-错误处理" class="headerlink" title="2.错误处理"></a>2.错误处理</h4><p>Async/Await让try/catch可以同时处理同步和异步错误。在下面的promise示例中，try/catch不能处理JSON.parse的错误，因为它在Promise中。我们需要使用.catch，这样错误处理代码非常冗余。并且，在我们的实际生产代码会更加复杂。</p>
-<pre><code>const makeRequest = () =&gt; {
-  try {
-    getJSON()
-      .then(result =&gt; {
-        // JSON.parse可能会出错
-        const data = JSON.parse(result)
-        console.log(data)
-      })
-      // 取消注释，处理异步代码的错误
-      // .catch((err) =&gt; {
-      //   console.log(err)
-      // })
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><p>使用aync/await的话，catch能处理JSON.parse错误:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  try {
-    // this parse may fail
-    const data = JSON.parse(await getJSON())
-    console.log(data)
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><ul>
-<li>3.条件语句</li>
-<li>4.中间值</li>
-<li>5.错误栈</li>
-<li>6.调试</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="cjtiobpbp000lmpoglasedys5" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cjwrtzo2d000hk1ogyke3dyxn" class="article-share-link">Share</a>
       
 
       
@@ -492,7 +389,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/">note</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/">note</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -501,7 +398,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/english/" style="font-size: 20px;">english</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/tips/" style="font-size: 15px;">tips</a>
+      <a href="/tags/english/" style="font-size: 15px;">english</a> <a href="/tags/note/" style="font-size: 20px;">note</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/tips/" style="font-size: 20px;">tips</a>
     </div>
   </div>
 
@@ -510,7 +407,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -522,6 +419,14 @@ makeRequest()
       <ul>
         
           <li>
+            <a href="/2019/06/11/other/course3/">科目三总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/11/other/gas/">液化气使用</a>
+          </li>
+        
+          <li>
             <a href="/2019/03/02/english/7000/">sentence</a>
           </li>
         
@@ -531,14 +436,6 @@ makeRequest()
         
           <li>
             <a href="/2019/02/19/other/fivePicture/">科目二五张图片</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/24/keyboard/">keyboard</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/22/other/life/">life</a>
           </li>
         
       </ul>
