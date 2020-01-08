@@ -63,6 +63,101 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-JS运行机制" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/11/JS运行机制/" class="article-date">
+  <time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished">2017-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/11/JS运行机制/">JS的运行机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="事件循环（Event-Loop）和任务队列"><a href="#事件循环（Event-Loop）和任务队列" class="headerlink" title="事件循环（Event Loop）和任务队列"></a>事件循环（Event Loop）和任务队列</h2><h3 id="和JS运行有关的几个线程"><a href="#和JS运行有关的几个线程" class="headerlink" title="和JS运行有关的几个线程"></a>和JS运行有关的几个线程</h3><ul>
+<li>JS引擎线程</li>
+<li>事件触发线程</li>
+<li>定时触发器线程</li>
+</ul>
+<h4 id="JS引擎是单线程"><a href="#JS引擎是单线程" class="headerlink" title="JS引擎是单线程"></a>JS引擎是单线程</h4><ul>
+<li>JS分为同步任务和异步任务</li>
+<li>同步任务都在主线程上执行，形成一个<strong>执行栈</strong></li>
+<li>主线程之外，<strong>事件触发线程</strong>管理着一个任务队列，只要有异步任务，就在任务队列之中放置一个事件。</li>
+<li>一旦执行栈中的所有同步任务执行完毕（此时JS引擎空闲），主线程就会读取任务队列，将可运行的异步任务添加到可执行栈中，开始执行。</li>
+</ul>
+<p><img src="./images/a.png" alt=""></p>
+<blockquote>
+<p>到这里，应该就可以理解了：为什么有时候setTimeout推入的事件不能准时执行？因为可能在它推入到事件列表时，主线程还不空闲，正在执行其它代码，<br>所以自然有误差。</p>
+</blockquote>
+<h3 id="事件循环机制"><a href="#事件循环机制" class="headerlink" title="事件循环机制"></a>事件循环机制</h3><p><img src="./images/b.png" alt=""></p>
+<p><a href="http://vimeo.com/96425312" target="_blank" rel="noopener">Help, I’m stuck in an event-loop</a></p>
+<p>上图大致描述就是：</p>
+<p>主线程运行时会产生执行栈，<br>栈中的代码调用某些api时，它们会在事件队列中添加各种事件（当满足触发条件后，如ajax请求完毕）</p>
+<ul>
+<li>而栈中的代码执行完毕，就会读取事件队列中的事件，去执行那些回调</li>
+<li>如此循环</li>
+<li>注意，总是要等待栈中的代码执行完毕后才会去读取事件队列中的事件</li>
+</ul>
+<h3 id="定时器线程"><a href="#定时器线程" class="headerlink" title="定时器线程"></a>定时器线程</h3><p><strong>上述事件循环机制的核心是：JS引擎线程和事件触发线程</strong></p>
+<p>但事实上，里面还有一些隐藏细节，譬如调用setTimeout后，是如何等待特定时间后才添加到事件队列中的？</p>
+<h4 id="是JS引擎检测的么？"><a href="#是JS引擎检测的么？" class="headerlink" title="是JS引擎检测的么？"></a>是JS引擎检测的么？</h4><p>不是。<strong>它是由定时器线程控制</strong></p>
+<h4 id="为什么要单独的定时器线程？"><a href="#为什么要单独的定时器线程？" class="headerlink" title="为什么要单独的定时器线程？"></a>为什么要单独的定时器线程？</h4><p>因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确，因此很有必要单独开一个线程用来计时。</p>
+<h4 id="什么时候会用到定时器线程？"><a href="#什么时候会用到定时器线程？" class="headerlink" title="什么时候会用到定时器线程？"></a>什么时候会用到定时器线程？</h4><p>当使用setTimeout或setInterval时，它需要定时器线程计时，计时完成后就会将特定的事件推入事件队列中。</p>
+<p>譬如:</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 1000);
+</code></pre><p>这段代码的作用是当1000毫秒计时完毕后（由定时器线程计时），将回调函数推入事件队列中，等待主线程执行</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 0);
+
+console.log(&apos;begin&apos;);
+</code></pre><p>这段代码的效果是最快的时间内将回调函数推入事件队列中，等待主线程执行</p>
+<p><strong>注意：</strong></p>
+<p>执行结果是：先begin后hello!</p>
+<blockquote>
+<p>虽然代码的本意是0毫秒后就推入事件队列，但是W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。<br>(不过也有一说是不同浏览器有不同的最小时间设定)</p>
+<p>就算不等待4ms，就算假设0毫秒就推入事件队列，也会先执行begin（因为只有可执行栈内空了后才会主动读取事件队列）</p>
+</blockquote>
+<h3 id="setTimeout和setInterval"><a href="#setTimeout和setInterval" class="headerlink" title="setTimeout和setInterval"></a>setTimeout和setInterval</h3><p>用setTimeout模拟定期计时和直接用setInterval是有区别的。</p>
+<p><strong>setTimeout</strong>每次计时到后就会去执行，然后执行一段时间后才会继续setTimeout，中间就多了误差（误差多少与代码执行时间有关）</p>
+<p><strong>setInterval</strong>则是每次都精确的隔一段时间推入一个事件<br>（但是，事件的实际执行时间不一定就准确，还有可能是这个事件还没执行完毕，下一个事件就来了）</p>
+<h4 id="setInterval有一些比较致命的问题就是："><a href="#setInterval有一些比较致命的问题就是：" class="headerlink" title="setInterval有一些比较致命的问题就是："></a>setInterval有一些比较致命的问题就是：</h4><p><strong>累计效应</strong>，如果setInterval代码在（setInterval）再次添加到队列之前还没有完成执行，<br>就会导致定时器代码连续运行好几次，而之间没有间隔。</p>
+<p>就算正常间隔执行，多个setInterval的代码执行时间可能会比预期小（因为代码执行需要一定时间）</p>
+<blockquote>
+<p>而且把浏览器最小化显示等操作时，setInterval并不是不执行程序，<br>它会把setInterval的回调函数放在队列中，等浏览器窗口再次打开时，一瞬间全部执行时</p>
+</blockquote>
+<p>目前一般认为的最佳方案是：用setTimeout模拟setInterval，或者特殊场合直接用requestAnimationFrame</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/04/11/JS运行机制/" data-id="ck54opd2t0005mwogcsjk38ux" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mac-vim" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/30/mac-vim/" class="article-date">
@@ -117,7 +212,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="cjwvlq7va000cv1ogrffv41m1" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="ck54opd3a0009mwoggvloeiwc" class="article-share-link">Share</a>
       
 
       
@@ -186,103 +281,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="cjwvlq7w3000kv1og50hwvw73" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-匿名函数和闭包的误区" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/12/匿名函数和闭包的误区/" class="article-date">
-  <time datetime="2017-03-11T16:00:00.000Z" itemprop="datePublished">2017-03-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/12/匿名函数和闭包的误区/">匿名函数和闭包的误区</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>匿名函数就是闭包吗，匿名函数和闭包有关系吗，</p>
-</blockquote>
-<p>不是，没有什么关系！</p>
-<h3 id="匿名函数？"><a href="#匿名函数？" class="headerlink" title="匿名函数？"></a>匿名函数？</h3><p>通常大家所说的匿名函数，准备的说法应该是 <strong>IIFE: Immediately Invoked Function Expression</strong><br>意为<strong>立即调用的函数表达式</strong>,也就是说,声明函数的同时立即调用这个函数。</p>
-<p>实际上，立即执行的匿名函数并不是函数，因为已经执行过了，所以它是一个结果，这个结果是对当前这个<strong>匿名函数执行结果的一个引用</strong>（函数执行默认return undefined）。</p>
-<p>这个结果可以是一个字符串、数字或者null/false/true，也可以是对象、数组或者一个函数（对象和数组都可以包含函数），当返回的结果包含函数时，这个立即执行的匿名函数所返回的结果就是典型的闭包了。</p>
-<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><blockquote>
-<p>A closure is the combination of a function and the lexical environment within which that function was declared.</p>
-</blockquote>
-<p>中文解释是：闭包是一个函数和该函数被定义时的词法环境的组合。</p>
-<p>按照闭包起的作用来理解它：<strong>就是能在一个函数外部执行这个函数内部的定义方法，并访问内部的变量</strong></p>
-<pre><code>　function f1(){
-　　　　var n=999;
-　　　　function f2(){
-　　　　　　alert(n); 
-　　　　}
-　　　　return f2;
-　　}
-　　var result=f1();
-　　result(); // 999
-</code></pre><h4 id="立即执行函数的应用"><a href="#立即执行函数的应用" class="headerlink" title="立即执行函数的应用"></a>立即执行函数的应用</h4><p>for循环的问题及解决方案</p>
-<p>还有一个令人感到困惑，工作和学习中也经常遇见的问题是在for循环中：</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  setTimeout(function(){
-    console.log(i);
-  },100*i);
-}
-</code></pre><p>我们希望打印出来0,1,2,3,4，然而打印出来的是5个5。</p>
-<p>什么原因引起的这问题呢？这是因为setTimeout的回调函数并不是立即执行的而是要等到循环结束才开始计时和执行（在此对运行机制不伸展）</p>
-<p>要说明的一点是js中函数在执行前都只对变量保持引用，并不会真正获取和保存变量的值。所以等循环结束后i的值是已经是5了，因此执行定时器的回调函数会打印出5个5。</p>
-<p><strong>怎么解决这个问题？</strong></p>
-<p>最常见的解决方法就是给定时器外面加一个立即执行的匿名函数，并把当前循环的i作为实参传入这个立即执行的匿名函数。如下：</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  (function(i){
-    setTimeout(function(){
-      console.log(i);
-    },100*i);
-  })(i);
-}
-</code></pre><p>可以得到预想的结果：0,1,2,3,4</p>
-<p>此时很多人认为这个立即执行的匿名函数就是闭包，其实这么理解是错误的，在错误的理解之上又扩展了好多案例</p>
-<p><a href="https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。" target="_blank" rel="noopener">https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。</a></p>
-<p><img src="images/iife.png" alt=""></p>
-<p>到底这个for循环中的闭包是什么呢，其中的自执行匿名函数又起到什么作用呢？<br>我们可以试着把这个自执行的匿名函数改写为具名的函数，来测试下结果:</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  function hasNameFn(i){
-    setTimeout(function(){
-      console.log(i);
-    },100*i);
-  };
-  hasNameFn(i);
-}
-</code></pre><p>可以发现结果和使用匿名函数的结果是一样的</p>
-<p><strong>另外，使用es6的let或者bind绑定当前的i都可以达到一样的结果</strong></p>
-<p>所以说<strong>匿名函数和闭包之间并没有什么关系</strong>，只不过很多时候在用到匿名函数解决问题的时候恰好形成了一个闭包，就导致很多人分不清楚匿名函数和闭包的关系</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/03/12/匿名函数和闭包的误区/" data-id="cjwvlq7vx000jv1ogsbsfsmnx" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="ck54opd4q000nmwog2znkcuyj" class="article-share-link">Share</a>
       
 
       
@@ -328,7 +327,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -340,7 +339,11 @@
       <ul>
         
           <li>
-            <a href="/2019/06/14/other/course3/">科目三总结</a>
+            <a href="/2020/01/08/other/course3/">科目三总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/11/web实时通讯技术总结/">Web端即时通讯技术</a>
           </li>
         
           <li>
@@ -355,10 +358,6 @@
             <a href="/2019/02/22/other/course2/">科目二笔记</a>
           </li>
         
-          <li>
-            <a href="/2019/02/19/other/fivePicture/">科目二五张图片</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -371,7 +370,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 wenhao wang<br>
+      &copy; 2020 wenhao wang<br>
       Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
       .
       
