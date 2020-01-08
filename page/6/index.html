@@ -63,6 +63,249 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-websocket" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/16/websocket/" class="article-date">
+  <time datetime="2018-06-15T16:00:00.000Z" itemprop="datePublished">2018-06-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/16/websocket/">websocket技术</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。</p>
+<p><strong>本质上是一个基于 TCP 的协议。</strong></p>
+<p>HTTP 协议是一种无状态的、无连接的、单向的应用层协议。它采用了请求/响应模型。通信请求只能由客户端发起，服务端对请求做出应答处理。</p>
+<p>这种通信模型有一个弊端：HTTP 协议无法实现服务器主动向客户端发起消息。</p>
+<p>这种单向的请求，如果服务器有连续的状态变化，客户端要获知就非常麻烦。大多数 Web 应用程序将通过频繁的异步JavaScript和XML（AJAX）请求实现长轮询。轮询的效率低，非常浪费资源（因为必须不停连接，或者 HTTP 连接始终打开）。</p>
+<h3 id="相对传统http的优势"><a href="#相对传统http的优势" class="headerlink" title="相对传统http的优势"></a>相对传统http的优势</h3><ul>
+<li>WebSocket是HTML5开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。</li>
+<li>在WebSocket API中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送。</li>
+<li>浏览器通过 JavaScript 向服务器发出建立 WebSocket 连接的请求，连接建立以后，客户端和服务器端就可以通过 TCP 连接直接交换数据。</li>
+<li>获取 Web Socket 连接后，通过 send() 方法来向服务器发送数据，并通过 onmessage 事件来接收服务器返回的数据。</li>
+</ul>
+<h4 id="创建WebSocket对象。"><a href="#创建WebSocket对象。" class="headerlink" title="创建WebSocket对象。"></a>创建WebSocket对象。</h4><pre><code>var Socket = new WebSocket(url, [protocol] );
+</code></pre><h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><ul>
+<li><p>Socket.readyState    只读属性 readyState 表示连接状态，可以是以下值：</p>
+<ol>
+<li><ul>
+<li>表示连接尚未建立。</li>
+</ul>
+</li>
+<li><ul>
+<li>表示连接已建立，可以进行通信。</li>
+</ul>
+</li>
+<li><ul>
+<li>表示连接正在进行关闭。</li>
+</ul>
+</li>
+<li><ul>
+<li>表示连接已经关闭或者连接不能打开。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Socket.bufferedAmount    只读属性 bufferedAmount 已被 send() 放入正在队列中等待传输，但是还没有发出的 UTF-8 文本字节数。</p>
+</li>
+</ul>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><ul>
+<li>open          连接建立时触发</li>
+<li>message  客户端接收服务端数据时触发</li>
+<li>error          通信发生错误时触发</li>
+<li>close          连接关闭时触发</li>
+</ul>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
+<li>Socket.send()    使用连接发送数据</li>
+<li>Socket.close()    关闭连接</li>
+</ul>
+<p>示例</p>
+<pre><code>// 初始化一个 WebSocket 对象
+var ws = new WebSocket(&quot;ws://localhost:9998/echo&quot;);
+
+// 建立 web socket 连接成功触发事件
+ws.onopen = function () {
+  // 使用 send() 方法发送数据
+  ws.send(&quot;发送数据&quot;);
+  alert(&quot;数据发送中...&quot;);
+};
+
+// 接收服务端数据时触发事件
+ws.onmessage = function (evt) {
+  var received_msg = evt.data;
+  alert(&quot;数据已接收...&quot;);
+};
+
+// 断开 web socket 连接成功触发事件
+ws.onclose = function () {
+  alert(&quot;连接已关闭...&quot;);
+};
+</code></pre><p>socket.io 是基于 WebSocket 的 C-S 实时通信库</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/06/16/websocket/" data-id="ck54p6z5y000mpbogv14l6h6f" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-函数节流(throttle)与函数去抖(debounce)" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" class="article-date">
+  <time datetime="2018-04-15T16:00:00.000Z" itemprop="datePublished">2018-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/16/函数节流(throttle)与函数去抖(debounce)/">函数节流（throttle）与函数去抖（debounce）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="函数节流（throttle）与函数去抖（debounce）"><a href="#函数节流（throttle）与函数去抖（debounce）" class="headerlink" title="函数节流（throttle）与函数去抖（debounce）"></a>函数节流（throttle）与函数去抖（debounce）</h3><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。</p>
+<p>DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为了解决这个问题，需要使用定时器对该函数进行节流。</p>
+<p><strong>函数节流</strong>，简单地讲，就是让一个函数无法在很短的时间间隔内连续调用，只有当上一次函数执行后过了你规定的时间间隔，才能进行下一次该函数的调用</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>当触发一个事件时，先setTimout让这个事件延迟一会再执行，如果在这个时间间隔内又触发了事件，就clear掉原来的定时器，再setTimeout一个新的定时器延迟一会执行。</p>
+<p><strong>2018 05-09更新 (其实这个应该叫做函数去抖debounce)</strong></p>
+<p>代码实现</p>
+<pre><code>function throttle(method, context) {
+    clearTimeout(methor.tId);
+    method.tId = setTimeout(function(){
+        method.call(context);
+    }， 100);
+}
+</code></pre><p>调用</p>
+<pre><code>window.onresize = function(){
+    throttle(myFunc);
+}
+</code></pre><p>这样两次函数调用之间至少间隔100ms。</p>
+<p>impress用的是另一个封装函数：</p>
+<pre><code>var throttle = function(fn, delay){
+     var timer = null;
+     return function(){
+         var context = this, args = arguments;
+         clearTimeout(timer);
+         timer = setTimeout(function(){
+             fn.apply(context, args);
+         }, delay);
+     };
+ };
+</code></pre><p>它使用闭包的方法形成一个私有的作用域来存放定时器变量timer。而调用方法为</p>
+<pre><code>window.onresize = throttle(myFunc, 100);
+</code></pre><blockquote>
+<p>两种方法各有优劣，前一个封装函数的优势在把上下文变量当做函数参数，直接可以定制执行函数的this变量；后一个函数优势在于把延迟时间当做变量（当然，前一个函数很容易做这个拓展），而且个人觉得使用闭包代码结构会更优，且易于拓展定制其他私有变量，缺点就是虽然使用apply把调用throttle时的this上下文传给执行函数，但毕竟不够灵活。</p>
+</blockquote>
+<p>以上参考<br><a href="http://www.alloyteam.com/2012/11/javascript-throttle/" target="_blank" rel="noopener">http://www.alloyteam.com/2012/11/javascript-throttle/</a></p>
+<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><hr>
+<h2 id="防止重复发送-Ajax-请求"><a href="#防止重复发送-Ajax-请求" class="headerlink" title="防止重复发送 Ajax 请求"></a>防止重复发送 Ajax 请求</h2><blockquote>
+<p>最简单粗暴的是设置flag做判断，或者暂时禁掉按钮</p>
+</blockquote>
+<p>不推荐用外部变量锁定或修改按钮状态的方式，因为那样比较难：</p>
+<ul>
+<li>要考虑并理解 success, complete, error, timeout 这些事件的区别，并注册正确的事件，一旦失误，功能将不再可用；</li>
+<li>不可避免地比普通流程要要多注册一个 complete 事件；</li>
+<li>恢复状态的代码很容易和不相干的代码混合在一起；</li>
+</ul>
+<p>我推荐用主动查询状态的方式（A、B，jQuery 为例）或工具函数的方式（C、D）来去除重复操作，并提供一些例子作为参考：</p>
+<h4 id="A-独占型提交"><a href="#A-独占型提交" class="headerlink" title="A. 独占型提交"></a>A. 独占型提交</h4><p>只允许同时存在一次提交操作，并且直到本次提交完成才能进行下一次提交。</p>
+<pre><code>module.submit = function() {
+  if (this.promise_.state() === &apos;pending&apos;) {
+    return
+  }
+  return this.promise_ = $.post(&apos;/api/save&apos;)
+}
+</code></pre><h4 id="B-贪婪型提交"><a href="#B-贪婪型提交" class="headerlink" title="B. 贪婪型提交"></a>B. 贪婪型提交</h4><p>无限制的提交，但是以最后一次操作为准；亦即需要尽快给出最后一次操作的反馈，而前面的操作结果并不重要。</p>
+<pre><code>module.submit = function() {
+  if (this.promise_.state() === &apos;pending&apos;) {
+    this.promise_.abort()
+  }
+  // todo
+}
+</code></pre><p>比如某些应用的条目中，有一些进行类似「喜欢」或「不喜欢」操作的二态按钮。如果按下后不立即给出反馈，用户的目光焦点就可能在那个按钮上停顿许久；如果按下时即时切换按钮的状态，再在程序上用 abort 来实现积极的提交，这样既能提高用户体验，还能降低服务器压力，皆大欢喜。</p>
+<h4 id="C-节制型提交"><a href="#C-节制型提交" class="headerlink" title="C. 节制型提交"></a>C. 节制型提交</h4><p>无论提交如何频繁，任意两次有效提交的间隔时间必定会大于或等于某一时间间隔；即以一定频率提交。</p>
+<pre><code>module.submit = throttle(150, function() {
+  // todo
+})
+</code></pre><p>如果客户发送每隔100毫秒发送过来10次请求，此模块将只接收其中6个（每个在时间线上距离为150毫秒）进行处理。</p>
+<p>这也是解决查询冲突的一种可选手段，比如以知乎草稿举例，仔细观察可以发现：</p>
+<p>编辑器的 blur 事件会立即触发保存；</p>
+<p>保存按钮的 click 事件也会立即触发保存；</p>
+<p>但是存在一种情况会使这两个事件在数毫秒内连续发生——当焦点在编辑器内部，并且直接去点击保存按钮——这时用 throttle 来处理是可行的。</p>
+<p>另外还有一些事件处理会很频繁地使用 throttle，如： resize、scroll、mousemove。</p>
+<h4 id="D-懒惰型提交"><a href="#D-懒惰型提交" class="headerlink" title="D. 懒惰型提交"></a>D. 懒惰型提交</h4><p>任意两次提交的间隔时间，必须大于一个指定时间，才会促成有效提交；即不给休息不干活。</p>
+<pre><code>module.submit = debounce(150, function() {
+  // todo
+})
+</code></pre><p>还是以知乎草稿举例，当在编辑器内按下 ctrl + s 时，可以手动保存草稿；如果你连按，程序会表示不理解为什么你要连按，只有等你放弃连按，它才会继续。</p>
+<hr>
+<p>更多记忆中的例子方式 C 和 方式 D 有时更加通用，比如这些情况：</p>
+<p>游戏中你捡到一把威力强大的高速武器，为了防止你的子弹在屏幕上打成一条直线，可以 throttle 来控制频率；</p>
+<p>在弹幕型游戏里，为了防止你把射击键夹住来进行无脑游戏，可以用 debounce 来控制频率；</p>
+<p>在编译任务里，守护进程监视了某一文件夹里所有的文件（如任一文件的改变都可以触发重新编译，一次执行就需要2秒），但某种操作能够瞬间造成大量文件改变（如 git checkout），这时一个简单的 debounce 可以使编译任务只执行一次。</p>
+<p>而方式 C 甚至可以和方式 B 组合使用，比如自动完成组件（Google 首页的搜索就是）：</p>
+<ul>
+<li><p>当用户快速输入文本时（特别是打字能手），可以 throttle  keypress 事件处理函数，以指定时间间隔来提取文本域的值，然后立即进行新的查询；</p>
+</li>
+<li><p>当新的查询需要发送，但上一个查询还没返回结果时，可以 abort 未完成的查询，并立即发送新查询；</p>
+</li>
+</ul>
+<h2 id="表单防止重复提交"><a href="#表单防止重复提交" class="headerlink" title="表单防止重复提交"></a>表单防止重复提交</h2><h3 id="1-用js为添加禁用"><a href="#1-用js为添加禁用" class="headerlink" title="1 用js为添加禁用"></a>1 用js为添加禁用</h3><h3 id="2-使用Post-Redirect-Get"><a href="#2-使用Post-Redirect-Get" class="headerlink" title="2 使用Post/Redirect/Get"></a>2 使用Post/Redirect/Get</h3><p>PRG设计模式并不适用所有的重复提交情况，比如：</p>
+<p>1）由于服务器响应缓慢，用户刷新提交POST请求造成的重复提交。</p>
+<p>2）用户点击后退按钮，返回到数据提交界面，导致的数据重复提交。</p>
+<p>3）用户多次点击提交按钮，导致的数据重复提交。</p>
+<p>4）用户恶意避开客户端预防多次提交手段，进行重复数据提交。</p>
+<p>###3 使用session／token设置令牌</p>
+<p>产生页面时，服务器为每次产生的Form分配唯一的随机标识号(比如时间戳)，并且在form的一个隐藏字段中设置这个标识号，同时在当前用户的Session中保存这个标识号。</p>
+<p>当提交表单时，服务器比较hidden和session中的标识号是否相同，相同则继续，处理完后清空Session，否则服务器忽略请求。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="ck54p6z78000qpbogojinh2sa" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ack" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/12/ack/" class="article-date">
@@ -108,235 +351,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="ck54opd330007mwogzakvjwtq" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/11/terminal/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
-<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
-<p>例如：要找redis</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
-<p>mac 显示隐藏文件<br>打开终端，输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
-<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
-<p>Mac 更新系统后无法使用git</p>
-<p>解决方案：</p>
-<p>在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
-<p>如果需要禁止spotlight, 在终端中运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
-<p>开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
-<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
-<p>为了查看它的状态，可以运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="ck54opd4h000kmwogdqwic9a2" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
-  <time datetime="2017-09-18T16:00:00.000Z" itemprop="datePublished">2017-09-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/19/回调-事件-promise和asyncawait/">回调函数 钩子(hook) promise和async await</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="回调-钩子-promise和async-await"><a href="#回调-钩子-promise和async-await" class="headerlink" title="回调-钩子 promise和async await"></a>回调-钩子 promise和async await</h2><h3 id="回调函数-callback"><a href="#回调函数-callback" class="headerlink" title="回调函数(callback)"></a>回调函数(callback)</h3><p>回调函数的英文解释为：</p>
-<blockquote>
-<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
-</blockquote>
-<p>翻译过来就是：回调函数是一个作为变量传递给另外一个函数的函数，它在主体函数执行完之后执行。</p>
-<p>function A有一个参数function B，function B会在function A执行完成之后被调用执行。</p>
-<h3 id="钩子函数-hook"><a href="#钩子函数-hook" class="headerlink" title="钩子函数(hook)"></a>钩子函数(hook)</h3><blockquote>
-<p>钩子的概念源于Windows的消息处理机制，通过设置钩子，应用程序可以对所有的消息事件进行拦截，然后执行钩子函数，对消息进行想要的处理方式。</p>
-</blockquote>
-<p><strong>钩子函数在捕获消息的第一时间执行</strong>，回调函数不是</p>
-<h3 id="钩子函数和回调函数"><a href="#钩子函数和回调函数" class="headerlink" title="钩子函数和回调函数"></a>钩子函数和回调函数</h3><ul>
-<li><p>js派函数监听事件 =&gt; 监听函数就是所谓的钩子函数=&gt;函数钩取事件：<strong>函数主动找事件</strong>=&gt;钩子函数</p>
-</li>
-<li><p>js预留函数给dom事件，dom事件调用js预留的函数 =&gt;事件派发给函数：<strong>事件调用函数</strong>=&gt;回调函数</p>
-</li>
-</ul>
-<h3 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h3><pre><code>let btn = document.getElementById(&quot;btn&quot;);
-btn.onclick = () =&gt; {
-    console.log(&quot;i&apos;m a hook&quot;);
-}
-</code></pre><h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><pre><code>btn.addEventListener(&quot;click&quot;,() =&gt;{
-    console.log(this.onclick);//undefined
-});
-</code></pre><p>JS由于自身的特殊性（单线程），上面的两段代码都是异步的。</p>
-<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>JavaScript的代码都是单线程执行的。</p>
-<p>导致JavaScript的所有网络操作，浏览器事件，都必须是异步执行。</p>
-<p>异步执行可以用回调函数实现,但是不好看，而且不利于代码复用</p>
-<p>所谓Promise ，简单说就是一个容器，里面保存着某个未来才回结束的事件(通常是一个异步操作）的结果。从语法上说，Promise是一个对象，从它可以获取异步操作的消息。</p>
-<p>Promise 对象的状态不受外界影响</p>
-<p>三种状态:</p>
-<ul>
-<li>pending：进行中</li>
-<li>fulfilled :已经成功</li>
-<li>rejected 已经失败</li>
-</ul>
-<p>状态改变：<br>Promise对象的状态改变，只有两种可能：</p>
-<ul>
-<li>从pending变为fulfilled</li>
-<li>从pending变为rejected。</li>
-</ul>
-<p>这两种情况只要发生，状态就凝固了，不会再变了，这时就称为resolved（已定型）</p>
-<p>基本用法<br>ES6规定，Promise对象是一个构造函数，用来生成Promise实例</p>
-<pre><code>const promist = new Promise(function(resolve,reject){
-    if(/*异步操作成功*/){
-        resolve(value);
-    }else{
-        reject(error);
-    }
-})
-</code></pre><p>resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<br>reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
-<p>Promise 实例生成以后，可以用then 方法分别指定resolved状态和rejected状态的回调函数。</p>
-<pre><code>promise.then(function(value){
-//success
-},function(error){
-//failure
-});
-</code></pre><h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><ul>
-<li>async/await是写异步代码的新方式，以前的方法有回调函数和Promise。</li>
-<li>async/await是基于Promise实现的，它不能用于普通的回调函数。</li>
-<li>async/await与Promise一样，是非阻塞的。</li>
-<li>async/await使得异步代码看起来像同步代码，这正是它的魔力所在。</li>
-</ul>
-<h4 id="Async-Await语法"><a href="#Async-Await语法" class="headerlink" title="Async/Await语法"></a>Async/Await语法</h4><p>示例中，getJSON函数返回一个promise，这个promise成功resolve时会返回一个json对象。我们只是调用这个函数，打印返回的JSON对象，然后返回”done”。</p>
-<p>使用Promise是这样的:</p>
-<pre><code>const makeRequest = () =&gt;
-  getJSON()
-    .then(data =&gt; {
-      console.log(data)
-      return &quot;done&quot;
-    })
-
-makeRequest()
-</code></pre><p>使用Async/Await是这样的:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  console.log(await getJSON())
-  return &quot;done&quot;
-}
-
-makeRequest()
-</code></pre><p><strong>区别</strong>:</p>
-<ul>
-<li><p>函数前面多了一个aync关键字。await关键字只能用在aync定义的函数内。async函数会隐式地返回一个promise，该promise的reosolve值就是函数return的值。(示例中reosolve值就是字符串”done”)</p>
-</li>
-<li><p>不能在最外层代码中使用await，因为不在async函数内。</p>
-</li>
-</ul>
-<h3 id="为什么Async-Await更好？"><a href="#为什么Async-Await更好？" class="headerlink" title="为什么Async/Await更好？"></a>为什么Async/Await更好？</h3><h4 id="1-简洁"><a href="#1-简洁" class="headerlink" title="1.简洁"></a>1.简洁</h4><p>由示例可知，使用Async/Await明显节约了不少代码。</p>
-<ul>
-<li>不需要写.then，</li>
-<li>不需要写匿名函数处理Promise的resolve值，</li>
-<li>不需要定义多余的data变量，还避免了嵌套代码。</li>
-</ul>
-<p>这些小的优点会迅速累计起来，这在之后的代码示例中会更加明显。</p>
-<h4 id="2-错误处理"><a href="#2-错误处理" class="headerlink" title="2.错误处理"></a>2.错误处理</h4><p>Async/Await让try/catch可以同时处理同步和异步错误。在下面的promise示例中，try/catch不能处理JSON.parse的错误，因为它在Promise中。我们需要使用.catch，这样错误处理代码非常冗余。并且，在我们的实际生产代码会更加复杂。</p>
-<pre><code>const makeRequest = () =&gt; {
-  try {
-    getJSON()
-      .then(result =&gt; {
-        // JSON.parse可能会出错
-        const data = JSON.parse(result)
-        console.log(data)
-      })
-      // 取消注释，处理异步代码的错误
-      // .catch((err) =&gt; {
-      //   console.log(err)
-      // })
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><p>使用aync/await的话，catch能处理JSON.parse错误:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  try {
-    // this parse may fail
-    const data = JSON.parse(await getJSON())
-    console.log(data)
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><ul>
-<li>3.条件语句</li>
-<li>4.中间值</li>
-<li>5.错误栈</li>
-<li>6.调试</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="ck54opd4s000omwogu7d7qh1a" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="ck54p6z4g0004pbog7azbid2g" class="article-share-link">Share</a>
       
 
       
@@ -352,7 +367,7 @@ makeRequest()
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -382,7 +397,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -394,7 +409,11 @@ makeRequest()
       <ul>
         
           <li>
-            <a href="/2020/01/08/other/course3/">科目三总结</a>
+            <a href="/2020/01/08/designPattern/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/19/Optimization/">网站性能优化总结</a>
           </li>
         
           <li>
@@ -406,11 +425,7 @@ makeRequest()
           </li>
         
           <li>
-            <a href="/2019/03/02/english/7000/">sentence</a>
-          </li>
-        
-          <li>
-            <a href="/2019/02/22/other/course2/">科目二笔记</a>
+            <a href="/2019/06/10/other/course3/">科目三总结</a>
           </li>
         
       </ul>
