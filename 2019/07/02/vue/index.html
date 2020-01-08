@@ -1,0 +1,1608 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>vue笔记2 | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vue案例 https://github.com/coligo-io/notes-app-vuejs-vuex https://github.com/liangxiaojuan/vue-Meizi https://github.com/superman66/vue-axios-github https://github.com/skyronic/vue-spa https://github.com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue笔记2">
+<meta property="og:url" content="https://whuper.github.io/2019/07/02/vue/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="vue案例 https://github.com/coligo-io/notes-app-vuejs-vuex https://github.com/liangxiaojuan/vue-Meizi https://github.com/superman66/vue-axios-github https://github.com/skyronic/vue-spa https://github.com">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://whuper.github.io/2019/07/02/resources/pictures/vuelife.png">
+<meta property="og:updated_time" content="2020-01-08T02:50:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue笔记2">
+<meta name="twitter:description" content="vue案例 https://github.com/coligo-io/notes-app-vuejs-vuex https://github.com/liangxiaojuan/vue-Meizi https://github.com/superman66/vue-axios-github https://github.com/skyronic/vue-spa https://github.com">
+<meta name="twitter:image" content="https://whuper.github.io/2019/07/02/resources/pictures/vuelife.png">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-vue" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/02/vue/" class="article-date">
+  <time datetime="2019-07-01T16:00:00.000Z" itemprop="datePublished">2019-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue笔记2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="vue案例"><a href="#vue案例" class="headerlink" title="vue案例"></a>vue案例</h3><ul>
+<li><a href="https://github.com/coligo-io/notes-app-vuejs-vuex" target="_blank" rel="noopener">https://github.com/coligo-io/notes-app-vuejs-vuex</a></li>
+<li><a href="https://github.com/liangxiaojuan/vue-Meizi" target="_blank" rel="noopener">https://github.com/liangxiaojuan/vue-Meizi</a></li>
+<li><a href="https://github.com/superman66/vue-axios-github" target="_blank" rel="noopener">https://github.com/superman66/vue-axios-github</a></li>
+<li><a href="https://github.com/skyronic/vue-spa" target="_blank" rel="noopener">https://github.com/skyronic/vue-spa</a></li>
+<li><a href="https://github.com/allan2coder/VUE2-SPA-Tutorial" target="_blank" rel="noopener">https://github.com/allan2coder/VUE2-SPA-Tutorial</a></li>
+<li><a href="https://github.com/alloyteamzy/vue2_blog" target="_blank" rel="noopener">https://github.com/alloyteamzy/vue2_blog</a></li>
+<li><a href="https://github.com/bailicangdu/vue2-happyfri" target="_blank" rel="noopener">https://github.com/bailicangdu/vue2-happyfri</a></li>
+<li><a href="https://github.com/keepfool/vue-tutorials" target="_blank" rel="noopener">https://github.com/keepfool/vue-tutorials</a></li>
+<li><a href="https://github.com/Awheat/vue2-douban-market" target="_blank" rel="noopener">https://github.com/Awheat/vue2-douban-market</a></li>
+<li><a href="https://github.com/wszgxa/vue-cnode" target="_blank" rel="noopener">https://github.com/wszgxa/vue-cnode</a></li>
+</ul>
+<h2 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h2><p>mapgetter<br>mapstate<br>mapaction</p>
+<h2 id="vue学习过程"><a href="#vue学习过程" class="headerlink" title="vue学习过程"></a>vue学习过程</h2><h4 id="声明式渲染"><a href="#声明式渲染" class="headerlink" title="声明式渲染"></a>声明式渲染</h4><p>Vue.js 的核心是一个允许采用简洁的模板语法来声明式地将数据渲染进 DOM 的系统：</p>
+<pre><code>&lt;div id=&quot;app&quot;&gt;
+  {{ message }}
+&lt;/div&gt;
+var app = new Vue({
+  el: &apos;#app&apos;,
+  data: {
+    message: &apos;Hello Vue!&apos;
+  }
+})
+</code></pre><h4 id="在-Vue-中注册组件"><a href="#在-Vue-中注册组件" class="headerlink" title="在 Vue 中注册组件"></a>在 Vue 中注册组件</h4><pre><code>// 定义名为 todo-item 的新组件
+Vue.component(&apos;todo-item&apos;, {
+  template: &apos;&lt;li&gt;这是个待办项&lt;/li&gt;&apos;
+})
+</code></pre><p>现在你可以用它构建另一个组件模板：</p>
+<pre><code>&lt;ol&gt;
+  &lt;!-- 创建一个 todo-item 组件的实例 --&gt;
+  &lt;todo-item&gt;&lt;/todo-item&gt;
+&lt;/ol&gt;
+</code></pre><p>但是这样会为每个待办项渲染同样的文本，这看起来并不炫酷。我们应该能从父作用域将数据传到子组件才对。让我们来修改一下组件的定义，使之能够接受一个 prop：</p>
+<pre><code>Vue.component(&apos;todo-item&apos;, {
+  // todo-item 组件现在接受一个
+  // &quot;prop&quot;，类似于一个自定义特性。
+  // 这个 prop 名为 todo。
+  props: [&apos;todo&apos;],
+  template: &apos;&lt;li&gt;{{ todo.text }}&lt;/li&gt;&apos;
+})
+</code></pre><h4 id="创建一个-Vue-实例"><a href="#创建一个-Vue-实例" class="headerlink" title="创建一个 Vue 实例"></a>创建一个 Vue 实例</h4><pre><code>var vm = new Vue({
+  // 选项
+})
+</code></pre><p>除了数据属性，Vue 实例还暴露了一些有用的实例属性与方法。它们都有前缀 \$，以便与用户定义的属性区分开来。例如：</p>
+<pre><code>var data = { a: 1 }
+var vm = new Vue({
+  el: &apos;#example&apos;,
+  data: data
+})
+
+vm.\$data === data // =&gt; true
+vm.\$el === document.getElementById(&apos;example&apos;) // =&gt; true
+
+// \$watch 是一个实例方法
+vm.\$watch(&apos;a&apos;, function (newValue, oldValue) {
+  // 这个回调将在 `vm.a` 改变后调用
+})
+</code></pre><h4 id="模板语法"><a href="#模板语法" class="headerlink" title="模板语法"></a>模板语法</h4><h5 id="文本-Text"><a href="#文本-Text" class="headerlink" title="文本(Text)"></a>文本(Text)</h5><p>数据绑定最基本的形式，就是使用 “mustache” 语法（双花括号）的文本插值(text interpolation)：</p>
+<pre><code>&lt;span&gt;Message: {{ msg }}&lt;/span&gt;
+</code></pre><h4 id="原始-HTML-Raw-HTML"><a href="#原始-HTML-Raw-HTML" class="headerlink" title="原始 HTML(Raw HTML)"></a>原始 HTML(Raw HTML)</h4><pre><code>&lt;p&gt;使用双花括号语法：{{ rawHtml }}&lt;/p&gt;
+&lt;p&gt;使用 v-html 指令：&lt;span v-html=&quot;rawHtml&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+</code></pre><h4 id="属性-Attributes"><a href="#属性-Attributes" class="headerlink" title="属性(Attributes)"></a>属性(Attributes)</h4><p>不能在 Vue 模板中的 HTML 属性上使用双花括号语法(mustache)。而是应该使用 v-bind 指令：</p>
+<pre><code>&lt;div v-bind:id=&quot;dynamicId&quot;&gt;&lt;/div&gt;
+</code></pre><p>在属性是布尔类型的一些情况中，v-bind 的作用有点不同，只要值存在就会隐含为 true。在这个例子中：</p>
+<pre><code>&lt;button v-bind:disabled=&quot;isButtonDisabled&quot;&gt;Button&lt;/button&gt;
+</code></pre><h4 id="使用-JavaScript-表达式"><a href="#使用-JavaScript-表达式" class="headerlink" title="使用 JavaScript 表达式"></a>使用 JavaScript 表达式</h4><p>到目前为止，我们只实现了将模板绑定到基本的属性键上。然而，Vue.js 实际上能够支持通过完整的 JavaScript 表达式，将模板与任意的数据绑定在一起：</p>
+<pre><code>{{ number + 1 }}
+
+{{ ok ? 'YES' : 'NO' }}
+
+{{ message.split('').reverse().join('') }}
+
+&lt;div v-bind:id=&quot;&apos;list-&apos; + id&quot;&gt;&lt;/div&gt;
+</code></pre><h4 id="指令-Directives"><a href="#指令-Directives" class="headerlink" title="指令(Directives)"></a>指令(Directives)</h4><p>指令(directive)是带有 v- 前缀的特殊属性</p>
+<pre><code>&lt;p v-if=&quot;seen&quot;&gt;Now you see me&lt;/p&gt;
+</code></pre><h4 id="参数-Arguments"><a href="#参数-Arguments" class="headerlink" title="参数(Arguments)"></a>参数(Arguments)</h4><p>一些指令能够接收一个“参数”，在指令名称之后以 : 表示。例如，v-bind 指令可以用于响应式地更新 HTML 属性：</p>
+<pre><code>&lt;a v-bind:href=&quot;url&quot;&gt; ... &lt;/a&gt;
+</code></pre><p>这里 href 是参数，告知 v-bind 指令将元素的 href 属性与表达式 url 的值绑定在一起。</p>
+<p>另一个示例是 v-on 指令，用于监听 DOM 事件：</p>
+<pre><code>&lt;a v-on:click=&quot;doSomething&quot;&gt; ... &lt;/a&gt;
+</code></pre><p>这里，参数是要监听事件的名称</p>
+<h4 id="修饰符-Modifiers"><a href="#修饰符-Modifiers" class="headerlink" title="修饰符(Modifiers)"></a>修饰符(Modifiers)</h4><p>修饰符(modifier)是以 . 表示的特殊后缀，表明应当以某种特殊方式绑定指令。例如，.prevent 修饰符告诉 v-on 指令，在触发事件后调用 event.preventDefault()：</p>
+<pre><code>&lt;form v-on:submit.prevent=&quot;onSubmit&quot;&gt; ... &lt;/form&gt;
+</code></pre><h4 id="v-bind-简写"><a href="#v-bind-简写" class="headerlink" title="v-bind 简写"></a>v-bind 简写</h4><pre><code>&lt;!-- 完整语法 --&gt;
+&lt;a v-bind:href=&quot;url&quot;&gt; ... &lt;/a&gt;
+
+&lt;!-- 简写 --&gt;
+&lt;a :href=&quot;url&quot;&gt; ... &lt;/a&gt;
+</code></pre><h4 id="v-on-简写"><a href="#v-on-简写" class="headerlink" title="v-on 简写"></a>v-on 简写</h4><pre><code>&lt;!-- 完整语法 --&gt;
+&lt;a v-on:click=&quot;doSomething&quot;&gt; ... &lt;/a&gt;
+
+&lt;!-- 简写 --&gt;
+&lt;a @click=&quot;doSomething&quot;&gt; ... &lt;/a&gt;
+</code></pre><h4 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h4><p>在模板中放入太多的逻辑会让模板过重且难以维护。例如：</p>
+<pre><code>&lt;div id=&quot;example&quot;&gt;
+  {{ message.split('').reverse().join('') }}
+&lt;/div&gt;
+</code></pre><p>对于任何复杂逻辑，应当使用计算属性。</p>
+<pre><code>&lt;div id=&quot;example&quot;&gt;
+  &lt;p&gt;Original message: &quot;{{ message }}&quot;&lt;/p&gt;
+  &lt;p&gt;Computed reversed message: &quot;{{ reversedMessage }}&quot;&lt;/p&gt;
+&lt;/div&gt;
+var vm = new Vue({
+  el: &apos;#example&apos;,
+  data: {
+    message: &apos;Hello&apos;
+  },
+  computed: {
+    // 计算属性的 getter
+    reversedMessage: function () {
+      // `this` 指向 vm 实例
+      return this.message.split(&apos;&apos;).reverse().join(&apos;&apos;)
+    }
+  }
+})
+</code></pre><p>计算属性缓存 vs 方法</p>
+<p>相比之下，每当触发重新渲染时，<strong>调用方法将总会再次执行函数</strong></p>
+<p><strong>计算属性 vs 侦听属性</strong></p>
+<pre><code>&lt;div id=&quot;demo&quot;&gt;{{ fullName }}&lt;/div&gt;
+var vm = new Vue({
+  el: &apos;#demo&apos;,
+  data: {
+    firstName: &apos;Foo&apos;,
+    lastName: &apos;Bar&apos;,
+    fullName: &apos;Foo Bar&apos;
+  },
+  watch: {
+    firstName: function (val) {
+      this.fullName = val + &apos; &apos; + this.lastName
+    },
+    lastName: function (val) {
+      this.fullName = this.firstName + &apos; &apos; + val
+    }
+  }
+})
+</code></pre><p>上面代码是命令式且重复的。将它与计算属性的版本进行比较：</p>
+<pre><code>var vm = new Vue({
+  el: &apos;#demo&apos;,
+  data: {
+    firstName: &apos;Foo&apos;,
+    lastName: &apos;Bar&apos;
+  },
+  computed: {
+    fullName: function () {
+      return this.firstName + &apos; &apos; + this.lastName
+    }
+  }
+})
+</code></pre><p>好得多了，不是吗？</p>
+<h4 id="class-和-style-绑定"><a href="#class-和-style-绑定" class="headerlink" title="class 和 style 绑定"></a>class 和 style 绑定</h4><pre><code>&lt;div class=&quot;static&quot;
+     v-bind:class=&quot;{ active: isActive, &apos;text-danger&apos;: hasError }&quot;&gt;
+&lt;/div&gt;
+</code></pre><p>然后，给定以下 data：</p>
+<pre><code>data: {
+  isActive: true,
+  hasError: false
+}
+</code></pre><p>将会渲染为：</p>
+<pre><code>&lt;div class=&quot;static active&quot;&gt;&lt;/div&gt;
+</code></pre><p>绑定对象，也可以无需内联，而是外部引用 data：</p>
+<pre><code>&lt;div v-bind:class=&quot;classObject&quot;&gt;&lt;/div&gt;
+
+data: {
+  classObject: {
+    active: true,
+    &apos;text-danger&apos;: false
+  }
+}
+</code></pre><p>我们还可以将 class 和 style 与某个 computed 属性绑定在一起，此 computed 属性所对应的 getter 函数需要返回一个对象。这是一种常用且强大的用法：</p>
+<pre><code>&lt;div v-bind:class=&quot;classObject&quot;&gt;&lt;/div&gt;
+data: {
+  isActive: true,
+  error: null
+},
+computed: {
+  classObject: function () {
+    return {
+      active: this.isActive &amp;&amp; !this.error,
+      &apos;text-danger&apos;: this.error &amp;&amp; this.error.type === &apos;fatal&apos;
+    }
+  }
+}
+</code></pre><h4 id="数组语法"><a href="#数组语法" class="headerlink" title="数组语法"></a>数组语法</h4><p>我们可以向 v-bind:class 传入一个数组，来与 class 列表对应：</p>
+<pre><code>&lt;div v-bind:class=&quot;[activeClass, errorClass]&quot;&gt;&lt;/div&gt;
+data: {
+  activeClass: &apos;active&apos;,
+  errorClass: &apos;text-danger&apos;
+}
+</code></pre><p>会被渲染为：</p>
+<pre><code>&lt;div class=&quot;active text-danger&quot;&gt;&lt;/div&gt;
+</code></pre><h4 id="数组语法-style"><a href="#数组语法-style" class="headerlink" title="数组语法 style"></a>数组语法 style</h4><p>v-bind:style 的数组语法，可以在同一个元素上，使用多个 style 对象：</p>
+<pre><code>&lt;div v-bind:style=&quot;[baseStyles, overridingStyles]&quot;&gt;&lt;/div&gt;
+</code></pre><h4 id="用-key-控制元素是否可复用"><a href="#用-key-控制元素是否可复用" class="headerlink" title="用 key 控制元素是否可复用"></a>用 key 控制元素是否可复用</h4><h3 id="v-if-和-v-show"><a href="#v-if-和-v-show" class="headerlink" title="v-if 和 v-show"></a>v-if 和 v-show</h3><p>v-if 是“真实”的条件渲染，因为它会确保条件块(conditional block)在切换的过程中，完整地销毁(destroy)和重新创建(re-create)条件块内的事件监听器和子组件。</p>
+<p>v-if 是惰性的(lazy)：如果在初始渲染时条件为 false，它不会执行任何操作 - 在条件第一次变为 true 时，才开始渲染条件块。</p>
+<p>相比之下，v-show 要简单得多 - 不管初始条件如何，元素始终渲染，并且只是基于 CSS 的切换。</p>
+<p>通常来说，v-if 在切换时有更高的性能开销，而 v-show 在初始渲染时有更高的性能开销。因此，如果需要频繁切换，推荐使用 v-show，如果条件在运行时改变的可能性较少，推荐使用 v-if。</p>
+<p>当与 v-if 一起使用时，<strong>v-for 具有比 v-if 更高的优先级</strong>。</p>
+<h4 id="带有-v-if-的-v-for"><a href="#带有-v-if-的-v-for" class="headerlink" title="带有 v-if 的 v-for"></a>带有 v-if 的 v-for</h4><p>当它们都处于同一节点时，v-for 的优先级高于 v-if。这意味着，v-if 将分别在循环中的每次迭代上运行。当你只想将某些项渲染为节点时，这会非常有用，如下：</p>
+<pre><code>&lt;li v-for=&quot;todo in todos&quot; v-if=&quot;!todo.isComplete&quot;&gt;
+  {{ todo }}
+&lt;/li&gt;
+</code></pre><p>以上只渲染 todos 中未完成的项。</p>
+<p>如果你的意图与此相反，是根据条件跳过执行循环，可以将 \v-if 放置于包裹元素上（或放置于 \&lt;template\ß&gt; 上）。例如：</p>
+<pre><code>&lt;ul v-if=&quot;todos.length&quot;&gt;
+  &lt;li v-for=&quot;todo in todos&quot;&gt;
+    {{ todo }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p v-else&gt;No todos left!&lt;/p&gt;
+</code></pre><p>译注：</p>
+<p><strong>变化数组方法</strong>：会对原数组操作的数组方法，如 pop(), shift(), unshift(), splice(), sort() 和 reverse()。</p>
+<p><strong>非变化数组方法</strong>：不会对原数组操作、返回新数组的数组方法，如 filter(), concat() 和 slice()。</p>
+<h3 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h3><h4 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h4><p>我们可以使用 v-on 指令监听 DOM 事件，并在事件被触发时执行一些 JavaScript 代码。</p>
+<pre><code>&lt;div id=&quot;example-1&quot;&gt;
+  &lt;button v-on:click=&quot;counter += 1&quot;&gt;增加 1&lt;/button&gt;
+  &lt;p&gt;上面的按钮被点击了 {{ counter }} 次。&lt;/p&gt;
+&lt;/div&gt;
+var example1 = new Vue({
+  el: &apos;#example-1&apos;,
+  data: {
+    counter: 0
+  }
+})
+</code></pre><h4 id="定义在-methods-对象中的事件处理器"><a href="#定义在-methods-对象中的事件处理器" class="headerlink" title="定义在 methods 对象中的事件处理器"></a>定义在 methods 对象中的事件处理器</h4><p>由于许多事件处理器的逻辑很复杂，所以把 JavaScript 代码都保存在 v-on 属性的值中是不可行的做法。这就是为什么 v-on 还可以接收要调用的方法名。</p>
+<pre><code>&lt;div id=&quot;example-2&quot;&gt;
+  &lt;!-- `greet` 是在下面 methods 中定义的方法名 --&gt;
+  &lt;button v-on:click=&quot;greet&quot;&gt;Greet&lt;/button&gt;
+&lt;/div&gt;
+var example2 = new Vue({
+  el: &apos;#example-2&apos;,
+  data: {
+    name: &apos;Vue.js&apos;
+  },
+  // 在 `methods` 对象中定义方法
+  methods: {
+    greet: function (event) {
+      // methods 里的方法中的 `this` 指 Vue 实例
+      alert(&apos;Hello &apos; + this.name + &apos;!&apos;)
+      // `event` 是原始 DOM 事件对象
+      if (event) {
+        alert(event.target.tagName)
+      }
+    }
+  }
+})
+
+// 也可以在 JavaScript 中通过 Vue 实例直接调用方法
+example2.greet() // =&gt; &apos;Hello Vue.js!&apos;
+</code></pre><h4 id="定义在行内的事件处理器"><a href="#定义在行内的事件处理器" class="headerlink" title="定义在行内的事件处理器"></a>定义在行内的事件处理器</h4><p>除了直接绑定到方法名，我们还可以在行内 JavaScript 语句中使用 methods 方法：</p>
+<pre><code>&lt;div id=&quot;example-3&quot;&gt;
+  &lt;button v-on:click=&quot;say(&apos;hi&apos;)&quot;&gt;Say hi&lt;/button&gt;
+  &lt;button v-on:click=&quot;say(&apos;what&apos;)&quot;&gt;Say what&lt;/button&gt;
+&lt;/div&gt;
+new Vue({
+  el: &apos;#example-3&apos;,
+  methods: {
+    say: function (message) {
+      alert(message)
+    }
+  }
+})
+</code></pre><p>在行内语句的事件处理器中，有时我们也需要访问原始 DOM 事件对象。可以使用特殊的 \$event 变量将它传递给一个方法：</p>
+<pre><code>&lt;button v-on:click=&quot;warn(&apos;Form cannot be submitted yet.&apos;, \$event)&quot;&gt;
+  Submit
+&lt;/button&gt;
+// ...
+methods: {
+  warn: function (message, event) {
+    // 现在，我们可以访问原始事件对象
+    if (event) event.preventDefault()
+    alert(message)
+  }
+}
+</code></pre><h4 id="事件修饰符-Event-Modifiers"><a href="#事件修饰符-Event-Modifiers" class="headerlink" title="事件修饰符(Event Modifiers)"></a>事件修饰符(Event Modifiers)</h4><pre><code>&lt;!-- 停止点击事件冒泡 --&gt;
+&lt;a v-on:click.stop=&quot;doThis&quot;&gt;&lt;/a&gt;
+
+&lt;!-- 提交事件不再重新载入页面 --&gt;
+&lt;form v-on:submit.prevent=&quot;onSubmit&quot;&gt;&lt;/form&gt;
+
+&lt;!-- 修饰符可以链式调用 --&gt;
+&lt;a v-on:click.stop.prevent=&quot;doThat&quot;&gt;&lt;/a&gt;
+
+&lt;!-- 只有修饰符 --&gt;
+&lt;form v-on:submit.prevent&gt;&lt;/form&gt;
+
+&lt;!-- 添加事件监听器时，使用事件捕获模式 --&gt;
+&lt;!-- 也就是说，内部元素触发的事件先在此处处理，然后才交给内部元素进行处理 --&gt;
+&lt;div v-on:click.capture=&quot;doThis&quot;&gt;...&lt;/div&gt;
+
+&lt;!-- 只有在 event.target 是元素自身时，才触发处理函数。 --&gt;
+&lt;!-- 也就是说，event.target 是子元素时，不触发处理函数 --&gt;
+&lt;div v-on:click.self=&quot;doThat&quot;&gt;...&lt;/div&gt;
+</code></pre><p>使用 v-on:click.prevent.self 会阻止所有点击</p>
+<p>而 v-on:click.self.prevent 只阻止元素自身的点击。</p>
+<h4 id="按键修饰符-Key-Modifiers"><a href="#按键修饰符-Key-Modifiers" class="headerlink" title="按键修饰符(Key Modifiers)"></a>按键修饰符(Key Modifiers)</h4><pre><code>&lt;!-- 只在 `keyCode` 是 13 时，调用 `vm.submit()` --&gt;
+&lt;input v-on:keyup.13=&quot;submit&quot;&gt;
+</code></pre><p>记住所有 keyCode 是非常麻烦的事，所以 Vue 提供一些最常用按键的别名：</p>
+<pre><code>&lt;!-- 和上面的示例相同 --&gt;
+&lt;input v-on:keyup.enter=&quot;submit&quot;&gt;
+
+&lt;!-- 也可用于简写语法 --&gt;
+&lt;input @keyup.enter=&quot;submit&quot;&gt;
+</code></pre><h4 id="checkbox"><a href="#checkbox" class="headerlink" title="checkbox"></a>checkbox</h4><p>单选 checkbox，绑定到布尔值：</p>
+<pre><code>&lt;input type=&quot;checkbox&quot; id=&quot;checkbox&quot; v-model=&quot;checked&quot;&gt;
+&lt;label for=&quot;checkbox&quot;&gt;{{ checked }}&lt;/label&gt;
+</code></pre><p>多选 checkbox，绑定到同一个数组：</p>
+<pre><code>&lt;div id=&apos;example-3&apos;&gt;
+  &lt;input type=&quot;checkbox&quot; id=&quot;jack&quot; value=&quot;Jack&quot; v-model=&quot;checkedNames&quot;&gt;
+  &lt;label for=&quot;jack&quot;&gt;Jack&lt;/label&gt;
+  &lt;input type=&quot;checkbox&quot; id=&quot;john&quot; value=&quot;John&quot; v-model=&quot;checkedNames&quot;&gt;
+  &lt;label for=&quot;john&quot;&gt;John&lt;/label&gt;
+  &lt;input type=&quot;checkbox&quot; id=&quot;mike&quot; value=&quot;Mike&quot; v-model=&quot;checkedNames&quot;&gt;
+  &lt;label for=&quot;mike&quot;&gt;Mike&lt;/label&gt;
+  &lt;br&gt;
+  &lt;span&gt;勾选的名字是：{{ checkedNames }}&lt;/span&gt;
+&lt;/div&gt;
+new Vue({
+  el: &apos;#example-3&apos;,
+  data: {
+    checkedNames: []
+  }
+})
+</code></pre><p>radio</p>
+<pre><code>&lt;input type=&quot;radio&quot; id=&quot;one&quot; value=&quot;One&quot; v-model=&quot;picked&quot;&gt;
+&lt;label for=&quot;one&quot;&gt;One&lt;/label&gt;
+&lt;br&gt;
+&lt;input type=&quot;radio&quot; id=&quot;two&quot; value=&quot;Two&quot; v-model=&quot;picked&quot;&gt;
+&lt;label for=&quot;two&quot;&gt;Two&lt;/label&gt;
+&lt;br&gt;
+&lt;span&gt;选中的是：{{ picked }}&lt;/span&gt;
+</code></pre><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><pre><code>&lt;select v-model=&quot;selected&quot;&gt;
+  &lt;option disabled value=&quot;&quot;&gt;请选择其中一项&lt;/option&gt;
+  &lt;option&gt;A&lt;/option&gt;
+  &lt;option&gt;B&lt;/option&gt;
+  &lt;option&gt;C&lt;/option&gt;
+&lt;/select&gt;
+&lt;span&gt;选中的是：{{ selected }}&lt;/span&gt;
+new Vue({
+  el: &apos;...&apos;,
+  data: {
+    selected: &apos;&apos;
+  }
+})
+</code></pre><h4 id="多选-select（绑定到一个数组）："><a href="#多选-select（绑定到一个数组）：" class="headerlink" title="多选 select（绑定到一个数组）："></a>多选 select（绑定到一个数组）：</h4><pre><code>&lt;select v-model=&quot;selected&quot; multiple&gt;
+  &lt;option&gt;A&lt;/option&gt;
+  &lt;option&gt;B&lt;/option&gt;
+  &lt;option&gt;C&lt;/option&gt;
+&lt;/select&gt;
+&lt;br&gt;
+&lt;span&gt;选中的是：{{ selected }}&lt;/span&gt;
+</code></pre><p>使用 v-for 渲染动态的 option：</p>
+<pre><code>&lt;select v-model=&quot;selected&quot;&gt;
+  &lt;option v-for=&quot;option in options&quot; v-bind:value=&quot;option.value&quot;&gt;
+    {{ option.text }}
+  &lt;/option&gt;
+&lt;/select&gt;
+&lt;span&gt;选中的是：{{ selected }}&lt;/span&gt;
+new Vue({
+  el: &apos;...&apos;,
+  data: {
+    selected: &apos;A&apos;,
+    options: [
+      { text: &apos;One&apos;, value: &apos;A&apos; },
+      { text: &apos;Two&apos;, value: &apos;B&apos; },
+      { text: &apos;Three&apos;, value: &apos;C&apos; }
+    ]
+  }
+})
+</code></pre><h4 id="与-value-属性绑定"><a href="#与-value-属性绑定" class="headerlink" title="与 value 属性绑定"></a>与 value 属性绑定</h4><p>对于 radio, checkbox 和 select 的 option 选项，通常可以将 v-model 与值是静态字符串的 value 属性关联在一起（或者，在 checkbox 中，绑定到布尔值）：</p>
+<pre><code>&lt;!-- 当选中时，`picked` 的值是字符串 &quot;a&quot;（译者注：如果没有 value 属性，选中时值是 null） --&gt;
+&lt;input type=&quot;radio&quot; v-model=&quot;picked&quot; value=&quot;a&quot;&gt;
+
+&lt;!-- `toggle` 的值是 true 或 false --&gt;
+&lt;input type=&quot;checkbox&quot; v-model=&quot;toggle&quot;&gt;
+
+&lt;!-- 当选中第一个选项时，`selected` 的值是字符串 &quot;abc&quot;（译者注：如果没有 value 属性，选中时 selected 值是 option 元素内的文本） --&gt;
+&lt;select v-model=&quot;selected&quot;&gt;
+  &lt;option value=&quot;abc&quot;&gt;ABC&lt;/option&gt;
+&lt;/select&gt;
+</code></pre><p>然而，有时可能需要把 value 与 Vue 实例上的一个动态属性绑定在一起。这时我们可以通过 v-bind 来实现。v-bind 还允许我们将 input 元素的值绑定到非字符串值。</p>
+<h4 id="checkbox-1"><a href="#checkbox-1" class="headerlink" title="checkbox"></a>checkbox</h4><pre><code>&lt;input
+  type=&quot;checkbox&quot;
+  v-model=&quot;toggle&quot;
+  true-value=&quot;yes&quot;
+  false-value=&quot;no&quot;
+&gt;
+</code></pre><blockquote>
+<p>true-value 和 false-value 属性不会影响到 input 元素的 value 属性，这是因为浏览器在提交表单时，并不会包含未被选中的 checkbox 的值。如果要确保表单中，这两个值的一个能够被提交（例如 “yes” 或 “no”），请换用类型是 radio 的 input 元素。</p>
+</blockquote>
+<h4 id="select-选项"><a href="#select-选项" class="headerlink" title="select 选项"></a>select 选项</h4><pre><code>&lt;select v-model=&quot;selected&quot;&gt;
+  &lt;!-- 内联对象字面量 --&gt;
+  &lt;option v-bind:value=&quot;{ number: 123 }&quot;&gt;123&lt;/option&gt;
+&lt;/select&gt;
+
+// 选中时：
+typeof vm.selected // =&gt; &apos;object&apos;
+vm.selected.number // =&gt; 123
+</code></pre><h3 id="修饰符-modifiers"><a href="#修饰符-modifiers" class="headerlink" title="修饰符(modifiers)"></a>修饰符(modifiers)</h3><ul>
+<li>.lazy</li>
+<li>.number</li>
+<li>.trim</li>
+</ul>
+<h2 id="组件基础"><a href="#组件基础" class="headerlink" title="组件基础"></a>组件基础</h2><p>这里是一个 Vue 组件示例：</p>
+<pre><code>// 定义一个新的组件，名称为 button-counter
+Vue.component(&apos;button-counter&apos;, {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: &apos;&lt;button v-on:click=&quot;count++&quot;&gt;你点击了 {{ count }} 次。&lt;/button&gt;&apos;
+})
+</code></pre><p>组件(component)，是具有 name 名称的可复用 Vue 实例：当前示例中是 <button-counter>。</button-counter></p>
+<p>我们可以使用 new Vue 创建出一个 Vue 根实例，然后将这个组件作为其中的一个自定义元素(custom element)：</p>
+<pre><code>&lt;div id=&quot;components-demo&quot;&gt;
+  &lt;button-counter&gt;&lt;/button-counter&gt;
+&lt;/div&gt;
+new Vue({ el: &apos;#components-demo&apos; })
+</code></pre><p>由于组件是可复用的 Vue 实例，它们接收的选项，和在 new Vue 时候的选项相同，例如 data, computed, watch, methods 和生命周期钩子。</p>
+<p>唯一的例外是，类似 el 这样，根实例上特有(root-specific)的选项。</p>
+<p>可以根据需要，多次重复使用组件：</p>
+<p>注意，当点击按钮时，每个按钮都维护彼此独立的 count。这是因为每次使用组件时，都会创建出一个新的组件实例。</p>
+<p><strong>data 必须是一个函数</strong></p>
+<p>组件的 data 选项必须是一个函数，以便每个实例都可以维护「函数返回的数据对象」的彼此独立的数据副本</p>
+<p>组件注册有两种方式：<strong>全局注册</strong>和<strong>局部注册</strong></p>
+<h3 id="在组件中使用less"><a href="#在组件中使用less" class="headerlink" title="在组件中使用less"></a>在组件中使用less</h3><pre><code>&lt;style lang=&apos;less&apos;&gt;
+    .test {
+        width: 100px;
+        height: 100px;
+        background: #f00;
+        .test-item {
+            width: 50px;
+            height: 50px;
+            background: #ff0;
+        }
+    } 
+&lt;/style&gt;
+</code></pre><h3 id="使用-props-向子组件传递数据"><a href="#使用-props-向子组件传递数据" class="headerlink" title="使用 props 向子组件传递数据"></a>使用 props 向子组件传递数据</h3><p>props 是指注册在组件选项上的自定义属性。当一个值，被放置在 props 中，作为其中一个 prop，这个值就会成为组件实例上，一个可访问的属性。</p>
+<pre><code>Vue.component(&apos;blog-post&apos;, {
+  props: [&apos;title&apos;],
+  template: &apos;&lt;h3&gt;{{ title }}&lt;/h3&gt;&apos;
+})
+</code></pre><p>在预先注册好一个 prop 属性之后，就可以将数据作为自定义属性传递给这个 prop 属性，如下所示：</p>
+<pre><code>&lt;blog-post title=&quot;我的 Vue 旅程&quot;&gt;&lt;/blog-post&gt;
+&lt;blog-post title=&quot;用 Vue 写博客&quot;&gt;&lt;/blog-post&gt;
+&lt;blog-post title=&quot;Vue 如此有趣&quot;&gt;&lt;/blog-post&gt;
+</code></pre><p>然而，在一个应用程序中，你常常会将 data 中的 posts 设为一个数组：</p>
+<pre><code>new Vue({
+  el: &apos;#blog-post-demo&apos;,
+  data: {
+    posts: [
+      { id: 1, title: &apos;我的 Vue 旅程&apos; },
+      { id: 2, title: &apos;用 Vue 写博客&apos; },
+      { id: 3, title: &apos;Vue 如此有趣&apos; },
+    ]
+  }
+})
+</code></pre><p>然后，将每条数据渲染为一个组件：</p>
+<pre><code>&lt;blog-post
+  v-for=&quot;post in posts&quot;
+  v-bind:key=&quot;post.id&quot;
+  v-bind:title=&quot;post.title&quot;&gt;
+  &lt;/blog-post&gt;
+</code></pre><h3 id="单个根元素"><a href="#单个根元素" class="headerlink" title="单个根元素"></a>单个根元素</h3><p> every component must have a single root element</p>
+<pre><code> &lt;div class=&quot;blog-post&quot;&gt;
+  &lt;h3&gt;{{ post.title }}&lt;/h3&gt;
+  &lt;div v-html=&quot;post.content&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><h3 id="使用-events-向父组件发送消息"><a href="#使用-events-向父组件发送消息" class="headerlink" title="使用 events 向父组件发送消息"></a>使用 events 向父组件发送消息</h3><pre><code>&lt;div id=&quot;blog-posts-events-demo&quot;&gt;
+  &lt;div :style=&quot;{ fontSize: postFontSize + &apos;em&apos; }&quot;&gt;
+    &lt;blog-post
+      v-for=&quot;post in posts&quot;
+      v-bind:key=&quot;post.id&quot;
+      v-bind:post=&quot;post&quot;
+    &gt;&lt;/blog-post&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><hr>
+<pre><code>&lt;button v-on:click=&quot;$emit(&apos;enlarge-text&apos;)&quot;&gt;
+  放大文本
+&lt;/button&gt;
+
+&lt;blog-post
+  ...
+  v-on:enlarge-text=&quot;postFontSize += 0.1&quot;&gt;
+    &lt;/blog-post&gt;
+</code></pre><h3 id="在-event-事件中发送一个值"><a href="#在-event-事件中发送一个值" class="headerlink" title="在 event 事件中发送一个值"></a>在 event 事件中发送一个值</h3><p>有时，想在 event 事件中发送一个特定的值。例如，我们可能想要在 \&lt;blog-post> 组件自身内部，去控制放大文本字号的间隔。在这种情况下，我们可以使用 \$emit 的第二个参数来提供字号间隔值：</p>
+<pre><code>&lt;button v-on:click=&quot;$emit(&apos;enlarge-text&apos;, 0.1)&quot;&gt;
+  放大文本
+&lt;/button&gt;
+
+&lt;blog-post
+  ...
+  v-on:enlarge-text=&quot;postFontSize += $event&quot;
+&gt;&lt;/blog-post&gt;
+</code></pre><p>或者，如果事件处理函数是一个方法：</p>
+<pre><code>&lt;blog-post
+  ...
+  v-on:enlarge-text=&quot;onEnlargeText&quot;
+&gt;&lt;/blog-post&gt;
+</code></pre><p>然后，这个值会被传入到方法中，作为第一个参数：</p>
+<pre><code>methods: {
+  onEnlargeText: function (enlargeAmount) {
+    this.postFontSize += enlargeAmount
+  }
+}
+</code></pre><h3 id="在组件中使用-v-model"><a href="#在组件中使用-v-model" class="headerlink" title="在组件中使用 v-model"></a>在组件中使用 v-model</h3><pre><code>&lt;input v-model=&quot;searchText&quot;&gt;
+</code></pre><p>等同于如下：</p>
+<pre><code>&lt;input
+  v-bind:value=&quot;searchText&quot;
+  v-on:input=&quot;searchText = $event.target.value&quot;&gt;
+</code></pre><p>为了组件内部能够有效运行，组件内的 \&lt;input> 必须：</p>
+<ul>
+<li>将 value 属性绑定到 value prop</li>
+<li>在 input 输入框中，在自定义的 input 事件中，发送一个新的值</li>
+</ul>
+<p>这里就是上面所描述的：</p>
+<pre><code>Vue.component(&apos;custom-input&apos;, {
+  props: [&apos;value&apos;],
+  template: `
+    &lt;input
+      v-bind:value=&quot;value&quot;
+      v-on:input=&quot;$emit(&apos;input&apos;, $event.target.value)
+    &gt;
+  `
+})
+</code></pre><p>  现在，我们的 custom-input 组件，应该可以实现 v-model 的完美运行：</p>
+<pre><code>&lt;custom-input v-model=&quot;searchText&quot;&gt;&lt;/custom-input&gt; 
+</code></pre><h3 id="进入、离开和列表的过渡"><a href="#进入、离开和列表的过渡" class="headerlink" title="进入、离开和列表的过渡"></a>进入、离开和列表的过渡</h3><h4 id="单元素-组件的过渡"><a href="#单元素-组件的过渡" class="headerlink" title="单元素/组件的过渡"></a>单元素/组件的过渡</h4><p>Vue 提供了 transition 外层包裹容器组件(wrapper component)，可以给下列情形中的任何元素和组件添加进入/离开(enter/leave)过渡</p>
+<ul>
+<li>条件渲染（使用 v-if）</li>
+<li>条件展示（使用 v-show）</li>
+<li>动态组件</li>
+<li>组件根节点</li>
+</ul>
+<p>这是一个常见行为的简单示例：</p>
+<pre><code>&lt;div id=&quot;demo&quot;&gt;
+  &lt;button v-on:click=&quot;show = !show&quot;&gt;
+    Toggle
+  &lt;/button&gt;
+  &lt;transition name=&quot;fade&quot;&gt;
+    &lt;p v-if=&quot;show&quot;&gt;hello&lt;/p&gt;
+  &lt;/transition&gt;
+&lt;/div&gt;
+new Vue({
+  el: &apos;#demo&apos;,
+  data: {
+    show: true
+  }
+})
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active 在低于版本 2.1.8 中 */ {
+  opacity: 0;
+}
+</code></pre><p>对于这些过渡中切换 class，每个都以过渡的 name 作为前缀。</p>
+<p>当你使用没有 name 的 \&lt;transition> 元素时，会默认前缀为 v-</p>
+<h4 id="在初始渲染时过渡"><a href="#在初始渲染时过渡" class="headerlink" title="在初始渲染时过渡"></a>在初始渲染时过渡</h4><p>如果你还想在节点初始渲染时应用过渡，可以添加 appear 属性：</p>
+<pre><code>&lt;transition appear&gt;
+  &lt;!-- ... --&gt;
+&lt;/transition&gt;
+</code></pre><p>多个元素之间切换过渡</p>
+<pre><code>给 &lt;transition&gt; 组件中的多个元素设置 key，被认为是一个最佳实践。
+</code></pre><p>例如：</p>
+<pre><code>&lt;transition&gt;
+  &lt;button v-if=&quot;docState === &apos;saved&apos;&quot; key=&quot;saved&quot;&gt;
+    Edit
+  &lt;/button&gt;
+  &lt;button v-if=&quot;docState === &apos;edited&apos;&quot; key=&quot;edited&quot;&gt;
+    Save
+  &lt;/button&gt;
+  &lt;button v-if=&quot;docState === &apos;editing&apos;&quot; key=&quot;editing&quot;&gt;
+    Cancel
+  &lt;/button&gt;
+&lt;/transition&gt;
+</code></pre><p>可以重写为：</p>
+<pre><code>&lt;transition&gt;
+  &lt;button v-bind:key=&quot;docState&quot;&gt;
+    {{ buttonMessage }}
+  &lt;/button&gt;
+&lt;/transition&gt;
+// ...
+computed: {
+  buttonMessage: function () {
+    switch (this.docState) {
+      case &apos;saved&apos;: return &apos;Edit&apos;
+      case &apos;edited&apos;: return &apos;Save&apos;
+      case &apos;editing&apos;: return &apos;Cancel&apos;
+    }
+  }
+}
+</code></pre><p>同时生效的进入式和离开式过渡不能满足所有要求，所以 Vue 提供了可选的<strong>过渡模式</strong>：</p>
+<ul>
+<li>in-out：新元素先过渡进入(transition in)，过渡完成之后，当前元素过渡离开(transition out)。</li>
+<li>out-in：当前元素先过渡离开(transition out)，过渡完成之后，新元素过渡进入(transition in)。</li>
+</ul>
+<pre><code>&lt;transition name=&quot;fade&quot; mode=&quot;out-in&quot;&gt;
+  &lt;!-- ... the buttons ... --&gt;
+&lt;/transition&gt;
+</code></pre><h4 id="多个组件之间过渡"><a href="#多个组件之间过渡" class="headerlink" title="多个组件之间过渡"></a>多个组件之间过渡</h4><p>多个组件之间的过渡甚至更简单 - 我们不需要使用 key 属性。相反，我们需要使用动态组件:</p>
+<h4 id="列表过渡"><a href="#列表过渡" class="headerlink" title="列表过渡"></a>列表过渡</h4><p>我们将使用 <transition-group> 组件。</transition-group></p>
+<p>在我们深入示例之前，先来了解关于这个组件的一些要点：</p>
+<ul>
+<li>不同于 <transition>，它会以一个真实元素渲染：默认为 <span>。你也可以通过 tag 属性更换为其他渲染元素</span></transition></li>
+<li>它内部的元素必须具有唯一的 key 属性</li>
+</ul>
+<h4 id="可复用的过渡"><a href="#可复用的过渡" class="headerlink" title="可复用的过渡"></a>可复用的过渡</h4><blockquote>
+<p>通过 Vue 的组件系统可以实现复用过渡。要创建一个可复用过渡，你需要做的就是将 <transition> 或者 <transition-group> 作为组件根节点，然后将全部子内容放置在 transition 组件中就可以了。</transition-group></transition></p>
+</blockquote>
+<h3 id="深入组件"><a href="#深入组件" class="headerlink" title="深入组件"></a>深入组件</h3><h4 id="局部注册方式-local-registration"><a href="#局部注册方式-local-registration" class="headerlink" title="局部注册方式(local registration)"></a>局部注册方式(local registration)</h4><p>可以将你的组件定义为纯 JavaScript 对象：</p>
+<pre><code>var ComponentA = { /* ... */ }
+var ComponentB = { /* ... */ }
+var ComponentC = { /* ... */ }
+</code></pre><p>然后，在 components 选项中，定义你需要用到的组件：</p>
+<pre><code>new Vue({
+  el: &apos;#app&apos;
+  components: {
+    &apos;component-a&apos;: ComponentA,
+    &apos;component-b&apos;: ComponentB
+  }
+})
+</code></pre><p>注意，局部注册的组件在子组件中无法访问。例如，如果你想要 在 ComponentB 中访问 ComponentA，你必须使用：</p>
+<pre><code>var ComponentA = { /* ... */ }
+
+var ComponentB = {
+  components: {
+    &apos;component-a&apos;: ComponentA
+  },
+  // ...
+}
+</code></pre><p>或者，如果使用 ES2015 模块（例如，通过 Babel 和 webpack 进行转译），则看起来可能类似这样：</p>
+<pre><code>import ComponentA from &apos;./ComponentA.vue&apos;
+
+export default {
+  components: {
+    ComponentA
+  },
+  // ...
+}
+</code></pre><p>注意，在 ES2015+ 中，在一个对象放置类似 ComponentA 这样的变量名称，其实是 ComponentA: ComponentA 的简写形式，也就是说，变量的名称：</p>
+<ul>
+<li>既是在模板中引用的自定义元素的名称</li>
+<li>而且，也是包含组件选项对象的变量的引用名</li>
+</ul>
+<h3 id="在模块系统中的局部注册方式"><a href="#在模块系统中的局部注册方式" class="headerlink" title="在模块系统中的局部注册方式"></a>在模块系统中的局部注册方式</h3><p>在局部注册这些组件之前，你需要预先导入每个需要用到的组件。例如，在假想的 ComponentB.js 或 ComponentB.vue 文件中：</p>
+<pre><code>import ComponentA from &apos;./ComponentA&apos;
+import ComponentC from &apos;./ComponentC&apos;
+
+export default {
+  components: {
+    ComponentA,
+    ComponentC
+  },
+  // ...
+}
+</code></pre><p>现在，可以在 ComponentB 组件的模板内部引用 ComponentA 和 ComponentC 这两个组件。</p>
+<h3 id="prop-验证"><a href="#prop-验证" class="headerlink" title="prop 验证"></a>prop 验证</h3><p>为了指定 prop 验证，你需要将 props 的值定义为一个带有验证接收条件的对象，而不是一个由字符串构成的数组。例如：</p>
+<pre><code>Vue.component(&apos;my-component&apos;, {
+  props: {
+    // 基本类型(base type)的检查（`null` 表示接受所有类型）
+    propA: Number,
+    // 多种可能的类型
+    propB: [String, Number],
+    // 必须传递，且 String 类型
+    propC: {
+      type: String,
+      required: true
+    },
+    // Number 类型，有一个默认值
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // Object 类型，有一个默认值
+    propE: {
+      type: Object,
+      // Object/Array 类型，
+      // 默认必须返回一个工厂函数
+      default: function () {
+        return { message: &apos;hello&apos; }
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 值必须是这些字符串中的一个
+        return [&apos;success&apos;, &apos;warning&apos;, &apos;danger&apos;].indexOf(value) !== -1
+      }
+    }
+  }
+})
+</code></pre><h3 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h3><pre><code>this.$emit(&apos;my-event&apos;)
+
+&lt;my-component v-on:my-event=&quot;doSomething&quot;&gt;&lt;/my-component&gt;
+</code></pre><p>与 components 和 props 不同，事件名称并不提供命名自动转换<br>建议总是使用串联式命名(kebab-cased)来命名事件名称</p>
+<h3 id="使用-slots-进行内容分发"><a href="#使用-slots-进行内容分发" class="headerlink" title="使用 slots 进行内容分发"></a>使用 slots 进行内容分发</h3><p>在组件渲染时，<slot> 元素就会被替换为 “Your Profile”。在 slot 位置，可以包含任何模板代码，也包括 HTML：</slot></p>
+<p>甚至，slot 位置也能包含其他组件：</p>
+<p>如果 \&lt;navigation-link> 完全没有 \&lt;slot> 元素，则 slot 位置传递的所有内容都会被直接丢弃。</p>
+<h4 id="命名插槽-named-slot"><a href="#命名插槽-named-slot" class="headerlink" title="命名插槽(named slot)"></a>命名插槽(named slot)</h4><h4 id="默认插槽内容-default-slot-content"><a href="#默认插槽内容-default-slot-content" class="headerlink" title="默认插槽内容(default slot content)"></a>默认插槽内容(default slot content)</h4><h3 id="对动态组件使用-keep-alive"><a href="#对动态组件使用-keep-alive" class="headerlink" title="对动态组件使用 keep-alive"></a>对动态组件使用 keep-alive</h3><h3 id="mixin"><a href="#mixin" class="headerlink" title="mixin"></a>mixin</h3><p>mixin 是分发 Vue 组件的可复用功能的一种非常灵活方式。每个 mixin 对象可以包含全部组件选项。当组件使用 mixin 对象时，mixin 对象中的全部选项，都会被“混入(mix)”到组件自身的选项当中。<br>例如：</p>
+<pre><code>// 定义一个 mixin 对象
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log(&apos;来自 mixin 对象的 hello！&apos;)
+    }
+  }
+}
+
+// 定义一个使用以上 mixin 对象的组件
+var Component = Vue.extend({
+  mixins: [myMixin]
+})
+
+var component = new Component() // =&gt; &quot;来自 mixin 对象的 hello！&quot;
+</code></pre><h3 id="自定义指令"><a href="#自定义指令" class="headerlink" title="自定义指令"></a>自定义指令</h3><p>注册一个名为 <code>v-focus</code> 的全局自定义指令</p>
+<pre><code>Vue.directive(&apos;focus&apos;, {
+  // 当绑定的元素插入到 DOM 时调用此函数……
+  inserted: function (el) {
+    // 元素调用 focus 获取焦点
+    el.focus()
+  }
+})
+</code></pre><p>如果你想要注册一个局部指令，也可以通过设置组件的 directives 选项：</p>
+<pre><code>directives: {
+  focus: {
+    // 指令定义对象
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+</code></pre><p>然后在模板中，你可以在任何元素上使用新增的 v-focus 属性，就像这样：</p>
+<pre><code>&lt;input v-focus&gt;
+</code></pre><p>钩子函数</p>
+<p>指令的定义对象提供了几个钩子函数（全部可选）：</p>
+<ul>
+<li>bind：在指令第一次绑定到元素时调用，只会调用一次。可以在此钩子函数中，执行一次性的初始化设置。</li>
+<li>inserted：在已绑定的元素插入到父节点时调用（只能保证父节点存在，不一定存在于 document 中）。</li>
+<li>update：在包含指令的组件的 VNode 更新后调用，但可能之前其子组件已更新。指令的值可能更新或者还没更新，然而可以通过比较绑定的当前值和旧值，来跳过不必要的更新（参考下面的钩子函数）。</li>
+<li>componentUpdated：在包含指令的组件的 VNode 更新后调用，并且其子组件的 VNode 已更新。</li>
+<li>unbind：在指令从元素上解除绑定时调用，只会调用一次。</li>
+<li>我们将在下一节中，探讨传入这些钩子函数的参数（例如 el, binding, vnode 和 oldVnode）。</li>
+</ul>
+<h3 id="编写插件"><a href="#编写插件" class="headerlink" title="编写插件"></a>编写插件</h3><p>插件通常用于为 Vue 添加全局级别的功能。然而对于插件，并没有严格限定其使用范围 - 下面是常见的几种插件类型：</p>
+<ol>
+<li>添加一些全局方法或属性。例如 <strong>vue-custom-element</strong></li>
+<li>添加一个或多个全局资源(asset)：指令(directives)/过滤器(filters)/过渡(transitions) 等。例如 <strong>vue-touch</strong></li>
+<li>通过全局 mixin，添加一些组件选项。例如 <strong>vue-router</strong></li>
+<li>添加一些 Vue 实例方法，通过把这些方法添加到 Vue.prototype 上实现。</li>
+<li>一个可以提供 API 的库(library)，与此同时也是以上功能的组合。例如 <strong>vue-router</strong></li>
+</ol>
+<h3 id="非父子组件的通信"><a href="#非父子组件的通信" class="headerlink" title="非父子组件的通信"></a>非父子组件的通信</h3><p>有时候，非父子关系的两个组件之间也需要通信。在简单的场景下，可以使用一个空的 Vue 实例作为事件总线：</p>
+<pre><code>var bus = new Vue()
+// 触发组件 A 中的事件
+bus.$emit(&apos;id-selected&apos;, 1)
+// 在组件 B 创建的钩子中监听事件
+bus.$on(&apos;id-selected&apos;, function (id) {
+  // ...
+})
+</code></pre><p>在复杂的情况下，我们应该考虑使用专门的状态管理模式。</p>
+<h3 id="vuex-1"><a href="#vuex-1" class="headerlink" title="vuex"></a>vuex</h3><p>每一个 Vuex 应用的核心就是 store（仓库）。</p>
+<p>“store”基本上就是一个容器，它包含着你的应用中大部分的状态 (state)。Vuex 和单纯的全局对象有以下两点不同：</p>
+<ol>
+<li>Vuex 的状态存储是响应式的。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。</li>
+<li>你不能直接改变 store 中的状态。改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation。这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。</li>
+</ol>
+<pre><code>// 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
+})
+</code></pre><p>现在，你可以通过 store.state 来获取状态对象，以及通过 store.commit 方法触发状态变更：</p>
+<pre><code>store.commit(&apos;increment&apos;)
+
+console.log(store.state.count) // -&gt; 1
+</code></pre><h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><ul>
+<li>State</li>
+<li>Getter</li>
+<li>Mutation</li>
+<li>Action</li>
+<li>Module</li>
+</ul>
+<h4 id="State"><a href="#State" class="headerlink" title="State"></a>State</h4><p>Vuex 通过 store 选项，提供了一种机制将状态从根组件“注入”到每一个子组件中（需调用 Vue.use(Vuex)）：</p>
+<pre><code>const app = new Vue({
+  el: &apos;#app&apos;,
+  // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
+  store,
+  components: { Counter },
+  template: `
+    &lt;div class=&quot;app&quot;&gt;
+      &lt;counter&gt;&lt;/counter&gt;
+    &lt;/div&gt;
+  `
+})
+</code></pre><p>通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.\$store 访问到。让我们更新下 Counter 的实现：</p>
+<pre><code>const Counter = {
+  template: `&lt;div&gt;{{ count }}&lt;/div&gt;`,
+  computed: {
+    count () {
+      return this.$store.state.count
+    }
+  }
+}
+</code></pre><h3 id="mapState-辅助函数"><a href="#mapState-辅助函数" class="headerlink" title="mapState 辅助函数"></a>mapState 辅助函数</h3><p>当一个组件需要获取多个状态时候，将这些状态都声明为计算属性会有些重复和冗余。为了解决这个问题，我们可以使用 mapState 辅助函数帮助我们生成计算属性，让你少按几次键：</p>
+<pre><code>// 在单独构建的版本中辅助函数为 Vuex.mapState
+import { mapState } from &apos;vuex&apos;
+
+export default {
+  // ...
+  computed: mapState({
+    // 箭头函数可使代码更简练
+    count: state =&gt; state.count,
+
+    // 传字符串参数 &apos;count&apos; 等同于 `state =&gt; state.count`
+    countAlias: &apos;count&apos;,
+
+    // 为了能够使用 `this` 获取局部状态，必须使用常规函数
+    countPlusLocalState (state) {
+      return state.count + this.localCount
+    }
+  })
+}
+</code></pre><h3 id="对象展开运算符"><a href="#对象展开运算符" class="headerlink" title="对象展开运算符"></a>对象展开运算符</h3><p>mapState 函数返回的是一个对象。我们如何将它与局部计算属性混合使用呢？</p>
+<p>通常，我们需要使用一个工具函数将多个对象合并为一个，以使我们可以将最终对象传给 computed 属性。但是自从有了对象展开运算符，我们可以极大地简化写法：</p>
+<pre><code>computed: {
+  localComputed () { /* ... */ },
+  // 使用对象展开运算符将此对象混入到外部对象中
+  ...mapState({
+    // ...
+  })
+}
+</code></pre><h3 id="Getter"><a href="#Getter" class="headerlink" title="Getter"></a>Getter</h3><p>Vuex 允许我们在 store 中定义“<strong>getter</strong>”（可以认为是 <strong>store 的计算属性</strong>）。</p>
+<p>就像计算属性一样，getter 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算。</p>
+<p>Getter 接受 state 作为其第一个参数：</p>
+<pre><code>const store = new Vuex.Store({
+  state: {
+    todos: [
+      { id: 1, text: &apos;...&apos;, done: true },
+      { id: 2, text: &apos;...&apos;, done: false }
+    ]
+  },
+  getters: {
+    doneTodos: state =&gt; {
+      return state.todos.filter(todo =&gt; todo.done)
+    }
+  }
+})
+</code></pre><p>通过属性访问</p>
+<p>Getter 会暴露为 store.getters 对象，你可以以属性的形式访问这些值：</p>
+<pre><code>store.getters.doneTodos // -&gt; [{ id: 1, text: &apos;...&apos;, done: true }]
+</code></pre><p>我们可以很容易地在任何组件中使用它：</p>
+<pre><code>computed: {
+  doneTodosCount () {
+    return this.$store.getters.doneTodosCount
+  }
+}
+</code></pre><p>注意，getter 在通过属性访问时是作为 Vue 的响应式系统的一部分缓存其中的。</p>
+<p>通过方法访问</p>
+<p>你也可以通过让 getter 返回一个函数，来实现给 getter 传参。在你对 store 里的数组进行查询时非常有用。</p>
+<pre><code>getters: {
+  // ...
+  getTodoById: (state) =&gt; (id) =&gt; {
+    return state.todos.find(todo =&gt; todo.id === id)
+  }
+}
+
+store.getters.getTodoById(2) // -&gt; { id: 2, text: &apos;...&apos;, done: false }
+</code></pre><p>注意，getter 在通过方法访问时，每次都会去进行调用，而不会缓存结果。</p>
+<h4 id="mapGetters-辅助函数"><a href="#mapGetters-辅助函数" class="headerlink" title="mapGetters 辅助函数"></a>mapGetters 辅助函数</h4><p>mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性：</p>
+<pre><code>import { mapGetters } from &apos;vuex&apos;
+
+export default {
+  // ...
+  computed: {
+  // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters([
+      &apos;doneTodosCount&apos;,
+      &apos;anotherGetter&apos;,
+      // ...
+    ])
+  }
+}
+</code></pre><p>如果你想将一个 getter 属性另取一个名字，使用对象形式：</p>
+<pre><code>mapGetters({
+  // 映射 `this.doneCount` 为 `store.getters.doneTodosCount`
+  doneCount: &apos;doneTodosCount&apos;
+})
+</code></pre><h3 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h3><p>更改 Vuex 的 store 中的状态的唯一方法是提交 mutation。</p>
+<p>Vuex 中的 mutation 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数：</p>
+<pre><code>const store = new Vuex.Store({
+  state: {
+    count: 1
+  },
+  mutations: {
+    increment (state) {
+      // 变更状态
+      state.count++
+    }
+  }
+})
+
+store.commit(&apos;increment&apos;)
+</code></pre><h3 id="提交载荷（Payload）"><a href="#提交载荷（Payload）" class="headerlink" title="提交载荷（Payload）"></a>提交载荷（Payload）</h3><pre><code>// ...
+mutations: {
+  increment (state, payload) {
+    state.count += payload.amount
+  }
+}
+store.commit(&apos;increment&apos;, {
+  amount: 10
+})
+</code></pre><p>Mutation 需遵守 Vue 的响应规则</p>
+<p>既然 Vuex 的 store 中的状态是响应式的，那么当我们变更状态时，监视状态的 Vue 组件也会自动更新。这也意味着 Vuex 中的 mutation 也需要与使用 Vue 一样遵守一些注意事项：</p>
+<ol>
+<li>最好提前在你的 store 中初始化好所有所需属性。 </li>
+<li>当需要在对象上添加新属性时，你应该:</li>
+</ol>
+<ul>
+<li>使用 Vue.set(obj, ‘newProp’, 123), 或者</li>
+<li><p>以新对象替换老对象。例如，利用<strong>对象展开运算符</strong>我们可以这样写：</p>
+<p>  state.obj = { …state.obj, newProp: 123 }</p>
+</li>
+</ul>
+<h4 id="在-Vuex-中，mutation-都是同步事务："><a href="#在-Vuex-中，mutation-都是同步事务：" class="headerlink" title="在 Vuex 中，mutation 都是同步事务："></a>在 Vuex 中，mutation 都是同步事务：</h4><pre><code>store.commit(&apos;increment&apos;)
+// 任何由 &quot;increment&quot; 导致的状态变更都应该在此刻完成。
+</code></pre><h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>Action 类似于 mutation，不同在于：</p>
+<ul>
+<li>Action 提交的是 mutation，而不是直接变更状态。</li>
+<li>Action 可以包含任意异步操作。</li>
+</ul>
+<p>让我们来注册一个简单的 action：</p>
+<pre><code>const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit(&apos;increment&apos;)
+    }
+  }
+})
+</code></pre><p>Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，因此你可以调用 context.commit 提交一个 mutation，或者通过 context.state 和 context.getters 来获取 state 和 getters。</p>
+<p>实践中，我们会经常用到 ES2015 的 参数解构 来简化代码（特别是我们需要调用 commit 很多次的时候）：</p>
+<pre><code>actions: {
+  increment ({ commit }) {
+    commit(&apos;increment&apos;)
+  }
+}
+</code></pre><h4 id="分发-Action"><a href="#分发-Action" class="headerlink" title="分发 Action"></a>分发 Action</h4><p>Action 通过 store.dispatch 方法触发：</p>
+<pre><code>store.dispatch(&apos;increment&apos;)
+</code></pre><p>乍一眼看上去感觉多此一举，我们直接分发 mutation 岂不更方便？实际上并非如此，还记得 <strong>mutation 必须同步执行</strong>这个限制么？Action 就不受约束！我们<strong>可以在 action 内部执行异步操作</strong>：</p>
+<pre><code>actions: {
+  incrementAsync ({ commit }) {
+    setTimeout(() =&gt; {
+      commit(&apos;increment&apos;)
+    }, 1000)
+  }
+}
+</code></pre><p>Actions 支持同样的载荷方式和对象方式进行分发：</p>
+<pre><code>// 以载荷形式分发
+store.dispatch(&apos;incrementAsync&apos;, {
+  amount: 10
+})
+
+// 以对象形式分发
+store.dispatch({
+  type: &apos;incrementAsync&apos;,
+  amount: 10
+})
+</code></pre><p>来看一个更加实际的购物车示例，涉及到调用异步 API 和分发多重 mutation：</p>
+<pre><code>actions: {
+  checkout ({ commit, state }, products) {
+    // 把当前购物车的物品备份起来
+    const savedCartItems = [...state.cart.added]
+    // 发出结账请求，然后乐观地清空购物车
+    commit(types.CHECKOUT_REQUEST)
+    // 购物 API 接受一个成功回调和一个失败回调
+    shop.buyProducts(
+      products,
+      // 成功操作
+      () =&gt; commit(types.CHECKOUT_SUCCESS),
+      // 失败操作
+      () =&gt; commit(types.CHECKOUT_FAILURE, savedCartItems)
+    )
+  }
+}
+</code></pre><h4 id="在组件中分发-Action"><a href="#在组件中分发-Action" class="headerlink" title="在组件中分发 Action"></a>在组件中分发 Action</h4><p>你在组件中使用 <code>this.$store.dispatch(&#39;xxx&#39;)</code>分发 action，或者使用 mapActions 辅助函数将组件的 methods 映射为 <code>store.dispatch</code> 调用（需要先在根节点注入 store）：</p>
+<pre><code>import { mapActions } from &apos;vuex&apos;
+
+export default {
+  // ...
+  methods: {
+    ...mapActions([
+      &apos;increment&apos;, // 将 `this.increment()` 映射为 `this.$store.dispatch(&apos;increment&apos;)`
+
+      // `mapActions` 也支持载荷：
+      &apos;incrementBy&apos; // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch(&apos;incrementBy&apos;, amount)`
+    ]),
+    ...mapActions({
+      add: &apos;increment&apos; // 将 `this.add()` 映射为 `this.$store.dispatch(&apos;increment&apos;)`
+    })
+  }
+}
+</code></pre><h4 id="组合-Action"><a href="#组合-Action" class="headerlink" title="组合 Action"></a>组合 Action</h4><p> store.dispatch 可以处理被触发的 action 的处理函数返回的 Promise，并且 store.dispatch 仍旧返回 Promise：</p>
+<pre><code> actions: {
+  actionA ({ commit }) {
+    return new Promise((resolve, reject) =&gt; {
+      setTimeout(() =&gt; {
+        commit(&apos;someMutation&apos;)
+        resolve()
+      }, 1000)
+    })
+  }
+}
+</code></pre><p>现在你可以：</p>
+<pre><code>store.dispatch(&apos;actionA&apos;).then(() =&gt; {
+  // ...
+})
+</code></pre><p>在另外一个 action 中也可以：</p>
+<pre><code>actions: {
+  // ...
+  actionB ({ dispatch, commit }) {
+    return dispatch(&apos;actionA&apos;).then(() =&gt; {
+      commit(&apos;someOtherMutation&apos;)
+    })
+  }
+}
+</code></pre><p>最后，如果我们利用 async / await，我们可以如下组合 action：</p>
+<pre><code>// 假设 getData() 和 getOtherData() 返回的是 Promise
+
+actions: {
+  async actionA ({ commit }) {
+    commit(&apos;gotData&apos;, await getData())
+  },
+  async actionB ({ dispatch, commit }) {
+    await dispatch(&apos;actionA&apos;) // 等待 actionA 完成
+    commit(&apos;gotOtherData&apos;, await getOtherData())
+  }
+}
+</code></pre><blockquote>
+<p>async/await 无疑是现阶段最好的异步回调同步化的解决方案，不过因为暂时没有纳入ES2016规范，而且主流浏览器的支持的不足，所以我们只能通过使用babel尝鲜。但是我们也可以借此看到未来JavaScript在回调问题上的主流解决方案。</p>
+</blockquote>
+<h3 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h3><p>由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。</p>
+<p>为了解决以上问题，Vuex 允许我们将 store 分割成模块（module）。</p>
+<p>每个模块拥有自己的 state、mutation、action、getter<strong>（可以认为是 store 的计算属性）</strong>、甚至是嵌套子模块——从上至下进行同样方式的分割：</p>
+<pre><code>const moduleA = {
+  state: { ... },
+  mutations: { ... },
+  actions: { ... },
+  getters: { ... }
+}
+
+const moduleB = {
+  state: { ... },
+  mutations: { ... },
+  actions: { ... }
+}
+
+const store = new Vuex.Store({
+  modules: {
+    a: moduleA,
+    b: moduleB
+  }
+})
+
+store.state.a // -&gt; moduleA 的状态
+store.state.b // -&gt; moduleB 的状态
+</code></pre><h4 id="模块的局部状态"><a href="#模块的局部状态" class="headerlink" title="模块的局部状态"></a>模块的局部状态</h4><p>对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。</p>
+<pre><code>const moduleA = {
+  state: { count: 0 },
+  mutations: {
+    increment (state) {
+      // 这里的 `state` 对象是模块的局部状态
+      state.count++
+    }
+  },
+
+  getters: {
+    doubleCount (state) {
+      return state.count * 2
+    }
+  }
+}
+</code></pre><p>同样，对于模块内部的 action，局部状态<strong>通过 context.state 暴露出来</strong>，根节点状态则为 context.rootState：</p>
+<pre><code>const moduleA = {
+  // ...
+  actions: {
+    incrementIfOddOnRootSum ({ state, commit, rootState }) {
+      if ((state.count + rootState.count) % 2 === 1) {
+        commit(&apos;increment&apos;)
+      }
+    }
+  }
+}
+</code></pre><p>对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：</p>
+<pre><code>const moduleA = {
+  // ...
+  getters: {
+    sumWithRootCount (state, getters, rootState) {
+      return state.count + rootState.count
+    }
+  }
+}
+</code></pre><h3 id="vuex-router-sync"><a href="#vuex-router-sync" class="headerlink" title="vuex-router-sync"></a>vuex-router-sync</h3><p>主要是把 vue-router 的狀態放進 vuex 的 state 中，這樣就可以透過改變 state 來進行路由的一些操作，當然直接使用像是 \$route.go 之類的也會影響到 state ，會同步的是這幾個屬性</p>
+<pre><code>store.state.route.path   // current path (string)
+store.state.route.params // current params (object)
+store.state.route.query  // current query (object)
+</code></pre><h3 id="vue-cli"><a href="#vue-cli" class="headerlink" title="vue-cli"></a>vue-cli</h3><p>自从node的兴起，前端项目中就开始出现各种预处理工具，当我们开始一个新项目时，我们都会先编写一些预处理文件，和构建项目目录。</p>
+<p>而vue-cli就是为了做这方面工作的，生成一套提前定义好的构建文件，和相应的文件。</p>
+<p>vue-cli有5个对应的项目结构。我们使用的是<strong>vue-webpack-boilerplate</strong>。</p>
+<pre><code>$ npm install -g vue-cli
+$ vue init webpack my-project
+$ cd my-project
+$ npm install
+$ npm run dev
+</code></pre><h3 id="axios-与-vue-resource"><a href="#axios-与-vue-resource" class="headerlink" title="axios 与 vue-resource"></a>axios 与 vue-resource</h3><p>axios 支持 Node.js 环境的使用 </p>
+<p>换句话说在 Vue SSR 中不需要额外处理，vue-resources 当时是只提供了浏览器环境</p>
+<p>vue-resources不再更新了，vue作者推荐axios</p>
+<p>axios 是一个基于Promise 用于浏览器和 nodejs 的 HTTP 客户端，它本身具有以下特征：</p>
+<ul>
+<li>从浏览器中创建 XMLHttpRequest</li>
+<li>从 node.js 发出 http 请求</li>
+<li>支持 Promise API</li>
+<li>拦截请求和响应</li>
+<li>转换请求和响应数据</li>
+<li>取消请求</li>
+<li>自动转换JSON数据</li>
+<li>客户端支持防止 CSRF<strong>（Cross-site request forgery 跨站请求伪造）</strong></li>
+</ul>
+<blockquote>
+<p>XSS又叫CSS 跨站脚本(cross-site scripting,XSS) ，基于系统对用户的信任</p>
+</blockquote>
+<h4 id="执行-GET-请求"><a href="#执行-GET-请求" class="headerlink" title="执行 GET 请求"></a>执行 GET 请求</h4><pre><code>// 为给定 ID 的 user 创建请求
+axios.get(&apos;/user?ID=12345&apos;)
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+// 可选地，上面的请求可以这样做
+axios.get(&apos;/user&apos;, {
+    params: {
+      ID: 12345
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+</code></pre><h4 id="执行-POST-请求"><a href="#执行-POST-请求" class="headerlink" title="执行 POST 请求"></a>执行 POST 请求</h4><pre><code>axios.post(&apos;/user&apos;, {
+    firstName: &apos;Fred&apos;,
+    lastName: &apos;Flintstone&apos;
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+</code></pre><h4 id="执行多个并发请求"><a href="#执行多个并发请求" class="headerlink" title="执行多个并发请求"></a>执行多个并发请求</h4><pre><code>function getUserAccount() {
+  return axios.get(&apos;/user/12345&apos;);
+}
+
+function getUserPermissions() {
+  return axios.get(&apos;/user/12345/permissions&apos;);
+}
+
+axios.all([getUserAccount(), getUserPermissions()])
+  .then(axios.spread(function (acct, perms) {
+    // 两个请求现在都执行完成
+  }));
+</code></pre><h3 id="vue-router"><a href="#vue-router" class="headerlink" title="vue-router"></a>vue-router</h3><p>把 vue-router 添加进来，我们需要做的是，将组件(components)映射到路由(routes)，然后告诉 vue-router 在哪里渲染它们</p>
+<pre><code>&lt;div id=&quot;app&quot;&gt;
+  &lt;h1&gt;Hello App!&lt;/h1&gt;
+  &lt;p&gt;
+    &lt;!-- 使用 router-link 组件来导航. --&gt;
+    &lt;!-- 通过传入 `to` 属性指定链接. --&gt;
+    &lt;!-- &lt;router-link&gt; 默认会被渲染成一个 `&lt;a&gt;` 标签 --&gt;
+    &lt;router-link to=&quot;/foo&quot;&gt;Go to Foo&lt;/router-link&gt;
+    &lt;router-link to=&quot;/bar&quot;&gt;Go to Bar&lt;/router-link&gt;
+  &lt;/p&gt;
+  &lt;!-- 路由出口 --&gt;
+  &lt;!-- 路由匹配到的组件将渲染在这里 --&gt;
+  &lt;router-view&gt;&lt;/router-view&gt;
+&lt;/div&gt;
+</code></pre><hr>
+<pre><code>// 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+
+// 1. 定义（路由）组件。
+// 可以从其他文件 import 进来
+const Foo = { template: &apos;&lt;div&gt;foo&lt;/div&gt;&apos; }
+const Bar = { template: &apos;&lt;div&gt;bar&lt;/div&gt;&apos; }
+
+// 2. 定义路由
+// 每个路由应该映射一个组件。 其中&quot;component&quot; 可以是
+// 通过 Vue.extend() 创建的组件构造器，
+// 或者，只是一个组件配置对象。
+// 我们晚点再讨论嵌套路由。
+const routes = [
+  { path: &apos;/foo&apos;, component: Foo },
+  { path: &apos;/bar&apos;, component: Bar }
+]
+
+// 3. 创建 router 实例，然后传 `routes` 配置
+// 你还可以传别的配置参数, 不过先这么简单着吧。
+const router = new VueRouter({
+  routes // （缩写）相当于 routes: routes
+})
+
+// 4. 创建和挂载根实例。
+// 记得要通过 router 配置参数注入路由，
+// 从而让整个应用都有路由功能
+const app = new Vue({
+  router
+}).$mount(&apos;#app&apos;)
+
+// 现在，应用已经启动了！
+</code></pre><h3 id="mount-手动挂载"><a href="#mount-手动挂载" class="headerlink" title="\$mount()手动挂载"></a>\$mount()手动挂载</h3><p>当Vue实例没有el属性时，则该实例尚没有挂载到某个dom中；</p>
+<p>假如需要延迟挂载，可以在之后手动调用<code>vm.$mount()</code>方法来挂载。</p>
+<h4 id="动态路由匹配"><a href="#动态路由匹配" class="headerlink" title="动态路由匹配"></a>动态路由匹配</h4><p>我们经常需要把某种模式匹配到的所有路由，全都映射到同个组件。例如，我们有一个 User 组件，对于所有 ID 各不相同的用户，都要使用这个组件来渲染。那么，我们可以在 vue-router 的路由路径中使用『动态路径参数』（dynamic segment）来达到这个效果：</p>
+<pre><code>const User = {
+  template: &apos;&lt;div&gt;User&lt;/div&gt;&apos;
+}
+
+const router = new VueRouter({
+  routes: [
+    // 动态路径参数 以冒号开头
+    { path: &apos;/user/:id&apos;, component: User }
+  ]
+})
+</code></pre><p>现在呢，像 /user/foo 和 /user/bar 都将映射到相同的路由。</p>
+<p>一个『路径参数』使用冒号 : 标记。当匹配到一个路由时，参数值会被设置到 this.</p>
+<p><code>$route.params</code>，可以在每个组件内使用。于是，我们可以更新 User 的模板，输出当前用户的 ID：</p>
+<pre><code>const User = {
+  template: &apos;&lt;div&gt;User {{ $route.params.id }}&lt;/div&gt;&apos;
+}
+</code></pre><h3 id="嵌套路由"><a href="#嵌套路由" class="headerlink" title="嵌套路由"></a>嵌套路由</h3><p>App里的 <router-view> 是最顶层的出口，渲染最高级路由匹配到的组件。同样地，一个被渲染组件同样可以包含自己的嵌套 <router-view>。例如，在 User 组件的模板添加一个 <code>&lt;router-view&gt;</code>：</router-view></router-view></p>
+<pre><code>const User = {
+  template: `
+    &lt;div class=&quot;user&quot;&gt;
+      &lt;h2&gt;User {{ $route.params.id }}&lt;/h2&gt;
+      &lt;router-view&gt;&lt;/router-view&gt;
+    &lt;/div&gt;
+  `
+}
+</code></pre><p>要在嵌套的出口中渲染组件，需要在 VueRouter 的参数中使用 children 配置：</p>
+<pre><code>const router = new VueRouter({
+  routes: [
+    { path: &apos;/user/:id&apos;, component: User,
+      children: [
+        {
+          // 当 /user/:id/profile 匹配成功，
+          // UserProfile 会被渲染在 User 的 &lt;router-view&gt; 中
+          path: &apos;profile&apos;,
+          component: UserProfile
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 &lt;router-view&gt; 中
+          path: &apos;posts&apos;,
+          component: UserPosts
+        }
+      ]
+    }
+  ]
+})
+</code></pre><p>要注意，以 / 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径。</p>
+<p>你会发现，children 配置就是像 routes 配置一样的路由配置数组，所以呢，你可以嵌套多层路由。</p>
+<p>此时，基于上面的配置，当你访问 /user/foo 时，User 的出口是不会渲染任何东西，这是因为没有匹配到合适的子路由。</p>
+<p>如果你想要渲染点什么，可以提供一个 <strong>空的 子路由</strong></p>
+<pre><code>const router = new VueRouter({
+  routes: [
+    {
+      path: &apos;/user/:id&apos;, component: User,
+      children: [
+        // 当 /user/:id 匹配成功，
+        // UserHome 会被渲染在 User 的 &lt;router-view&gt; 中
+        { path: &apos;&apos;, component: UserHome },
+
+        // ...其他子路由
+      ]
+    }
+  ]
+})
+</code></pre><h4 id="编程式的导航"><a href="#编程式的导航" class="headerlink" title="编程式的导航"></a>编程式的导航</h4><p>除了使用 <code>&lt;router-link&gt;</code> 创建 a 标签来定义导航链接，我们还可以借助 router 的实例方法，通过编写代码来实现。</p>
+<p>router.push(location, onComplete?, onAbort?)</p>
+<pre><code>当你点击 &lt;router-link&gt; 时，这个方法会在内部调用，所以说，点击 &lt;router-link :to=&quot;...&quot;&gt; 等同于调用 router.push(...)。
+</code></pre><p>该方法的参数可以是一个字符串路径，或者一个描述地址的对象。例如：</p>
+<pre><code>// 字符串
+router.push(&apos;home&apos;)
+
+// 对象
+router.push({ path: &apos;home&apos; })
+
+// 命名的路由
+router.push({ name: &apos;user&apos;, params: { userId: 123 }})
+
+// 带查询参数，变成 /register?plan=private
+router.push({ path: &apos;register&apos;, query: { plan: &apos;private&apos; }})
+</code></pre><p>注意：<strong>如果提供了 path，params 会被忽略</strong>，上述例子中的 query 并不属于这种情况。取而代之的是下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：</p>
+<pre><code>const userId = 123
+router.push({ name: &apos;user&apos;, params: { userId }}) // -&gt; /user/123
+router.push({ path: `/user/${userId}` }) // -&gt; /user/123
+// 这里的 params 不生效
+router.push({ path: &apos;/user&apos;, params: { userId }}) // -&gt; /user
+</code></pre><hr>
+<pre><code>router.replace(location, onComplete?, onAbort?)
+</code></pre><p>跟 <code>router.push</code> 很像，唯一的不同就是，它不会向 history 添加新记录，而是跟它的方法名一样 —— 替换掉当前的 history 记录。</p>
+<h4 id="router-go-n"><a href="#router-go-n" class="headerlink" title="router.go(n)"></a>router.go(n)</h4><p>这个方法的参数是一个整数，意思是在 history 记录中向前或者后退多少步</p>
+<h4 id="命名路由"><a href="#命名路由" class="headerlink" title="命名路由"></a>命名路由</h4><p>有时候，通过一个名称来标识一个路由显得更方便一些，特别是在链接一个路由，或者是执行一些跳转的时候。你可以在创建 Router 实例的时候，在 routes 配置中给某个路由设置名称。</p>
+<pre><code>const router = new VueRouter({
+  routes: [
+    {
+      path: &apos;/user/:userId&apos;,
+      name: &apos;user&apos;,
+      component: User
+    }
+  ]
+})
+</code></pre><p>要链接到一个命名路由，可以给 router-link 的 to 属性传一个对象：</p>
+<pre><code>&lt;router-link :to=&quot;{ name: &apos;user&apos;, params: { userId: 123 }}&quot;&gt;User&lt;/router-link&gt;
+</code></pre><p>这跟代码调用 router.push() 是一回事：</p>
+<pre><code>router.push({ name: &apos;user&apos;, params: { userId: 123 }})
+</code></pre><h4 id="命名视图"><a href="#命名视图" class="headerlink" title="命名视图"></a>命名视图</h4><p>有时候想同时（同级）展示多个视图，而不是嵌套展示，例如创建一个布局，有 sidebar（侧导航） 和 main（主内容） 两个视图，这个时候命名视图就派上用场了。你可以在界面中拥有多个单独命名的视图，而不是只有一个单独的出口。如果 router-view 没有设置名字，那么默认为 default。</p>
+<pre><code>&lt;router-view class=&quot;view one&quot;&gt;&lt;/router-view&gt;
+&lt;router-view class=&quot;view two&quot; name=&quot;a&quot;&gt;&lt;/router-view&gt;
+&lt;router-view class=&quot;view three&quot; name=&quot;b&quot;&gt;&lt;/router-view&gt;
+</code></pre><p>一个视图使用一个组件渲染，因此对于同个路由，多个视图就需要多个组件。确保正确使用 components 配置（带上 s）：</p>
+<pre><code>const router = new VueRouter({
+  routes: [
+    {
+      path: &apos;/&apos;,
+      components: {
+        default: Foo,
+        a: Bar,
+        b: Baz
+      }
+    }
+  ]
+})
+</code></pre><h3 id="vue的生命周期"><a href="#vue的生命周期" class="headerlink" title="vue的生命周期"></a>vue的生命周期</h3><p><img src="../resources/pictures/vuelife.png" alt=""></p>
+<p>它可以总共分为8个阶段：</p>
+<ol>
+<li>beforeCreate（创建前）</li>
+<li>created（创建后）</li>
+<li>beforeMount(挂载前)</li>
+<li>mounted（挂载后）</li>
+<li>beforeUpdate（更新前）</li>
+<li>updated（更新后）</li>
+<li>beforeDestroy（销毁前）</li>
+<li>destroyed（销毁后）</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2019/07/02/vue/" data-id="ck54pl3gw000mqwog6sd7a60i" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/11/web实时通讯技术总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Web端即时通讯技术
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/11/other/gas/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">液化气使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/">note</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 15px;">english</a> <a href="/tags/note/" style="font-size: 20px;">note</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/tips/" style="font-size: 20px;">tips</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/02/designPattern/">javascript设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/19/Optimization/">网站性能优化总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/11/web实时通讯技术总结/">Web端即时通讯技术</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/11/other/gas/">液化气使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

@@ -63,6 +63,73 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-git" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/19/git/" class="article-date">
+  <time datetime="2018-12-18T16:00:00.000Z" itemprop="datePublished">2018-12-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/19/git/">同一台电脑git多帐号配置 VPN设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在同一台电脑上使用github和gitlab，主要的思想就是使用不同的仓库时，切换成不同的账号。不同账号的sshKey分别对应github和gitlab。接下来跟着我看看怎么做吧_</p>
+</blockquote>
+<h2 id="一、生成ssh密钥"><a href="#一、生成ssh密钥" class="headerlink" title="一、生成ssh密钥"></a>一、生成ssh密钥</h2><p>这里我们要做的事情就是分别对githubn和gitlab生成对应的密钥（默认情况下本地生成的秘钥位于/Users/用户名/.ssh/），并且配置git访问不同host时访问不同的密钥，流程如下：<br> <strong>1、</strong> 在gitbash中使用<code>ssh-keygen -t rsa -C &quot;wangwenh@**.com&quot;</code>生成对应的gitlab密钥：<em>id_rsa</em>和<em>id_rsa.pub</em><br> <strong>2、</strong> 将gitlab公钥即<em>id_rsa.pub</em>中的内容配置到公司的gitlab上<br> <strong>3、</strong> 在gitbash中使用<code>ssh-keygen -t rsa -C &quot;whuper@163.com&quot; -f ~/.ssh/github_rsa</code>生成对应的github密钥：<em>github_rsa</em>和<em>github_rsa.pub</em><br> <strong>4、</strong> 将github公钥即<em>github_rsa.pub</em>中的内容配置到自己的github上<br> <strong>5、</strong> 进入密钥生成的位置，创建一个<code>config</code>文件，添加配置：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gitlab</span></span><br><span class="line">Host gitlab</span><br><span class="line">    HostName git.xxx.com <span class="comment">#这里填你的gitlab的Host</span></span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br><span class="line"><span class="comment"># githab</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/github_rsa</span><br></pre></td></tr></table></figure>
+<h2 id="二、测试连接"><a href="#二、测试连接" class="headerlink" title="二、测试连接"></a>二、测试连接</h2><p>在密钥的生成位置/Users/用户名/.ssh/下使用gitbash运行<code>ssh -T git@hostName</code>命令测试sshkey对gitlab与github的连接：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">catalinaLi@catalinaLi MINGW64 ~/.ssh</span><br><span class="line">$ ssh -T git@gitlab</span><br><span class="line">Welcome to GitLab, catalinaLi!</span><br><span class="line"></span><br><span class="line">catalinaLi@catalinaLi MINGW64 ~/.ssh</span><br><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi catalinaLi! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+<p>如果出现上图结果就说明连接成功，如果不是这样的话就仔细看看第一步哪里做错了。</p>
+<h2 id="git使用vpn"><a href="#git使用vpn" class="headerlink" title="git使用vpn"></a>git使用vpn</h2><p>设置</p>
+<pre><code>git config --global http.proxy http://127.0.0.1:1087
+
+git config --global https.proxy https://127.0.0.1:1087
+</code></pre><p>取消</p>
+<pre><code>git config --global --unset http.proxy
+git config --global --unset https.proxy
+</code></pre><p>也可以在用户目录下直接编辑<code>.gitconfig</code>文件</p>
+<pre><code>1 [user]
+  2   name = whuper
+  3   email = whuper@163.com
+  4 [http]
+  5   proxy = http://127.0.0.1:1087
+  6 [https]
+  7   proxy = https://127.0.0.1:1087
+~                                          
+</code></pre><blockquote>
+<p>不过明明看到shadowsocks软件里默认设置的端口号是 1086<br>却要用1087才可以访问,还没有弄明白怎么回事</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/12/19/git/" data-id="ck54pl3fz000dqwog20ncyht6" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-websocket" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/16/websocket/" class="article-date">
@@ -158,7 +225,7 @@ ws.onclose = function () {
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/06/16/websocket/" data-id="ck54p6z5y000mpbogv14l6h6f" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/06/16/websocket/" data-id="ck54pl3gu000lqwogso7qlj4b" class="article-share-link">Share</a>
       
 
       
@@ -171,10 +238,10 @@ ws.onclose = function () {
 
 
   
-    <article id="post-函数节流(throttle)与函数去抖(debounce)" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-vue开发记录" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" class="article-date">
-  <time datetime="2018-04-15T16:00:00.000Z" itemprop="datePublished">2018-04-16</time>
+    <a href="/2018/05/02/vue开发记录/" class="article-date">
+  <time datetime="2018-05-01T16:00:00.000Z" itemprop="datePublished">2018-05-02</time>
 </a>
     
   </div>
@@ -185,7 +252,7 @@ ws.onclose = function () {
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/16/函数节流(throttle)与函数去抖(debounce)/">函数节流（throttle）与函数去抖（debounce）</a>
+      <a class="article-title" href="/2018/05/02/vue开发记录/">vue开发记录</a>
     </h1>
   
 
@@ -193,165 +260,68 @@ ws.onclose = function () {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="函数节流（throttle）与函数去抖（debounce）"><a href="#函数节流（throttle）与函数去抖（debounce）" class="headerlink" title="函数节流（throttle）与函数去抖（debounce）"></a>函数节流（throttle）与函数去抖（debounce）</h3><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。</p>
-<p>DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为了解决这个问题，需要使用定时器对该函数进行节流。</p>
-<p><strong>函数节流</strong>，简单地讲，就是让一个函数无法在很短的时间间隔内连续调用，只有当上一次函数执行后过了你规定的时间间隔，才能进行下一次该函数的调用</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>当触发一个事件时，先setTimout让这个事件延迟一会再执行，如果在这个时间间隔内又触发了事件，就clear掉原来的定时器，再setTimeout一个新的定时器延迟一会执行。</p>
-<p><strong>2018 05-09更新 (其实这个应该叫做函数去抖debounce)</strong></p>
-<p>代码实现</p>
-<pre><code>function throttle(method, context) {
-    clearTimeout(methor.tId);
-    method.tId = setTimeout(function(){
-        method.call(context);
-    }， 100);
+        <p>安装 normalize</p>
+<pre><code>npm i normalize.css --save 
+</code></pre><p>main.js</p>
+<pre><code>import &apos;normalize.css&apos;  
+</code></pre><p>安装：css-loader   和style-loader</p>
+<pre><code>npm install css-loader style-loader  --save-dev
+</code></pre><h3 id="方法中操作router"><a href="#方法中操作router" class="headerlink" title="方法中操作router"></a>方法中操作router</h3><pre><code>this.$router.push({ name: &apos;detail&apos;, params: { id: 1 }})
+</code></pre><h3 id="方法中改变示例data数据"><a href="#方法中改变示例data数据" class="headerlink" title="方法中改变示例data数据"></a>方法中改变示例data数据</h3><pre><code>const _self = this;
+
+(res) =&gt; {
+
+    _self.msg = &apos;sad&apos;;
+
 }
-</code></pre><p>调用</p>
-<pre><code>window.onresize = function(){
-    throttle(myFunc);
-}
-</code></pre><p>这样两次函数调用之间至少间隔100ms。</p>
-<p>impress用的是另一个封装函数：</p>
-<pre><code>var throttle = function(fn, delay){
-     var timer = null;
-     return function(){
-         var context = this, args = arguments;
-         clearTimeout(timer);
-         timer = setTimeout(function(){
-             fn.apply(context, args);
-         }, delay);
-     };
- };
-</code></pre><p>它使用闭包的方法形成一个私有的作用域来存放定时器变量timer。而调用方法为</p>
-<pre><code>window.onresize = throttle(myFunc, 100);
-</code></pre><blockquote>
-<p>两种方法各有优劣，前一个封装函数的优势在把上下文变量当做函数参数，直接可以定制执行函数的this变量；后一个函数优势在于把延迟时间当做变量（当然，前一个函数很容易做这个拓展），而且个人觉得使用闭包代码结构会更优，且易于拓展定制其他私有变量，缺点就是虽然使用apply把调用throttle时的this上下文传给执行函数，但毕竟不够灵活。</p>
-</blockquote>
-<p>以上参考<br><a href="http://www.alloyteam.com/2012/11/javascript-throttle/" target="_blank" rel="noopener">http://www.alloyteam.com/2012/11/javascript-throttle/</a></p>
-<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><hr>
-<h2 id="防止重复发送-Ajax-请求"><a href="#防止重复发送-Ajax-请求" class="headerlink" title="防止重复发送 Ajax 请求"></a>防止重复发送 Ajax 请求</h2><blockquote>
-<p>最简单粗暴的是设置flag做判断，或者暂时禁掉按钮</p>
-</blockquote>
-<p>不推荐用外部变量锁定或修改按钮状态的方式，因为那样比较难：</p>
-<ul>
-<li>要考虑并理解 success, complete, error, timeout 这些事件的区别，并注册正确的事件，一旦失误，功能将不再可用；</li>
-<li>不可避免地比普通流程要要多注册一个 complete 事件；</li>
-<li>恢复状态的代码很容易和不相干的代码混合在一起；</li>
-</ul>
-<p>我推荐用主动查询状态的方式（A、B，jQuery 为例）或工具函数的方式（C、D）来去除重复操作，并提供一些例子作为参考：</p>
-<h4 id="A-独占型提交"><a href="#A-独占型提交" class="headerlink" title="A. 独占型提交"></a>A. 独占型提交</h4><p>只允许同时存在一次提交操作，并且直到本次提交完成才能进行下一次提交。</p>
-<pre><code>module.submit = function() {
-  if (this.promise_.state() === &apos;pending&apos;) {
-    return
+</code></pre><h3 id="箭头函数的指向"><a href="#箭头函数的指向" class="headerlink" title="箭头函数的指向"></a>箭头函数的指向</h3><p>是指定义时候的父级上下文环境,不是指当前调用的</p>
+<p>有时候不能用</p>
+<h3 id="路由嵌套是指视图里嵌套视图-不是指路径"><a href="#路由嵌套是指视图里嵌套视图-不是指路径" class="headerlink" title="路由嵌套是指视图里嵌套视图,不是指路径"></a>路由嵌套是指视图里嵌套视图,不是指路径</h3><h3 id="计算属性里不能用异步方式改变数据"><a href="#计算属性里不能用异步方式改变数据" class="headerlink" title="计算属性里不能用异步方式改变数据"></a>计算属性里不能用异步方式改变数据</h3><h4 id="合理利用created方法"><a href="#合理利用created方法" class="headerlink" title="合理利用created方法"></a>合理利用created方法</h4><h3 id="在vue中获取dom元素"><a href="#在vue中获取dom元素" class="headerlink" title="在vue中获取dom元素"></a>在vue中获取dom元素</h3><p>在vue中可以通过给标签加ref属性，就可以在js中利用ref去引用它</p>
+<pre><code> &lt;div id=&quot;box&quot; ref=&quot;mybox&quot;&gt;  
+      DEMO  
+    &lt;/div&gt;  
+
+this.$refs.mybox.style.color = &apos;red&apos;;  
+</code></pre><h3 id="在vue中获取所有路由链接"><a href="#在vue中获取所有路由链接" class="headerlink" title="在vue中获取所有路由链接"></a>在vue中获取所有路由链接</h3><pre><code>import links from &apos;@/router&apos;
+
+links.options.routes;
+</code></pre><h3 id="服务全局可用"><a href="#服务全局可用" class="headerlink" title="服务全局可用:"></a>服务全局可用:</h3><h4 id="vue插件"><a href="#vue插件" class="headerlink" title="vue插件"></a>vue插件</h4><p>Vue.js 的插件应当有一个公开方法 install 。这个方法的第一个参数是 Vue 构造器，第二个参数是一个可选的选项对象：</p>
+<pre><code>MyPlugin.install = function (Vue, options) {
+  // 1. 添加全局方法或属性
+  Vue.myGlobalMethod = function () {
+    // 逻辑...
   }
-  return this.promise_ = $.post(&apos;/api/save&apos;)
-}
-</code></pre><h4 id="B-贪婪型提交"><a href="#B-贪婪型提交" class="headerlink" title="B. 贪婪型提交"></a>B. 贪婪型提交</h4><p>无限制的提交，但是以最后一次操作为准；亦即需要尽快给出最后一次操作的反馈，而前面的操作结果并不重要。</p>
-<pre><code>module.submit = function() {
-  if (this.promise_.state() === &apos;pending&apos;) {
-    this.promise_.abort()
+
+  // 2. 添加全局资源
+  Vue.directive(&apos;my-directive&apos;, {
+    bind (el, binding, vnode, oldVnode) {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 3. 注入组件
+  Vue.mixin({
+    created: function () {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 4. 添加实例方法
+  Vue.prototype.$myMethod = function (methodOptions) {
+    // 逻辑...
   }
-  // todo
 }
-</code></pre><p>比如某些应用的条目中，有一些进行类似「喜欢」或「不喜欢」操作的二态按钮。如果按下后不立即给出反馈，用户的目光焦点就可能在那个按钮上停顿许久；如果按下时即时切换按钮的状态，再在程序上用 abort 来实现积极的提交，这样既能提高用户体验，还能降低服务器压力，皆大欢喜。</p>
-<h4 id="C-节制型提交"><a href="#C-节制型提交" class="headerlink" title="C. 节制型提交"></a>C. 节制型提交</h4><p>无论提交如何频繁，任意两次有效提交的间隔时间必定会大于或等于某一时间间隔；即以一定频率提交。</p>
-<pre><code>module.submit = throttle(150, function() {
-  // todo
-})
-</code></pre><p>如果客户发送每隔100毫秒发送过来10次请求，此模块将只接收其中6个（每个在时间线上距离为150毫秒）进行处理。</p>
-<p>这也是解决查询冲突的一种可选手段，比如以知乎草稿举例，仔细观察可以发现：</p>
-<p>编辑器的 blur 事件会立即触发保存；</p>
-<p>保存按钮的 click 事件也会立即触发保存；</p>
-<p>但是存在一种情况会使这两个事件在数毫秒内连续发生——当焦点在编辑器内部，并且直接去点击保存按钮——这时用 throttle 来处理是可行的。</p>
-<p>另外还有一些事件处理会很频繁地使用 throttle，如： resize、scroll、mousemove。</p>
-<h4 id="D-懒惰型提交"><a href="#D-懒惰型提交" class="headerlink" title="D. 懒惰型提交"></a>D. 懒惰型提交</h4><p>任意两次提交的间隔时间，必须大于一个指定时间，才会促成有效提交；即不给休息不干活。</p>
-<pre><code>module.submit = debounce(150, function() {
-  // todo
-})
-</code></pre><p>还是以知乎草稿举例，当在编辑器内按下 ctrl + s 时，可以手动保存草稿；如果你连按，程序会表示不理解为什么你要连按，只有等你放弃连按，它才会继续。</p>
-<hr>
-<p>更多记忆中的例子方式 C 和 方式 D 有时更加通用，比如这些情况：</p>
-<p>游戏中你捡到一把威力强大的高速武器，为了防止你的子弹在屏幕上打成一条直线，可以 throttle 来控制频率；</p>
-<p>在弹幕型游戏里，为了防止你把射击键夹住来进行无脑游戏，可以用 debounce 来控制频率；</p>
-<p>在编译任务里，守护进程监视了某一文件夹里所有的文件（如任一文件的改变都可以触发重新编译，一次执行就需要2秒），但某种操作能够瞬间造成大量文件改变（如 git checkout），这时一个简单的 debounce 可以使编译任务只执行一次。</p>
-<p>而方式 C 甚至可以和方式 B 组合使用，比如自动完成组件（Google 首页的搜索就是）：</p>
-<ul>
-<li><p>当用户快速输入文本时（特别是打字能手），可以 throttle  keypress 事件处理函数，以指定时间间隔来提取文本域的值，然后立即进行新的查询；</p>
-</li>
-<li><p>当新的查询需要发送，但上一个查询还没返回结果时，可以 abort 未完成的查询，并立即发送新查询；</p>
-</li>
-</ul>
-<h2 id="表单防止重复提交"><a href="#表单防止重复提交" class="headerlink" title="表单防止重复提交"></a>表单防止重复提交</h2><h3 id="1-用js为添加禁用"><a href="#1-用js为添加禁用" class="headerlink" title="1 用js为添加禁用"></a>1 用js为添加禁用</h3><h3 id="2-使用Post-Redirect-Get"><a href="#2-使用Post-Redirect-Get" class="headerlink" title="2 使用Post/Redirect/Get"></a>2 使用Post/Redirect/Get</h3><p>PRG设计模式并不适用所有的重复提交情况，比如：</p>
-<p>1）由于服务器响应缓慢，用户刷新提交POST请求造成的重复提交。</p>
-<p>2）用户点击后退按钮，返回到数据提交界面，导致的数据重复提交。</p>
-<p>3）用户多次点击提交按钮，导致的数据重复提交。</p>
-<p>4）用户恶意避开客户端预防多次提交手段，进行重复数据提交。</p>
-<p>###3 使用session／token设置令牌</p>
-<p>产生页面时，服务器为每次产生的Form分配唯一的随机标识号(比如时间戳)，并且在form的一个隐藏字段中设置这个标识号，同时在当前用户的Session中保存这个标识号。</p>
-<p>当提交表单时，服务器比较hidden和session中的标识号是否相同，相同则继续，处理完后清空Session，否则服务器忽略请求。</p>
+</code></pre><h3 id="mapState-和…mapGetters的区别"><a href="#mapState-和…mapGetters的区别" class="headerlink" title="mapState 和…mapGetters的区别"></a>mapState 和…mapGetters的区别</h3><p> getters是从state派生出来的，两者不相同，所以用mapState拿state，用mapGetters拿getters</p>
+<h3 id="在vue-中使用-vuematerial-input聚焦时候宽度增大的问题解决"><a href="#在vue-中使用-vuematerial-input聚焦时候宽度增大的问题解决" class="headerlink" title="在vue 中使用 vuematerial input聚焦时候宽度增大的问题解决"></a>在vue 中使用 vuematerial input聚焦时候宽度增大的问题解决</h3><p>因为文本框没有初始内容…</p>
+<h3 id="在vue中使用mock-访问接口报404"><a href="#在vue中使用mock-访问接口报404" class="headerlink" title="在vue中使用mock 访问接口报404"></a>在vue中使用mock 访问接口报404</h3><p>因为参数的问题，接口中没有定义参数，在调用的时候，就不能加参数了！否则会报404</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="ck54p6z78000qpbogojinh2sa" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ack" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/12/ack/" class="article-date">
-  <time datetime="2018-01-11T16:00:00.000Z" itemprop="datePublished">2018-01-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/12/ack/">vim安装ack</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="vim安装ack-brew安装"><a href="#vim安装ack-brew安装" class="headerlink" title="vim安装ack(brew安装)"></a>vim安装ack(brew安装)</h1><h3 id="brew"><a href="#brew" class="headerlink" title="brew"></a>brew</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew update  更新brew；</span><br><span class="line"></span><br><span class="line">brew install &#123;应用名，如git&#125; 安装软件</span><br></pre></td></tr></table></figure>
-<p>Ack.vim主要用来在项目里全局搜索某个单词,比如搜索函数名的时候.</p>
-<p>实现类似Ctrl + shift + f 全局搜索的功能</p>
-<p>安装ack:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ack</span><br></pre></td></tr></table></figure>
-<p>安装ack.vim插件:</p>
-<p>进入./vim/bundle目录:<br>bundle安装</p>
-<p>在.vimrc中加入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin ‘mileszs/ack.vim’</span><br></pre></td></tr></table></figure>
-<p>执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:BundleInstall</span><br></pre></td></tr></table></figure>
-<p>此时已可以使用ack命令;</p>
-<p>:Ack xxx * ,在项目里搜索xxx单词.<br>每次手动输入:Ack xxx还是很不方便的</p>
-<p>可以在.vimrc文件里设置快捷键：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Leader&gt;f :Ack! -i&lt;Space&gt;</span><br></pre></td></tr></table></figure>
-<p>-i 参数表示忽略大小写. 以后在项目里,只需要按<code>,+f</code>,即可全局搜索单词了.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="ck54p6z4g0004pbog7azbid2g" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/05/02/vue开发记录/" data-id="ck54pl3i5000uqwog3vi7hz7o" class="article-share-link">Share</a>
       
 
       
@@ -397,7 +367,7 @@ ws.onclose = function () {
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -409,7 +379,7 @@ ws.onclose = function () {
       <ul>
         
           <li>
-            <a href="/2020/01/08/designPattern/">(no title)</a>
+            <a href="/2020/01/02/designPattern/">javascript设计模式</a>
           </li>
         
           <li>
@@ -421,11 +391,11 @@ ws.onclose = function () {
           </li>
         
           <li>
-            <a href="/2019/06/11/other/gas/">液化气使用</a>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
           </li>
         
           <li>
-            <a href="/2019/06/10/other/course3/">科目三总结</a>
+            <a href="/2019/06/11/other/gas/">液化气使用</a>
           </li>
         
       </ul>

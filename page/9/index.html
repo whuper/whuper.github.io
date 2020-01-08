@@ -63,6 +63,199 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-session-cookie-token的区别" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/18/session-cookie-token的区别/" class="article-date">
+  <time datetime="2017-04-17T16:00:00.000Z" itemprop="datePublished">2017-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/18/session-cookie-token的区别/">session cookie token</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>session的中文翻译是“会话”，当用户打开某个web应用时，便与web服务器产生一次session。</p>
+<p>服务器使用session把用户的信息临时保存在了服务器上，用户离开网站后session会被销毁。</p>
+<p><strong>session的存储是需要空间的,用户量很大的时候会对服务器的性能有影响</strong></p>
+<p>这种用户信息存储方式相对cookie来说更安全，可是session有一个缺陷：如果web服务器做了负载均衡，那么下一个操作请求到了另一台服务器的时候session会丢失。</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>cookie是保存在本地终端的数据。cookie可以由服务器生成，发送给浏览器，浏览器把cookie以kv形式保存到某个目录下的文本文件内，下一次请求同一网站时会把该cookie发送给服务器。由于cookie是存在客户端上的，所以浏览器加入了一些限制确保cookie不会被恶意使用，同时不会占据太多磁盘空间，所以每个域的cookie数量是有限的。</p>
+<p>cookie的组成有：名称(key)、值(value)、有效域(domain)、路径(域的路径，一般设置为全局:”\”)、失效时间、安全标志(指定后，cookie只有在使用SSL连接时才发送到服务器(https))。</p>
+<p>js使用cookie的例子:</p>
+<h4 id="创建cookie"><a href="#创建cookie" class="headerlink" title="创建cookie:"></a>创建cookie:</h4><pre><code>document.cookie = &quot;id=&quot;+result.data[&apos;id&apos;]+&quot;; path=/&quot;;
+
+document.cookie = &quot;name=&quot;+result.data[&apos;name&apos;]+&quot;; path=/&quot;;
+
+document.cookie = &quot;avatar=&quot;+result.data[&apos;avatar&apos;]+&quot;; path=/&quot;;
+</code></pre><h4 id="获取解析cookie："><a href="#获取解析cookie：" class="headerlink" title="获取解析cookie："></a>获取解析cookie：</h4><pre><code>var cookie = document.cookie;var cookieArr = cookie.split(&quot;;&quot;);var user_info = {};for(var i = 0; i &lt; cookieArr.length; i++) {
+
+    user_info[cookieArr[i].split(&quot;=&quot;)[0]] = cookieArr[i].split(&quot;=&quot;)[1];
+
+}
+
+$(&apos;#user_name&apos;).text(user_info[&apos; name&apos;]);
+
+$(&apos;#user_avatar&apos;).attr(&quot;src&quot;, user_info[&apos; avatar&apos;]);
+
+$(&apos;#user_id&apos;).val(user_info[&apos; id&apos;]);
+</code></pre><h2 id="token"><a href="#token" class="headerlink" title="token"></a>token</h2><p>token的意思是“令牌”，是用户身份的验证方式，最简单的token组成:uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign(签名，由token的前几位+盐以哈希算法压缩成一定长的十六进制字符串，可以防止恶意第三方拼接token请求服务器)。</p>
+<p>可以用url传参，也可以用post提交，也可以夹在http的header中</p>
+<p>还可以把不变的参数也放进token，避免多次查库</p>
+<h2 id="cookie-和session的区别"><a href="#cookie-和session的区别" class="headerlink" title="cookie 和session的区别"></a>cookie 和session的区别</h2><ol>
+<li><p>cookie数据存放在客户的浏览器上，session数据放在服务器上。</p>
+</li>
+<li><p>cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗<br>考虑到安全应当使用session。</p>
+</li>
+<li><p>session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能<br>考虑到减轻服务器性能方面，应当使用COOKIE。</p>
+</li>
+<li><p>单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。</p>
+</li>
+<li><p>所以个人建议：<br>将登陆信息等重要信息存放为SESSION<br>其他信息如果需要保留，可以放在COOKIE中</p>
+</li>
+</ol>
+<h2 id="token-和session-的区别"><a href="#token-和session-的区别" class="headerlink" title="token 和session 的区别"></a>token 和session 的区别</h2><p>session 和 oauth token并不矛盾，作为身份认证 token安全性比session好，因为每个请求都有签名还能防止监听以及重放攻击，而session就必须靠链路层来保障通讯安全了。</p>
+<p>如上所说，如果你需要实现有状态的会话，仍然可以增加session来在服务器端保存一些状态</p>
+<blockquote>
+<p>App通常用restful api跟server打交道。Rest是stateless的，也就是app不需要像browser那样用cookie来保存session,因此用session token来标示自己就够了，session/state由api server的逻辑处理。 如果你的后端不是stateless的rest api, 那么你可能需要在app里保存session.可以在app里嵌入webkit,用一个隐藏的browser来管理cookie session.</p>
+</blockquote>
+<p><strong>Session 是一种HTTP存储机制，目的是为无状态的HTTP提供的持久机制。</strong></p>
+<p>所谓Session 认证只是简单的把User 信息存储到Session 里，因为SID 的不可预测性，暂且认为是安全的。这是一种认证手段。 </p>
+<p>而Token ，如果指的是OAuth Token 或类似的机制的话，提供的是 认证 和 授权 ，认证是针对用户，授权是针对App 。其目的是让 某App有权利访问 某用户 的信息。这里的 Token是唯一的。不可以转移到其它 App上，也不可以转到其它 用户 上。 </p>
+<p>转过来说Session 。Session只提供一种简单的认证，即有此 SID，即认为有此 User的全部权利。是需要严格保密的，这个数据应该只保存在站方，不应该共享给其它网站或者第三方App。 </p>
+<p>所以简单来说，如果你的用户数据可能需要和第三方共享，或者允许第三方调用 API 接口，用 Token 。</p>
+<p>如果永远只是自己的网站，自己的 App，用什么就无所谓了。</p>
+<p>token就是令牌，比如你授权（登录）一个程序时，他就是个依据，判断你是否已经授权该软件；</p>
+<p>cookie就是写在客户端的一个txt文件，里面包括你登录信息之类的，这样你下次在登录某个网站，就会自动调用cookie自动登录用户名；</p>
+<p>session和cookie差不多，只是session是写在服务器端的文件，也需要在客户端写入cookie文件，但是文件里是你的浏览器编号.Session的状态是存储在服务器端，客户端只有session id；</p>
+<p>session一般既包括客户端中的session_id，也包括服务器端内存或数据库中保存的session数据。</p>
+<p><strong>另外session一般只标识会话</strong>，用户身份的信息是间接保存在session数据中的，登录之前也有session，登出甚至换身份登录之后session_id可以保持不变；</p>
+<p><strong>token一般跟用户身份有一一对应的关系</strong></p>
+<p>登出之后token就失效。再有就是token从设计上必须通过get参数或者post参数提交，一般是不允许保存在cookies当中的，容易产生CSRF漏洞。</p>
+<h3 id="本质上的区别："><a href="#本质上的区别：" class="headerlink" title="本质上的区别："></a>本质上的区别：</h3><p>session的使用方式是客户端cookie里存id，服务端session存用户数据，客户端访问服务端的时候，根据id找用户数据。</p>
+<p>token的使用方式是客户端里存id（也就是token）、用户信息、密文 <strong>服务端什么也不存</strong>，<strong>服务端只有一段加密代码</strong>，用来判断当前加密后的密文是否和客户端传递过来的密文一致，如果不一致，就是客户端的用户数据被篡改了，如果一致，就代表客户端的用户数据正常且正确。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/04/18/session-cookie-token的区别/" data-id="ck54pl3gb000iqwogj1qirie6" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JS运行机制" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/11/JS运行机制/" class="article-date">
+  <time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished">2017-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/11/JS运行机制/">JS的运行机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="事件循环（Event-Loop）和任务队列"><a href="#事件循环（Event-Loop）和任务队列" class="headerlink" title="事件循环（Event Loop）和任务队列"></a>事件循环（Event Loop）和任务队列</h2><h3 id="和JS运行有关的几个线程"><a href="#和JS运行有关的几个线程" class="headerlink" title="和JS运行有关的几个线程"></a>和JS运行有关的几个线程</h3><ul>
+<li>JS引擎线程</li>
+<li>事件触发线程</li>
+<li>定时触发器线程</li>
+</ul>
+<h4 id="JS引擎是单线程"><a href="#JS引擎是单线程" class="headerlink" title="JS引擎是单线程"></a>JS引擎是单线程</h4><ul>
+<li>JS分为同步任务和异步任务</li>
+<li>同步任务都在主线程上执行，形成一个<strong>执行栈</strong></li>
+<li>主线程之外，<strong>事件触发线程</strong>管理着一个任务队列，只要有异步任务，就在任务队列之中放置一个事件。</li>
+<li>一旦执行栈中的所有同步任务执行完毕（此时JS引擎空闲），主线程就会读取任务队列，将可运行的异步任务添加到可执行栈中，开始执行。</li>
+</ul>
+<p><img src="./images/a.png" alt=""></p>
+<blockquote>
+<p>到这里，应该就可以理解了：为什么有时候setTimeout推入的事件不能准时执行？因为可能在它推入到事件列表时，主线程还不空闲，正在执行其它代码，<br>所以自然有误差。</p>
+</blockquote>
+<h3 id="事件循环机制"><a href="#事件循环机制" class="headerlink" title="事件循环机制"></a>事件循环机制</h3><p><img src="./images/b.png" alt=""></p>
+<p><a href="http://vimeo.com/96425312" target="_blank" rel="noopener">Help, I’m stuck in an event-loop</a></p>
+<p>上图大致描述就是：</p>
+<p>主线程运行时会产生执行栈，<br>栈中的代码调用某些api时，它们会在事件队列中添加各种事件（当满足触发条件后，如ajax请求完毕）</p>
+<ul>
+<li>而栈中的代码执行完毕，就会读取事件队列中的事件，去执行那些回调</li>
+<li>如此循环</li>
+<li>注意，总是要等待栈中的代码执行完毕后才会去读取事件队列中的事件</li>
+</ul>
+<h3 id="定时器线程"><a href="#定时器线程" class="headerlink" title="定时器线程"></a>定时器线程</h3><p><strong>上述事件循环机制的核心是：JS引擎线程和事件触发线程</strong></p>
+<p>但事实上，里面还有一些隐藏细节，譬如调用setTimeout后，是如何等待特定时间后才添加到事件队列中的？</p>
+<h4 id="是JS引擎检测的么？"><a href="#是JS引擎检测的么？" class="headerlink" title="是JS引擎检测的么？"></a>是JS引擎检测的么？</h4><p>不是。<strong>它是由定时器线程控制</strong></p>
+<h4 id="为什么要单独的定时器线程？"><a href="#为什么要单独的定时器线程？" class="headerlink" title="为什么要单独的定时器线程？"></a>为什么要单独的定时器线程？</h4><p>因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确，因此很有必要单独开一个线程用来计时。</p>
+<h4 id="什么时候会用到定时器线程？"><a href="#什么时候会用到定时器线程？" class="headerlink" title="什么时候会用到定时器线程？"></a>什么时候会用到定时器线程？</h4><p>当使用setTimeout或setInterval时，它需要定时器线程计时，计时完成后就会将特定的事件推入事件队列中。</p>
+<p>譬如:</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 1000);
+</code></pre><p>这段代码的作用是当1000毫秒计时完毕后（由定时器线程计时），将回调函数推入事件队列中，等待主线程执行</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 0);
+
+console.log(&apos;begin&apos;);
+</code></pre><p>这段代码的效果是最快的时间内将回调函数推入事件队列中，等待主线程执行</p>
+<p><strong>注意：</strong></p>
+<p>执行结果是：先begin后hello!</p>
+<blockquote>
+<p>虽然代码的本意是0毫秒后就推入事件队列，但是W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。<br>(不过也有一说是不同浏览器有不同的最小时间设定)</p>
+<p>就算不等待4ms，就算假设0毫秒就推入事件队列，也会先执行begin（因为只有可执行栈内空了后才会主动读取事件队列）</p>
+</blockquote>
+<h3 id="setTimeout和setInterval"><a href="#setTimeout和setInterval" class="headerlink" title="setTimeout和setInterval"></a>setTimeout和setInterval</h3><p>用setTimeout模拟定期计时和直接用setInterval是有区别的。</p>
+<p><strong>setTimeout</strong>每次计时到后就会去执行，然后执行一段时间后才会继续setTimeout，中间就多了误差（误差多少与代码执行时间有关）</p>
+<p><strong>setInterval</strong>则是每次都精确的隔一段时间推入一个事件<br>（但是，事件的实际执行时间不一定就准确，还有可能是这个事件还没执行完毕，下一个事件就来了）</p>
+<h4 id="setInterval有一些比较致命的问题就是："><a href="#setInterval有一些比较致命的问题就是：" class="headerlink" title="setInterval有一些比较致命的问题就是："></a>setInterval有一些比较致命的问题就是：</h4><p><strong>累计效应</strong>，如果setInterval代码在（setInterval）再次添加到队列之前还没有完成执行，<br>就会导致定时器代码连续运行好几次，而之间没有间隔。</p>
+<p>就算正常间隔执行，多个setInterval的代码执行时间可能会比预期小（因为代码执行需要一定时间）</p>
+<blockquote>
+<p>而且把浏览器最小化显示等操作时，setInterval并不是不执行程序，<br>它会把setInterval的回调函数放在队列中，等浏览器窗口再次打开时，一瞬间全部执行时</p>
+</blockquote>
+<p>目前一般认为的最佳方案是：用setTimeout模拟setInterval，或者特殊场合直接用requestAnimationFrame</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/04/11/JS运行机制/" data-id="ck54pl3fp000bqwog0x5ecl1n" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mac-vim" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/30/mac-vim/" class="article-date">
@@ -117,172 +310,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="ck54p6z5f000epbogjf5yr288" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-同步和异步" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/16/同步和异步/" class="article-date">
-  <time datetime="2017-03-15T16:00:00.000Z" itemprop="datePublished">2017-03-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/16/同步和异步/">同步和异步</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><p>所谓同步，是指一个进程必需等待另一个进程的结果。</p>
-<p>所谓异步，是指不需要等待其他进程，继续做自己的事件</p>
-<p><strong>静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的</strong></p>
-<p><code>&lt;script&gt;</code>标签是同步加载的</p>
-<p>加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write方法），所以必须把控制权让给它。</p>
-<blockquote>
-<p>如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
-</blockquote>
-<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部</p>
-<p>defer属性</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有defer属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-浏览器完成解析HTML网页，此时再执行下载的脚本
-</code></pre><p>async属性</p>
-<p>async属性的作用是，使用另一个进程下载脚本，下载时不会阻塞渲染。(执行是同步的)</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有async属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-
-**脚本下载完成，浏览器暂停解析HTML网页，开始执行下载的脚本**
-
-脚本执行完毕，浏览器恢复解析HTML网页
-</code></pre><p>async属性可以保证脚本下载的同时，浏览器继续渲染。需要注意的是，一旦采用这个属性，<strong>就无法保证脚本的执行顺序</strong>。哪个脚本先下载结束，就先执行那个脚本。如果同时使用async和defer属性，后者不起作用，浏览器行为由async属性决定。</p>
-<h2 id="nodejs的异步非阻塞和python的同步"><a href="#nodejs的异步非阻塞和python的同步" class="headerlink" title="nodejs的异步非阻塞和python的同步"></a>nodejs的异步非阻塞和python的同步</h2><p>Node.js一直都标榜自己是non-blocking I/O，不标榜自己是Asynchronous I/O。<br>所以异步I/O并不是说Node.js的特色，非阻塞才是。<br>nodejs是单线程异步</p>
-<blockquote>
-<p>单线程指的是主线程是“单线程”的，所有阻塞的部分交给一个线程池处理，然后这个主线程通过一个队列跟线程池协作，于是对我们写到的js代码部分，不再关心线程问题，代码也主要由一堆callback回调构成，然后主线程在不停的循环过程中，适时调用这些代码。</p>
-</blockquote>
-<p>python可以用多线程实现异步</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="ck54p6z72000opbog166m3mwa" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-匿名函数和闭包的误区" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/12/匿名函数和闭包的误区/" class="article-date">
-  <time datetime="2017-03-11T16:00:00.000Z" itemprop="datePublished">2017-03-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/12/匿名函数和闭包的误区/">匿名函数和闭包的误区</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>匿名函数就是闭包吗，匿名函数和闭包有关系吗，</p>
-</blockquote>
-<p>不是，没有什么关系！</p>
-<h3 id="匿名函数？"><a href="#匿名函数？" class="headerlink" title="匿名函数？"></a>匿名函数？</h3><p>通常大家所说的匿名函数，准备的说法应该是 <strong>IIFE: Immediately Invoked Function Expression</strong><br>意为<strong>立即调用的函数表达式</strong>,也就是说,声明函数的同时立即调用这个函数。</p>
-<p>实际上，立即执行的匿名函数并不是函数，因为已经执行过了，所以它是一个结果，这个结果是对当前这个<strong>匿名函数执行结果的一个引用</strong>（函数执行默认return undefined）。</p>
-<p>这个结果可以是一个字符串、数字或者null/false/true，也可以是对象、数组或者一个函数（对象和数组都可以包含函数），当返回的结果包含函数时，这个立即执行的匿名函数所返回的结果就是典型的闭包了。</p>
-<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><blockquote>
-<p>A closure is the combination of a function and the lexical environment within which that function was declared.</p>
-</blockquote>
-<p>中文解释是：闭包是一个函数和该函数被定义时的词法环境的组合。</p>
-<p>按照闭包起的作用来理解它：<strong>就是能在一个函数外部执行这个函数内部的定义方法，并访问内部的变量</strong></p>
-<pre><code>　function f1(){
-　　　　var n=999;
-　　　　function f2(){
-　　　　　　alert(n); 
-　　　　}
-　　　　return f2;
-　　}
-　　var result=f1();
-　　result(); // 999
-</code></pre><h4 id="立即执行函数的应用"><a href="#立即执行函数的应用" class="headerlink" title="立即执行函数的应用"></a>立即执行函数的应用</h4><p>for循环的问题及解决方案</p>
-<p>还有一个令人感到困惑，工作和学习中也经常遇见的问题是在for循环中：</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  setTimeout(function(){
-    console.log(i);
-  },100*i);
-}
-</code></pre><p>我们希望打印出来0,1,2,3,4，然而打印出来的是5个5。</p>
-<p>什么原因引起的这问题呢？这是因为setTimeout的回调函数并不是立即执行的而是要等到循环结束才开始计时和执行（在此对运行机制不伸展）</p>
-<p>要说明的一点是js中函数在执行前都只对变量保持引用，并不会真正获取和保存变量的值。所以等循环结束后i的值是已经是5了，因此执行定时器的回调函数会打印出5个5。</p>
-<p><strong>怎么解决这个问题？</strong></p>
-<p>最常见的解决方法就是给定时器外面加一个立即执行的匿名函数，并把当前循环的i作为实参传入这个立即执行的匿名函数。如下：</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  (function(i){
-    setTimeout(function(){
-      console.log(i);
-    },100*i);
-  })(i);
-}
-</code></pre><p>可以得到预想的结果：0,1,2,3,4</p>
-<p>此时很多人认为这个立即执行的匿名函数就是闭包，其实这么理解是错误的，在错误的理解之上又扩展了好多案例</p>
-<p><a href="https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。" target="_blank" rel="noopener">https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。</a></p>
-<p><img src="images/iife.png" alt=""></p>
-<p>到底这个for循环中的闭包是什么呢，其中的自执行匿名函数又起到什么作用呢？<br>我们可以试着把这个自执行的匿名函数改写为具名的函数，来测试下结果:</p>
-<pre><code>for(var i = 0;i&lt;5;i++){
-  function hasNameFn(i){
-    setTimeout(function(){
-      console.log(i);
-    },100*i);
-  };
-  hasNameFn(i);
-}
-</code></pre><p>可以发现结果和使用匿名函数的结果是一样的</p>
-<p><strong>另外，使用es6的let或者bind绑定当前的i都可以达到一样的结果</strong></p>
-<p>所以说<strong>匿名函数和闭包之间并没有什么关系</strong>，只不过很多时候在用到匿名函数解决问题的时候恰好形成了一个闭包，就导致很多人分不清楚匿名函数和闭包的关系</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/03/12/匿名函数和闭包的误区/" data-id="ck54p6z5v000lpbogqtdcg012" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="ck54pl3ge000jqwogukf4xe49" class="article-share-link">Share</a>
       
 
       
@@ -328,7 +356,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -340,7 +368,7 @@
       <ul>
         
           <li>
-            <a href="/2020/01/08/designPattern/">(no title)</a>
+            <a href="/2020/01/02/designPattern/">javascript设计模式</a>
           </li>
         
           <li>
@@ -352,11 +380,11 @@
           </li>
         
           <li>
-            <a href="/2019/06/11/other/gas/">液化气使用</a>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
           </li>
         
           <li>
-            <a href="/2019/06/10/other/course3/">科目三总结</a>
+            <a href="/2019/06/11/other/gas/">液化气使用</a>
           </li>
         
       </ul>

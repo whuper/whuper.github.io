@@ -63,6 +63,171 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-同步和异步" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/16/同步和异步/" class="article-date">
+  <time datetime="2017-03-15T16:00:00.000Z" itemprop="datePublished">2017-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/16/同步和异步/">同步和异步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><p>所谓同步，是指一个进程必需等待另一个进程的结果。</p>
+<p>所谓异步，是指不需要等待其他进程，继续做自己的事件</p>
+<p><strong>静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的</strong></p>
+<p><code>&lt;script&gt;</code>标签是同步加载的</p>
+<p>加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write方法），所以必须把控制权让给它。</p>
+<blockquote>
+<p>如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
+</blockquote>
+<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部</p>
+<p>defer属性</p>
+<pre><code>浏览器开始解析HTML网页
+解析过程中，发现带有defer属性的script标签
+浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
+浏览器完成解析HTML网页，此时再执行下载的脚本
+</code></pre><p>async属性</p>
+<p>async属性的作用是，使用另一个进程下载脚本，下载时不会阻塞渲染。(执行是同步的)</p>
+<pre><code>浏览器开始解析HTML网页
+解析过程中，发现带有async属性的script标签
+浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
+
+**脚本下载完成，浏览器暂停解析HTML网页，开始执行下载的脚本**
+
+脚本执行完毕，浏览器恢复解析HTML网页
+</code></pre><p>async属性可以保证脚本下载的同时，浏览器继续渲染。需要注意的是，一旦采用这个属性，<strong>就无法保证脚本的执行顺序</strong>。哪个脚本先下载结束，就先执行那个脚本。如果同时使用async和defer属性，后者不起作用，浏览器行为由async属性决定。</p>
+<h2 id="nodejs的异步非阻塞和python的同步"><a href="#nodejs的异步非阻塞和python的同步" class="headerlink" title="nodejs的异步非阻塞和python的同步"></a>nodejs的异步非阻塞和python的同步</h2><p>Node.js一直都标榜自己是non-blocking I/O，不标榜自己是Asynchronous I/O。<br>所以异步I/O并不是说Node.js的特色，非阻塞才是。<br>nodejs是单线程异步</p>
+<blockquote>
+<p>单线程指的是主线程是“单线程”的，所有阻塞的部分交给一个线程池处理，然后这个主线程通过一个队列跟线程池协作，于是对我们写到的js代码部分，不再关心线程问题，代码也主要由一堆callback回调构成，然后主线程在不停的循环过程中，适时调用这些代码。</p>
+</blockquote>
+<p>python可以用多线程实现异步</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="ck54pl3h5000pqwogtf5f36xh" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-匿名函数和闭包的误区" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/12/匿名函数和闭包的误区/" class="article-date">
+  <time datetime="2017-03-11T16:00:00.000Z" itemprop="datePublished">2017-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/12/匿名函数和闭包的误区/">匿名函数和闭包的误区</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>匿名函数就是闭包吗，匿名函数和闭包有关系吗，</p>
+</blockquote>
+<p>不是，没有什么关系！</p>
+<h3 id="匿名函数？"><a href="#匿名函数？" class="headerlink" title="匿名函数？"></a>匿名函数？</h3><p>通常大家所说的匿名函数，准备的说法应该是 <strong>IIFE: Immediately Invoked Function Expression</strong><br>意为<strong>立即调用的函数表达式</strong>,也就是说,声明函数的同时立即调用这个函数。</p>
+<p>实际上，立即执行的匿名函数并不是函数，因为已经执行过了，所以它是一个结果，这个结果是对当前这个<strong>匿名函数执行结果的一个引用</strong>（函数执行默认return undefined）。</p>
+<p>这个结果可以是一个字符串、数字或者null/false/true，也可以是对象、数组或者一个函数（对象和数组都可以包含函数），当返回的结果包含函数时，这个立即执行的匿名函数所返回的结果就是典型的闭包了。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><blockquote>
+<p>A closure is the combination of a function and the lexical environment within which that function was declared.</p>
+</blockquote>
+<p>中文解释是：闭包是一个函数和该函数被定义时的词法环境的组合。</p>
+<p>按照闭包起的作用来理解它：<strong>就是能在一个函数外部执行这个函数内部的定义方法，并访问内部的变量</strong></p>
+<pre><code>　function f1(){
+　　　　var n=999;
+　　　　function f2(){
+　　　　　　alert(n); 
+　　　　}
+　　　　return f2;
+　　}
+　　var result=f1();
+　　result(); // 999
+</code></pre><h4 id="立即执行函数的应用"><a href="#立即执行函数的应用" class="headerlink" title="立即执行函数的应用"></a>立即执行函数的应用</h4><p>for循环的问题及解决方案</p>
+<p>还有一个令人感到困惑，工作和学习中也经常遇见的问题是在for循环中：</p>
+<pre><code>for(var i = 0;i&lt;5;i++){
+  setTimeout(function(){
+    console.log(i);
+  },100*i);
+}
+</code></pre><p>我们希望打印出来0,1,2,3,4，然而打印出来的是5个5。</p>
+<p>什么原因引起的这问题呢？这是因为setTimeout的回调函数并不是立即执行的而是要等到循环结束才开始计时和执行（在此对运行机制不伸展）</p>
+<p>要说明的一点是js中函数在执行前都只对变量保持引用，并不会真正获取和保存变量的值。所以等循环结束后i的值是已经是5了，因此执行定时器的回调函数会打印出5个5。</p>
+<p><strong>怎么解决这个问题？</strong></p>
+<p>最常见的解决方法就是给定时器外面加一个立即执行的匿名函数，并把当前循环的i作为实参传入这个立即执行的匿名函数。如下：</p>
+<pre><code>for(var i = 0;i&lt;5;i++){
+  (function(i){
+    setTimeout(function(){
+      console.log(i);
+    },100*i);
+  })(i);
+}
+</code></pre><p>可以得到预想的结果：0,1,2,3,4</p>
+<p>此时很多人认为这个立即执行的匿名函数就是闭包，其实这么理解是错误的，在错误的理解之上又扩展了好多案例</p>
+<p><a href="https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。" target="_blank" rel="noopener">https://stackoverflow.com/questions/8967214/what-is-the-difference-between-a-closure-and-an-anonymous-function-in-js。</a></p>
+<p><img src="images/iife.png" alt=""></p>
+<p>到底这个for循环中的闭包是什么呢，其中的自执行匿名函数又起到什么作用呢？<br>我们可以试着把这个自执行的匿名函数改写为具名的函数，来测试下结果:</p>
+<pre><code>for(var i = 0;i&lt;5;i++){
+  function hasNameFn(i){
+    setTimeout(function(){
+      console.log(i);
+    },100*i);
+  };
+  hasNameFn(i);
+}
+</code></pre><p>可以发现结果和使用匿名函数的结果是一样的</p>
+<p><strong>另外，使用es6的let或者bind绑定当前的i都可以达到一样的结果</strong></p>
+<p>所以说<strong>匿名函数和闭包之间并没有什么关系</strong>，只不过很多时候在用到匿名函数解决问题的时候恰好形成了一个闭包，就导致很多人分不清楚匿名函数和闭包的关系</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/03/12/匿名函数和闭包的误区/" data-id="ck54pl3gz000nqwog9r71v30k" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-浏览器工作原理" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/05/19/浏览器工作原理/" class="article-date">
@@ -218,7 +383,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2016/05/19/浏览器工作原理/" data-id="ck54p6z7b000rpbogffgrf7g4" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2016/05/19/浏览器工作原理/" data-id="ck54pl3h8000qqwogye3d8qad" class="article-share-link">Share</a>
       
 
       
@@ -264,7 +429,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -276,7 +441,7 @@
       <ul>
         
           <li>
-            <a href="/2020/01/08/designPattern/">(no title)</a>
+            <a href="/2020/01/02/designPattern/">javascript设计模式</a>
           </li>
         
           <li>
@@ -288,11 +453,11 @@
           </li>
         
           <li>
-            <a href="/2019/06/11/other/gas/">液化气使用</a>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
           </li>
         
           <li>
-            <a href="/2019/06/10/other/course3/">科目三总结</a>
+            <a href="/2019/06/11/other/gas/">液化气使用</a>
           </li>
         
       </ul>
