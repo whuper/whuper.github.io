@@ -63,6 +63,102 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-vue开发记录" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/02/vue开发记录/" class="article-date">
+  <time datetime="2018-05-01T16:00:00.000Z" itemprop="datePublished">2018-05-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/02/vue开发记录/">vue开发记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装 normalize</p>
+<pre><code>npm i normalize.css --save 
+</code></pre><p>main.js</p>
+<pre><code>import &apos;normalize.css&apos;  
+</code></pre><p>安装：css-loader   和style-loader</p>
+<pre><code>npm install css-loader style-loader  --save-dev
+</code></pre><h3 id="方法中操作router"><a href="#方法中操作router" class="headerlink" title="方法中操作router"></a>方法中操作router</h3><pre><code>this.$router.push({ name: &apos;detail&apos;, params: { id: 1 }})
+</code></pre><h3 id="方法中改变示例data数据"><a href="#方法中改变示例data数据" class="headerlink" title="方法中改变示例data数据"></a>方法中改变示例data数据</h3><pre><code>const _self = this;
+
+(res) =&gt; {
+
+    _self.msg = &apos;sad&apos;;
+
+}
+</code></pre><h3 id="箭头函数的指向"><a href="#箭头函数的指向" class="headerlink" title="箭头函数的指向"></a>箭头函数的指向</h3><p>是指定义时候的父级上下文环境,不是指当前调用的</p>
+<p>有时候不能用</p>
+<h3 id="路由嵌套是指视图里嵌套视图-不是指路径"><a href="#路由嵌套是指视图里嵌套视图-不是指路径" class="headerlink" title="路由嵌套是指视图里嵌套视图,不是指路径"></a>路由嵌套是指视图里嵌套视图,不是指路径</h3><h3 id="计算属性里不能用异步方式改变数据"><a href="#计算属性里不能用异步方式改变数据" class="headerlink" title="计算属性里不能用异步方式改变数据"></a>计算属性里不能用异步方式改变数据</h3><h4 id="合理利用created方法"><a href="#合理利用created方法" class="headerlink" title="合理利用created方法"></a>合理利用created方法</h4><h3 id="在vue中获取dom元素"><a href="#在vue中获取dom元素" class="headerlink" title="在vue中获取dom元素"></a>在vue中获取dom元素</h3><p>在vue中可以通过给标签加ref属性，就可以在js中利用ref去引用它</p>
+<pre><code> &lt;div id=&quot;box&quot; ref=&quot;mybox&quot;&gt;  
+      DEMO  
+    &lt;/div&gt;  
+
+this.$refs.mybox.style.color = &apos;red&apos;;  
+</code></pre><h3 id="在vue中获取所有路由链接"><a href="#在vue中获取所有路由链接" class="headerlink" title="在vue中获取所有路由链接"></a>在vue中获取所有路由链接</h3><pre><code>import links from &apos;@/router&apos;
+
+links.options.routes;
+</code></pre><h3 id="服务全局可用"><a href="#服务全局可用" class="headerlink" title="服务全局可用:"></a>服务全局可用:</h3><h4 id="vue插件"><a href="#vue插件" class="headerlink" title="vue插件"></a>vue插件</h4><p>Vue.js 的插件应当有一个公开方法 install 。这个方法的第一个参数是 Vue 构造器，第二个参数是一个可选的选项对象：</p>
+<pre><code>MyPlugin.install = function (Vue, options) {
+  // 1. 添加全局方法或属性
+  Vue.myGlobalMethod = function () {
+    // 逻辑...
+  }
+
+  // 2. 添加全局资源
+  Vue.directive(&apos;my-directive&apos;, {
+    bind (el, binding, vnode, oldVnode) {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 3. 注入组件
+  Vue.mixin({
+    created: function () {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 4. 添加实例方法
+  Vue.prototype.$myMethod = function (methodOptions) {
+    // 逻辑...
+  }
+}
+</code></pre><h3 id="mapState-和…mapGetters的区别"><a href="#mapState-和…mapGetters的区别" class="headerlink" title="mapState 和…mapGetters的区别"></a>mapState 和…mapGetters的区别</h3><p> getters是从state派生出来的，两者不相同，所以用mapState拿state，用mapGetters拿getters</p>
+<h3 id="在vue-中使用-vuematerial-input聚焦时候宽度增大的问题解决"><a href="#在vue-中使用-vuematerial-input聚焦时候宽度增大的问题解决" class="headerlink" title="在vue 中使用 vuematerial input聚焦时候宽度增大的问题解决"></a>在vue 中使用 vuematerial input聚焦时候宽度增大的问题解决</h3><p>因为文本框没有初始内容…</p>
+<h3 id="在vue中使用mock-访问接口报404"><a href="#在vue中使用mock-访问接口报404" class="headerlink" title="在vue中使用mock 访问接口报404"></a>在vue中使用mock 访问接口报404</h3><p>因为参数的问题，接口中没有定义参数，在调用的时候，就不能加参数了！否则会报404</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2018/05/02/vue开发记录/" data-id="ck54prrhd000srlog7gvhlnjo" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-函数节流(throttle)与函数去抖(debounce)" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" class="article-date">
@@ -185,7 +281,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="ck54pl3hg000rqwog7o59pkwt" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="ck54prrh3000nrlognfo96sgr" class="article-share-link">Share</a>
       
 
       
@@ -243,69 +339,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="ck54pl3fv000cqwogi4v5s0s8" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/11/terminal/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
-<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
-<p>例如：要找redis</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
-<p>mac 显示隐藏文件<br>打开终端，输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
-<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
-<p>Mac 更新系统后无法使用git</p>
-<p>解决方案：</p>
-<p>在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
-<p>如果需要禁止spotlight, 在终端中运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
-<p>开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
-<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
-<p>为了查看它的状态，可以运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="ck54pl3gf000kqwog3dj5eahy" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="ck54prrgh000crlog9lmeqouy" class="article-share-link">Share</a>
       
 
       
@@ -321,7 +355,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -351,7 +385,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -375,11 +409,11 @@
           </li>
         
           <li>
-            <a href="/2019/07/02/vue/">vue笔记2</a>
+            <a href="/2019/08/11/7000/">100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇</a>
           </li>
         
           <li>
-            <a href="/2019/06/11/other/gas/">液化气使用</a>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
           </li>
         
       </ul>

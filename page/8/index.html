@@ -63,6 +63,68 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/11/terminal/" class="article-date">
+  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
+<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
+<p>例如：要找redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
+<p>mac 显示隐藏文件<br>打开终端，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
+<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
+<p>Mac 更新系统后无法使用git</p>
+<p>解决方案：</p>
+<p>在终端输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
+<p>如果需要禁止spotlight, 在终端中运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
+<p>开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
+<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
+<p>为了查看它的状态，可以运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="ck54prrgt000irlog9qwxpa9u" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
@@ -216,7 +278,7 @@ makeRequest()
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="ck54pl3hi000sqwogtt8pu1fh" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="ck54prrhb000rrlogrmz5a0uv" class="article-share-link">Share</a>
       
 
       
@@ -377,68 +439,7 @@ makeRequest()
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/05/19/浏览器事件总结/" data-id="ck54pl3i3000tqwogcnfnh23x" class="article-share-link">Share</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-hexo" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/08/hello-hexo/" class="article-date">
-  <time datetime="2017-05-07T16:00:00.000Z" itemprop="datePublished">2017-05-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/08/hello-hexo/">Hello Hexo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h1><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new &quot;My New Post&quot;</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<hr>
-<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><p>npm install -g hexo</p>
-<p>初始化Hexo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-<p>在_config.yml,进行基础配置(博客名，作者，主题)</p>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br><span class="line">hexo clean &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
-<p>在_config.yml,进行基础配置（deployment）</p>
-<p>安装hexo-deployer-git自动部署发布工具</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git  --save</span><br></pre></td></tr></table></figure>
-<p>发布到Github</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-<p><a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">https://hexo.io/docs/deployment.html</a>)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="https://whuper.github.io/2017/05/08/hello-hexo/" data-id="ck54pl3g5000fqwoglr7srybw" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/05/19/浏览器事件总结/" data-id="ck54prrhx000urlogusfcvhgq" class="article-share-link">Share</a>
       
 
       
@@ -454,7 +455,7 @@ makeRequest()
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -484,7 +485,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -508,11 +509,11 @@ makeRequest()
           </li>
         
           <li>
-            <a href="/2019/07/02/vue/">vue笔记2</a>
+            <a href="/2019/08/11/7000/">100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇</a>
           </li>
         
           <li>
-            <a href="/2019/06/11/other/gas/">液化气使用</a>
+            <a href="/2019/07/02/vue/">vue笔记2</a>
           </li>
         
       </ul>
