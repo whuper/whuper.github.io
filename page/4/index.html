@@ -1,0 +1,592 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Wenhao&#39;s Blog">
+<meta property="og:url" content="https://whuper.github.io/page/4/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wenhao&#39;s Blog">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main">
+  
+    <article id="post-web实时通讯技术总结" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/11/web实时通讯技术总结/" class="article-date">
+  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">2017-11-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/11/web实时通讯技术总结/">Web端即时通讯技术</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Web端即时通讯技术"><a href="#Web端即时通讯技术" class="headerlink" title="Web端即时通讯技术"></a>Web端即时通讯技术</h2><blockquote>
+<p>传统Web的通信原理</p>
+<p>浏览器本身作为一个瘦客户端，不具备直接通过系统调用来达到和处于异地的另外一个客户端浏览器通信的功能。这和我们桌面应用的工作方式是不同的，通常桌面应用通过socket可以和远程主机上另外一端的一个进程建立TCP连接，从而达到全双工的即时通信。</p>
+<p>浏览器从诞生开始一直走的是客户端请求服务器，服务器返回结果的模式，即使发展至今仍然没有任何改变。所以可以肯定的是，要想实现两个客户端的通信，必然要通过服务器进行信息的转发。例如A要和B通信，则应该是A先把信息发送给IM应用服务器，服务器根据A信息中携带的接收者将它再转发给B，同样B到A也是这种模式，如下所示：</p>
+</blockquote>
+<p>常见的实现即时通讯实现方法</p>
+<blockquote>
+<p>轮询：客户端定时向服务器发送Ajax请求，服务器接到请求后马上返回响应信息并关闭连接。<br>优点：后端程序编写比较容易。<br>缺点：请求中有大半是无用，浪费带宽和服务器资源。<br>实例：适于小型应用。</p>
+<p>长轮询：客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。<br>优点：在无消息的情况下不会频繁的请求，耗费资源小。<br>缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护。<br>实例：WebQQ、Hi网页版、Facebook IM。</p>
+<p>长连接：在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。<br>优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>缺点：服务器维护一个长连接会增加开销。<br>实例：Gmail聊天</p>
+</blockquote>
+<p>基于web实现IM软件依然要走浏览器请求服务器的模式，这种方式下，针对IM软件的开发需要解决如下三个问题：</p>
+<h4 id="1-双全工通信："><a href="#1-双全工通信：" class="headerlink" title="1 双全工通信："></a>1 双全工通信：</h4><p>即达到浏览器拉取（pull）服务器数据，服务器推送（push）数据到浏览器；</p>
+<h4 id="2-低延迟："><a href="#2-低延迟：" class="headerlink" title="2 低延迟："></a>2 低延迟：</h4><p>即浏览器A发送给B的信息经过服务器要快速转发给B，同理B的信息也要快速交给A，实际上就是要求任何浏览器能够快速请求服务器的数据，服务器能够快速推送数据到浏览器；</p>
+<h4 id="3-支持跨域："><a href="#3-支持跨域：" class="headerlink" title="3 支持跨域："></a>3 支持跨域：</h4><p>通常客户端浏览器和服务器都是处于网络的不同位置，浏览器本身不允许通过脚本直接访问不同域名下的服务器，即使IP地址相同域名不同也不行，域名相同端口不同也不行，这方面主要是为了安全考虑。</p>
+<h3 id="从技术实现上，大致有4种："><a href="#从技术实现上，大致有4种：" class="headerlink" title="从技术实现上，大致有4种："></a>从技术实现上，大致有4种：</h3><ol>
+<li>Ajax短轮询</li>
+<li>Comet 别名叫(彗星)</li>
+<li>Websocket</li>
+<li>SSE（Server-sent Events）</li>
+</ol>
+<h2 id="1-Ajax短轮询"><a href="#1-Ajax短轮询" class="headerlink" title="1. Ajax短轮询"></a>1. Ajax短轮询</h2><p>传统的web应用要想与服务器交互，必须提交一个表单（form），服务器接收并处理传来的表单，然后返回全新的页面，因为前后两个页面的数据大部分都是相同的，这个过程传输了很多冗余的数据、浪费了带宽。于是Ajax技术便应运而生。</p>
+<blockquote>
+<p>Ajax是Asynchronous JavaScript and XML的简称，由Jesse James Garrett 首先提出。这种技术开创性地允许浏览器脚本（JS）发送http请求。</p>
+</blockquote>
+<blockquote>
+<p>XMLHttpRequest 是 AJAX 的基础。<br>XMLHttpRequest 对象<br>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
+</blockquote>
+<p>创建 XMLHttpRequest 对象：</p>
+<pre><code>var xml = new XMLHttpRequest();
+</code></pre><p>老版本的ie就不再列举了，毕竟是快要被淘汰的东西，不具有可持续性。。。</p>
+<p>这种浏览器端的小技术毕竟还是基于http协议，http协议要求的请求/响应的模式也是无法改变的，除非http协议本身有所改变。</p>
+<p><strong>具体实现：用定时器，每间隔一定的时间，就发送请求，获取数据。。。简单粗暴，造成很多资源浪费</strong></p>
+<hr>
+<h2 id="Comet-基于-HTTP长连接的“服务器推”技术"><a href="#Comet-基于-HTTP长连接的“服务器推”技术" class="headerlink" title="Comet(基于 HTTP长连接的“服务器推”技术)"></a>Comet(基于 HTTP长连接的“服务器推”技术)</h2><p>是一种hack技术</p>
+<blockquote>
+<p>Ajax通信方式是http协议的经典使用方式，要想取得数据，必须首先发送请求。在Low Latency要求比较高的web应用中，只能增加服务器请求的频率。</p>
+<p>Comet则不同，客户端与服务器端保持一个长连接，只有客户端需要的数据更新时，服务器才主动将数据推送给客户端。<br>Comet的实现主要有两种方式：</p>
+</blockquote>
+<ol>
+<li>基于Ajax的长轮询（long-polling）</li>
+<li>基于 Iframe 及 htmlfile 的流（http streaming）</li>
+</ol>
+<h4 id="1-基于Ajax的长轮询（long-polling）方式"><a href="#1-基于Ajax的长轮询（long-polling）方式" class="headerlink" title="1 基于Ajax的长轮询（long-polling）方式"></a>1 基于Ajax的长轮询（long-polling）方式</h4><p>浏览器发出XMLHttpRequest 请求，服务器端接收到请求后，会阻塞请求直到有数据或者超时才返回，浏览器JS在处理请求返回信息（超时或有效数据）后再次发出请求，重新建立连接。在此期间服务器端可能已经有新的数据到达，服务器会选择把数据保存，直到重新建立连接，浏览器会把所有数据一次性取回。</p>
+<p>在XHR对象的readySate为4的时候，表示服务器已经返回数据，本次连接已断开，再次请求服务器建立连接。</p>
+<h4 id="2-基于-Iframe-及-htmlfile-的流（http-streaming）方式"><a href="#2-基于-Iframe-及-htmlfile-的流（http-streaming）方式" class="headerlink" title="2 基于 Iframe 及 htmlfile 的流（http streaming）方式"></a>2 基于 Iframe 及 htmlfile 的流（http streaming）方式</h4><p>iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，然后将这个隐蔵帧的 <strong>SRC 属性设为对一个长连接的请求</strong>，服务器端就能源源不断地往客户端输入数据。</p>
+<p>在第一种方式中，浏览器在收到数据后会直接调用JS回调函数，但是这种方式该如何响应数据呢？可以通过在返回数据中嵌入JS脚本的方式，如<code>&lt;script type=&quot;text/javascript&quot;&gt;js_func(“data from server ”)&lt;/script&gt;</code>，服务器端将返回的数据作为回调函数的参数，浏览器在收到数据后就会执行这段JS脚本。</p>
+<p>但是这种方式有一个明显的不足之处：IE、Morzilla Firefox 下端的进度栏都会显示加载没有完成，而且 IE 上方的图标会不停的转动，表示加载正在进行，并且底部也显示正在加载，这对于一个产品来讲用户体验是不好的</p>
+<h4 id="2-1-基于-Iframe的优化"><a href="#2-1-基于-Iframe的优化" class="headerlink" title="2.1 基于 Iframe的优化"></a>2.1 基于 Iframe的优化</h4><p>谷歌想出了一中hack方式。就是在IE中，动态生成一个<strong>htmlfile对象</strong>，这个对象ActiveX形式的com组件，它实际上就是一个在内存中实现的HTML文档，通过将生成的iframe添加到这个内存中的HTMLfile中，并利用iframe的数据流通信方式达到上面的效果。同时由于HTMLfile对象并不是直接添加到页面上的，所以并没有造成浏览器显示正在加载的现象。</p>
+<p>这种方法应用到了 gmail+gtalk 产品中</p>
+<p><a href="http://www.52im.net/thread-334-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-334-1-1.html</a></p>
+<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>在上面的这些解决方案中，都是利用浏览器单向请求服务器或者服务器单向推送数据到浏览器这些技术组合在一起而形成的hack技术，在HTML5中，为了加强web的功能，提供了websocket技术，它不仅是一种web通信方式，也是一种应用层协议。</p>
+<p>它提供了浏览器和服务器之间原生的双全工跨域通信，通过浏览器和服务器之间建立websocket连接（实际上是TCP连接）,在同一时刻能够实现客户端到服务器和服务器到客户端的数据发送。</p>
+<p>首先是客户端new 一个websocket对象，该对象会发送一个http请求到服务端，服务端发现这是个webscoket请求，会同意协议转换，发送回客户端一个101状态码的response，以上过程称之为一次握手，经过这次握手之后，客户端就和服务端建立了一条TCP连接，在该连接上，服务端和客户端就可以进行双向通信了。</p>
+<p>这时的双向通信在应用层走的就是ws或者wss协议了，和http就没有关系了。</p>
+<p>所谓的ws协议，就是要求客户端和服务端遵循某种格式发送数据报文（帧），然后对方才能够理解。</p>
+<p>客户端参考代码</p>
+<pre><code>window.onload=function(){
+        var ws=new WebSocket(&quot;ws://127.0.0.1:8088&quot;);
+        var oText=document.getElementById(&apos;message&apos;);
+        var oSend=document.getElementById(&apos;send&apos;);
+        var oClose=document.getElementById(&apos;close&apos;);
+        var oUl=document.getElementsByTagName(&apos;ul&apos;)[0];
+        ws.onopen=function(){
+            oSend.onclick=function(){
+                if(!/^\s*$/.test(oText.value)){
+                    ws.send(oText.value);
+                }
+            };
+
+        };
+        ws.onmessage=function(msg){
+          var str=&quot;&lt;li&gt;&quot;+msg.data+&quot;&lt;/li&gt;&quot;;
+          oUl.innerHTML+=str;
+        };
+        ws.onclose=function(e){
+            console.log(&quot;已断开与服务器的连接&quot;);
+            ws.close();
+        }
+    }
+</code></pre><hr>
+<p>WebSocket在支持它的浏览器上确实提供了一种全双工跨域的通信方案，所以在各以上各种方案中，我们的首选无疑是WebSocket。</p>
+<blockquote>
+<p>socket.io介绍</p>
+<p>socket.io封装了websocket，同时包含了其它的连接方式，比如Ajax。原因在于不是所有的浏览器都支持websocket，通过socket.io的封装，不用关心里面用了什么连接方式。</p>
+<p>在任何浏览器里都可以使用socket.io来建立异步的连接。socket.io包含了服务端和客户端的库，如果在浏览器中使用了socket.io的js，服务端也必须同样适用。如果你很清楚你需要的就是websocket，那可以直接使用websocket。</p>
+</blockquote>
+<h2 id="SSE"><a href="#SSE" class="headerlink" title="SSE"></a>SSE</h2><p>SSE（Server-Sent Event，服务端推送事件）是一种允许服务端向客户端推送新数据的HTML5技术。与由客户端每隔几秒从服务端轮询拉取新数据相比，这是一种更优的解决方案。</p>
+<p>与WebSocket相比，它也能从服务端向客户端推送数据。那如何决定你是用SSE还是WebSocket呢？概括来说，WebSocket能做的，SSE也能做，反之亦然，但在完成某些任务方面，它们各有千秋。</p>
+<p>SSE技术提供的是从服务器单向推送数据给浏览器的功能，但是配合浏览器主动请求，实际上就实现了客户端和服务器的双向通信。它的原理是在客户端构造一个eventSource对象，该对象具有readySate属性，分别表示如下：</p>
+<ol>
+<li>正在连接到服务器；</li>
+<li>打开了连接；</li>
+<li>关闭了连接。</li>
+</ol>
+<p>同时eventSource对象会保持与服务器的长连接，断开后会自动重连，如果要强制断开可以调用它的close方法。</p>
+<p>监听onmessage事件，服务端遵循SSE数据传输的格式给客户端，客户端在onmessage事件触发时就能够接收到数据，从而进行某种处理，代码如下。</p>
+<p>客户端</p>
+<pre><code>var source=new EventSource(&apos;http://localhost:8088/evt&apos;);
+    source.addEventListener(&apos;message&apos;, function(e) {
+        console.log(e.data);
+    }, false);
+    source.onopen=function(){
+        console.log(&apos;connected&apos;);
+    }
+    source.onerror=function(err){
+        console.log(err);
+    }
+</code></pre><p>服务端</p>
+<pre><code>var http=require(&apos;http&apos;);
+var fs = require(&quot;fs&quot;);
+var count=0;
+var server=http.createServer(function(req,res){
+    if(req.url==&apos;/evt&apos;){
+        //res.setHeader(&apos;content-type&apos;, &apos;multipart/octet-stream&apos;);
+        res.writeHead(200, {&quot;Content-Type&quot;:&quot;tex&quot; +
+            &quot;t/event-stream&quot;, &quot;Cache-Control&quot;:&quot;no-cache&quot;,
+            &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;,
+            &quot;Connection&quot;:&quot;keep-alive&quot;});
+        var timer=setInterval(function(){
+            if(++count==10){
+                clearInterval(timer);
+                res.end();
+            }else{
+                res.write(&apos;id: &apos; + count + &apos;\n&apos;);
+                res.write(&quot;data: &quot; + new Date().toLocaleString() + &apos;\n\n&apos;);
+            }
+        },2000);
+
+    };
+    if(req.url==&apos;/&apos;){
+        fs.readFile(&quot;./sse.html&quot;, &quot;binary&quot;, function(err, file) {
+            if (!err) {
+                res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/html&apos;});
+                res.write(file, &quot;binary&quot;);
+                res.end();
+            }
+        });
+    }
+}).listen(8088,&apos;localhost&apos;);
+</code></pre><p>WebSocket是一种更为复杂的服务端实现技术，但它是真正的双向传输技术，既能从服务端向客户端推送数据，也能从客户端向服务端推送数据。</p>
+<p>与WebSocket相比，SSE有一些显著的优势，便利：不需要添加任何新组件，用任何你习惯的后端语言和框架就能继续使用。你不用为新建虚拟机、弄一个新的IP或新的端口号而劳神，就像在现有网站中新增一个页面那样简单。我喜欢把这称为既存基础设施优势。</p>
+<p>SSE的第二个优势是服务端的简洁。相对而言，WebSocket则很复杂，不借助辅助类库基本搞不定</p>
+<p>WebSocket和SSE（Server-sent Events）两种技术方案都是html5引进的</p>
+<p>参考：<br><a href="http://www.52im.net/thread-338-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-338-1-1.html</a></p>
+<p><a href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=338" target="_blank" rel="noopener">http://www.52im.net/forum.php?mod=viewthread&amp;tid=338</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cl6wzqen5000bk0wm6ec8bx4h" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/11/terminal/" class="article-date">
+  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
+<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
+<p>例如：要找redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
+<p>mac 显示隐藏文件<br>打开终端，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
+<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
+<p>Mac 更新系统后无法使用git</p>
+<p>解决方案：</p>
+<p>在终端输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
+<p>如果需要禁止spotlight, 在终端中运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
+<p>开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
+<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
+<p>为了查看它的状态，可以运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="cl6wzqen20008k0wmi9vf9bnb" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
+  <time datetime="2017-09-18T16:00:00.000Z" itemprop="datePublished">2017-09-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/19/回调-事件-promise和asyncawait/">回调函数 钩子(hook) promise和async await</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="回调-钩子-promise和async-await"><a href="#回调-钩子-promise和async-await" class="headerlink" title="回调-钩子 promise和async await"></a>回调-钩子 promise和async await</h2><h3 id="回调函数-callback"><a href="#回调函数-callback" class="headerlink" title="回调函数(callback)"></a>回调函数(callback)</h3><p>回调函数的英文解释为：</p>
+<blockquote>
+<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
+</blockquote>
+<p>翻译过来就是：回调函数是一个作为变量传递给另外一个函数的函数，它在主体函数执行完之后执行。</p>
+<p>function A有一个参数function B，function B会在function A执行完成之后被调用执行。</p>
+<h3 id="钩子函数-hook"><a href="#钩子函数-hook" class="headerlink" title="钩子函数(hook)"></a>钩子函数(hook)</h3><blockquote>
+<p>钩子的概念源于Windows的消息处理机制，通过设置钩子，应用程序可以对所有的消息事件进行拦截，然后执行钩子函数，对消息进行想要的处理方式。</p>
+</blockquote>
+<p><strong>钩子函数在捕获消息的第一时间执行</strong>，回调函数不是</p>
+<h3 id="钩子函数和回调函数"><a href="#钩子函数和回调函数" class="headerlink" title="钩子函数和回调函数"></a>钩子函数和回调函数</h3><ul>
+<li><p>js派函数监听事件 =&gt; 监听函数就是所谓的钩子函数=&gt;函数钩取事件：<strong>函数主动找事件</strong>=&gt;钩子函数</p>
+</li>
+<li><p>js预留函数给dom事件，dom事件调用js预留的函数 =&gt;事件派发给函数：<strong>事件调用函数</strong>=&gt;回调函数</p>
+</li>
+</ul>
+<h3 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h3><pre><code>let btn = document.getElementById(&quot;btn&quot;);
+btn.onclick = () =&gt; {
+    console.log(&quot;i&apos;m a hook&quot;);
+}
+</code></pre><h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><pre><code>btn.addEventListener(&quot;click&quot;,() =&gt;{
+    console.log(this.onclick);//undefined
+});
+</code></pre><p>JS由于自身的特殊性（单线程），上面的两段代码都是异步的。</p>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>JavaScript的代码都是单线程执行的。</p>
+<p>导致JavaScript的所有网络操作，浏览器事件，都必须是异步执行。</p>
+<p>异步执行可以用回调函数实现,但是不好看，而且不利于代码复用</p>
+<p>所谓Promise ，简单说就是一个容器，里面保存着某个未来才回结束的事件(通常是一个异步操作）的结果。从语法上说，Promise是一个对象，从它可以获取异步操作的消息。</p>
+<p>Promise 对象的状态不受外界影响</p>
+<p>三种状态:</p>
+<ul>
+<li>pending：进行中</li>
+<li>fulfilled :已经成功</li>
+<li>rejected 已经失败</li>
+</ul>
+<p>状态改变：<br>Promise对象的状态改变，只有两种可能：</p>
+<ul>
+<li>从pending变为fulfilled</li>
+<li>从pending变为rejected。</li>
+</ul>
+<p>这两种情况只要发生，状态就凝固了，不会再变了，这时就称为resolved（已定型）</p>
+<p>基本用法<br>ES6规定，Promise对象是一个构造函数，用来生成Promise实例</p>
+<pre><code>const promist = new Promise(function(resolve,reject){
+    if(/*异步操作成功*/){
+        resolve(value);
+    }else{
+        reject(error);
+    }
+})
+</code></pre><p>resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<br>reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
+<p>Promise 实例生成以后，可以用then 方法分别指定resolved状态和rejected状态的回调函数。</p>
+<pre><code>promise.then(function(value){
+//success
+},function(error){
+//failure
+});
+</code></pre><h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><ul>
+<li>async/await是写异步代码的新方式，以前的方法有回调函数和Promise。</li>
+<li>async/await是基于Promise实现的，它不能用于普通的回调函数。</li>
+<li>async/await与Promise一样，是非阻塞的。</li>
+<li>async/await使得异步代码看起来像同步代码，这正是它的魔力所在。</li>
+</ul>
+<h4 id="Async-Await语法"><a href="#Async-Await语法" class="headerlink" title="Async/Await语法"></a>Async/Await语法</h4><p>示例中，getJSON函数返回一个promise，这个promise成功resolve时会返回一个json对象。我们只是调用这个函数，打印返回的JSON对象，然后返回”done”。</p>
+<p>使用Promise是这样的:</p>
+<pre><code>const makeRequest = () =&gt;
+  getJSON()
+    .then(data =&gt; {
+      console.log(data)
+      return &quot;done&quot;
+    })
+
+makeRequest()
+</code></pre><p>使用Async/Await是这样的:</p>
+<pre><code>const makeRequest = async () =&gt; {
+  console.log(await getJSON())
+  return &quot;done&quot;
+}
+
+makeRequest()
+</code></pre><p><strong>区别</strong>:</p>
+<ul>
+<li><p>函数前面多了一个aync关键字。await关键字只能用在aync定义的函数内。async函数会隐式地返回一个promise，该promise的reosolve值就是函数return的值。(示例中reosolve值就是字符串”done”)</p>
+</li>
+<li><p>不能在最外层代码中使用await，因为不在async函数内。</p>
+</li>
+</ul>
+<h3 id="为什么Async-Await更好？"><a href="#为什么Async-Await更好？" class="headerlink" title="为什么Async/Await更好？"></a>为什么Async/Await更好？</h3><h4 id="1-简洁"><a href="#1-简洁" class="headerlink" title="1.简洁"></a>1.简洁</h4><p>由示例可知，使用Async/Await明显节约了不少代码。</p>
+<ul>
+<li>不需要写.then，</li>
+<li>不需要写匿名函数处理Promise的resolve值，</li>
+<li>不需要定义多余的data变量，还避免了嵌套代码。</li>
+</ul>
+<p>这些小的优点会迅速累计起来，这在之后的代码示例中会更加明显。</p>
+<h4 id="2-错误处理"><a href="#2-错误处理" class="headerlink" title="2.错误处理"></a>2.错误处理</h4><p>Async/Await让try/catch可以同时处理同步和异步错误。在下面的promise示例中，try/catch不能处理JSON.parse的错误，因为它在Promise中。我们需要使用.catch，这样错误处理代码非常冗余。并且，在我们的实际生产代码会更加复杂。</p>
+<pre><code>const makeRequest = () =&gt; {
+  try {
+    getJSON()
+      .then(result =&gt; {
+        // JSON.parse可能会出错
+        const data = JSON.parse(result)
+        console.log(data)
+      })
+      // 取消注释，处理异步代码的错误
+      // .catch((err) =&gt; {
+      //   console.log(err)
+      // })
+  } catch (err) {
+    console.log(err)
+  }
+}
+</code></pre><p>使用aync/await的话，catch能处理JSON.parse错误:</p>
+<pre><code>const makeRequest = async () =&gt; {
+  try {
+    // this parse may fail
+    const data = JSON.parse(await getJSON())
+    console.log(data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+</code></pre><ul>
+<li>3.条件语句</li>
+<li>4.中间值</li>
+<li>5.错误栈</li>
+<li>6.调试</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="cl6wzqen8000fk0wmxcdtdtpk" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+  </nav>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/17/english/7000/">sentence</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/24/keyboard/">keyboard</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

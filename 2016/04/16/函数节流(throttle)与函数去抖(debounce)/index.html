@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>函数节流（throttle）与函数去抖（debounce） | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="函数节流（throttle）与函数去抖（debounce）背景鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。 DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数节流（throttle）与函数去抖（debounce）">
+<meta property="og:url" content="https://whuper.github.io/2016/04/16/函数节流(throttle)与函数去抖(debounce)/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="函数节流（throttle）与函数去抖（debounce）背景鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。 DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-17T01:03:48.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数节流（throttle）与函数去抖（debounce）">
+<meta name="twitter:description" content="函数节流（throttle）与函数去抖（debounce）背景鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。 DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-函数节流(throttle)与函数去抖(debounce)" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/16/函数节流(throttle)与函数去抖(debounce)/" class="article-date">
+  <time datetime="2016-04-15T16:00:00.000Z" itemprop="datePublished">2016-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      函数节流（throttle）与函数去抖（debounce）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="函数节流（throttle）与函数去抖（debounce）"><a href="#函数节流（throttle）与函数去抖（debounce）" class="headerlink" title="函数节流（throttle）与函数去抖（debounce）"></a>函数节流（throttle）与函数去抖（debounce）</h3><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。</p>
+<p>DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为了解决这个问题，需要使用定时器对该函数进行节流。</p>
+<p><strong>函数节流</strong>，简单地讲，就是让一个函数无法在很短的时间间隔内连续调用，只有当上一次函数执行后过了你规定的时间间隔，才能进行下一次该函数的调用</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>当触发一个事件时，先setTimout让这个事件延迟一会再执行，如果在这个时间间隔内又触发了事件，就clear掉原来的定时器，再setTimeout一个新的定时器延迟一会执行。</p>
+<p><strong>2018 05-09更新 (其实这个应该叫做函数去抖debounce)</strong></p>
+<p>代码实现</p>
+<pre><code>function throttle(method, context) {
+    clearTimeout(methor.tId);
+    method.tId = setTimeout(function(){
+        method.call(context);
+    }， 100);
+}
+</code></pre><p>调用</p>
+<pre><code>window.onresize = function(){
+    throttle(myFunc);
+}
+</code></pre><p>这样两次函数调用之间至少间隔100ms。</p>
+<p>impress用的是另一个封装函数：</p>
+<pre><code>var throttle = function(fn, delay){
+     var timer = null;
+     return function(){
+         var context = this, args = arguments;
+         clearTimeout(timer);
+         timer = setTimeout(function(){
+             fn.apply(context, args);
+         }, delay);
+     };
+ };
+</code></pre><p>它使用闭包的方法形成一个私有的作用域来存放定时器变量timer。而调用方法为</p>
+<pre><code>window.onresize = throttle(myFunc, 100);
+</code></pre><blockquote>
+<p>两种方法各有优劣，前一个封装函数的优势在把上下文变量当做函数参数，直接可以定制执行函数的this变量；后一个函数优势在于把延迟时间当做变量（当然，前一个函数很容易做这个拓展），而且个人觉得使用闭包代码结构会更优，且易于拓展定制其他私有变量，缺点就是虽然使用apply把调用throttle时的this上下文传给执行函数，但毕竟不够灵活。</p>
+</blockquote>
+<p>以上参考<br><a href="http://www.alloyteam.com/2012/11/javascript-throttle/" target="_blank" rel="noopener">http://www.alloyteam.com/2012/11/javascript-throttle/</a></p>
+<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><hr>
+<h2 id="防止重复发送-Ajax-请求"><a href="#防止重复发送-Ajax-请求" class="headerlink" title="防止重复发送 Ajax 请求"></a>防止重复发送 Ajax 请求</h2><blockquote>
+<p>最简单粗暴的是设置flag做判断，或者暂时禁掉按钮</p>
+</blockquote>
+<p>不推荐用外部变量锁定或修改按钮状态的方式，因为那样比较难：</p>
+<ul>
+<li>要考虑并理解 success, complete, error, timeout 这些事件的区别，并注册正确的事件，一旦失误，功能将不再可用；</li>
+<li>不可避免地比普通流程要要多注册一个 complete 事件；</li>
+<li>恢复状态的代码很容易和不相干的代码混合在一起；</li>
+</ul>
+<p>我推荐用主动查询状态的方式（A、B，jQuery 为例）或工具函数的方式（C、D）来去除重复操作，并提供一些例子作为参考：</p>
+<h4 id="A-独占型提交"><a href="#A-独占型提交" class="headerlink" title="A. 独占型提交"></a>A. 独占型提交</h4><p>只允许同时存在一次提交操作，并且直到本次提交完成才能进行下一次提交。</p>
+<pre><code>module.submit = function() {
+  if (this.promise_.state() === &apos;pending&apos;) {
+    return
+  }
+  return this.promise_ = $.post(&apos;/api/save&apos;)
+}
+</code></pre><h4 id="B-贪婪型提交"><a href="#B-贪婪型提交" class="headerlink" title="B. 贪婪型提交"></a>B. 贪婪型提交</h4><p>无限制的提交，但是以最后一次操作为准；亦即需要尽快给出最后一次操作的反馈，而前面的操作结果并不重要。</p>
+<pre><code>module.submit = function() {
+  if (this.promise_.state() === &apos;pending&apos;) {
+    this.promise_.abort()
+  }
+  // todo
+}
+</code></pre><p>比如某些应用的条目中，有一些进行类似「喜欢」或「不喜欢」操作的二态按钮。如果按下后不立即给出反馈，用户的目光焦点就可能在那个按钮上停顿许久；如果按下时即时切换按钮的状态，再在程序上用 abort 来实现积极的提交，这样既能提高用户体验，还能降低服务器压力，皆大欢喜。</p>
+<h4 id="C-节制型提交"><a href="#C-节制型提交" class="headerlink" title="C. 节制型提交"></a>C. 节制型提交</h4><p>无论提交如何频繁，任意两次有效提交的间隔时间必定会大于或等于某一时间间隔；即以一定频率提交。</p>
+<pre><code>module.submit = throttle(150, function() {
+  // todo
+})
+</code></pre><p>如果客户发送每隔100毫秒发送过来10次请求，此模块将只接收其中6个（每个在时间线上距离为150毫秒）进行处理。</p>
+<p>这也是解决查询冲突的一种可选手段，比如以知乎草稿举例，仔细观察可以发现：</p>
+<p>编辑器的 blur 事件会立即触发保存；</p>
+<p>保存按钮的 click 事件也会立即触发保存；</p>
+<p>但是存在一种情况会使这两个事件在数毫秒内连续发生——当焦点在编辑器内部，并且直接去点击保存按钮——这时用 throttle 来处理是可行的。</p>
+<p>另外还有一些事件处理会很频繁地使用 throttle，如： resize、scroll、mousemove。</p>
+<h4 id="D-懒惰型提交"><a href="#D-懒惰型提交" class="headerlink" title="D. 懒惰型提交"></a>D. 懒惰型提交</h4><p>任意两次提交的间隔时间，必须大于一个指定时间，才会促成有效提交；即不给休息不干活。</p>
+<pre><code>module.submit = debounce(150, function() {
+  // todo
+})
+</code></pre><p>还是以知乎草稿举例，当在编辑器内按下 ctrl + s 时，可以手动保存草稿；如果你连按，程序会表示不理解为什么你要连按，只有等你放弃连按，它才会继续。</p>
+<hr>
+<p>更多记忆中的例子方式 C 和 方式 D 有时更加通用，比如这些情况：</p>
+<p>游戏中你捡到一把威力强大的高速武器，为了防止你的子弹在屏幕上打成一条直线，可以 throttle 来控制频率；</p>
+<p>在弹幕型游戏里，为了防止你把射击键夹住来进行无脑游戏，可以用 debounce 来控制频率；</p>
+<p>在编译任务里，守护进程监视了某一文件夹里所有的文件（如任一文件的改变都可以触发重新编译，一次执行就需要2秒），但某种操作能够瞬间造成大量文件改变（如 git checkout），这时一个简单的 debounce 可以使编译任务只执行一次。</p>
+<p>而方式 C 甚至可以和方式 B 组合使用，比如自动完成组件（Google 首页的搜索就是）：</p>
+<ul>
+<li><p>当用户快速输入文本时（特别是打字能手），可以 throttle  keypress 事件处理函数，以指定时间间隔来提取文本域的值，然后立即进行新的查询；</p>
+</li>
+<li><p>当新的查询需要发送，但上一个查询还没返回结果时，可以 abort 未完成的查询，并立即发送新查询；</p>
+</li>
+</ul>
+<h2 id="表单防止重复提交"><a href="#表单防止重复提交" class="headerlink" title="表单防止重复提交"></a>表单防止重复提交</h2><h3 id="1-用js为添加禁用"><a href="#1-用js为添加禁用" class="headerlink" title="1 用js为添加禁用"></a>1 用js为添加禁用</h3><h3 id="2-使用Post-Redirect-Get"><a href="#2-使用Post-Redirect-Get" class="headerlink" title="2 使用Post/Redirect/Get"></a>2 使用Post/Redirect/Get</h3><p>PRG设计模式并不适用所有的重复提交情况，比如：</p>
+<p>1）由于服务器响应缓慢，用户刷新提交POST请求造成的重复提交。</p>
+<p>2）用户点击后退按钮，返回到数据提交界面，导致的数据重复提交。</p>
+<p>3）用户多次点击提交按钮，导致的数据重复提交。</p>
+<p>4）用户恶意避开客户端预防多次提交手段，进行重复数据提交。</p>
+<p>###3 使用session／token设置令牌</p>
+<p>产生页面时，服务器为每次产生的Form分配唯一的随机标识号(比如时间戳)，并且在form的一个隐藏字段中设置这个标识号，同时在当前用户的Session中保存这个标识号。</p>
+<p>当提交表单时，服务器比较hidden和session中的标识号是否相同，相同则继续，处理完后清空Session，否则服务器忽略请求。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2016/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="cl6wzqen7000ek0wmmic31jkh" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/19/浏览器工作原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          浏览器工作原理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/17/english/7000/">sentence</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/24/keyboard/">keyboard</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>回调函数 钩子(hook) promise和async await | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="回调-钩子 promise和async await回调函数(callback)回调函数的英文解释为：  A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.  翻译过来就是：回调函数是一个作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回调函数 钩子(hook) promise和async await">
+<meta property="og:url" content="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="回调-钩子 promise和async await回调函数(callback)回调函数的英文解释为：  A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.  翻译过来就是：回调函数是一个作">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-17T01:03:48.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回调函数 钩子(hook) promise和async await">
+<meta name="twitter:description" content="回调-钩子 promise和async await回调函数(callback)回调函数的英文解释为：  A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.  翻译过来就是：回调函数是一个作">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
+  <time datetime="2017-09-18T16:00:00.000Z" itemprop="datePublished">2017-09-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      回调函数 钩子(hook) promise和async await
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="回调-钩子-promise和async-await"><a href="#回调-钩子-promise和async-await" class="headerlink" title="回调-钩子 promise和async await"></a>回调-钩子 promise和async await</h2><h3 id="回调函数-callback"><a href="#回调函数-callback" class="headerlink" title="回调函数(callback)"></a>回调函数(callback)</h3><p>回调函数的英文解释为：</p>
+<blockquote>
+<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
+</blockquote>
+<p>翻译过来就是：回调函数是一个作为变量传递给另外一个函数的函数，它在主体函数执行完之后执行。</p>
+<p>function A有一个参数function B，function B会在function A执行完成之后被调用执行。</p>
+<h3 id="钩子函数-hook"><a href="#钩子函数-hook" class="headerlink" title="钩子函数(hook)"></a>钩子函数(hook)</h3><blockquote>
+<p>钩子的概念源于Windows的消息处理机制，通过设置钩子，应用程序可以对所有的消息事件进行拦截，然后执行钩子函数，对消息进行想要的处理方式。</p>
+</blockquote>
+<p><strong>钩子函数在捕获消息的第一时间执行</strong>，回调函数不是</p>
+<h3 id="钩子函数和回调函数"><a href="#钩子函数和回调函数" class="headerlink" title="钩子函数和回调函数"></a>钩子函数和回调函数</h3><ul>
+<li><p>js派函数监听事件 =&gt; 监听函数就是所谓的钩子函数=&gt;函数钩取事件：<strong>函数主动找事件</strong>=&gt;钩子函数</p>
+</li>
+<li><p>js预留函数给dom事件，dom事件调用js预留的函数 =&gt;事件派发给函数：<strong>事件调用函数</strong>=&gt;回调函数</p>
+</li>
+</ul>
+<h3 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h3><pre><code>let btn = document.getElementById(&quot;btn&quot;);
+btn.onclick = () =&gt; {
+    console.log(&quot;i&apos;m a hook&quot;);
+}
+</code></pre><h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><pre><code>btn.addEventListener(&quot;click&quot;,() =&gt;{
+    console.log(this.onclick);//undefined
+});
+</code></pre><p>JS由于自身的特殊性（单线程），上面的两段代码都是异步的。</p>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>JavaScript的代码都是单线程执行的。</p>
+<p>导致JavaScript的所有网络操作，浏览器事件，都必须是异步执行。</p>
+<p>异步执行可以用回调函数实现,但是不好看，而且不利于代码复用</p>
+<p>所谓Promise ，简单说就是一个容器，里面保存着某个未来才回结束的事件(通常是一个异步操作）的结果。从语法上说，Promise是一个对象，从它可以获取异步操作的消息。</p>
+<p>Promise 对象的状态不受外界影响</p>
+<p>三种状态:</p>
+<ul>
+<li>pending：进行中</li>
+<li>fulfilled :已经成功</li>
+<li>rejected 已经失败</li>
+</ul>
+<p>状态改变：<br>Promise对象的状态改变，只有两种可能：</p>
+<ul>
+<li>从pending变为fulfilled</li>
+<li>从pending变为rejected。</li>
+</ul>
+<p>这两种情况只要发生，状态就凝固了，不会再变了，这时就称为resolved（已定型）</p>
+<p>基本用法<br>ES6规定，Promise对象是一个构造函数，用来生成Promise实例</p>
+<pre><code>const promist = new Promise(function(resolve,reject){
+    if(/*异步操作成功*/){
+        resolve(value);
+    }else{
+        reject(error);
+    }
+})
+</code></pre><p>resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<br>reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
+<p>Promise 实例生成以后，可以用then 方法分别指定resolved状态和rejected状态的回调函数。</p>
+<pre><code>promise.then(function(value){
+//success
+},function(error){
+//failure
+});
+</code></pre><h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><ul>
+<li>async/await是写异步代码的新方式，以前的方法有回调函数和Promise。</li>
+<li>async/await是基于Promise实现的，它不能用于普通的回调函数。</li>
+<li>async/await与Promise一样，是非阻塞的。</li>
+<li>async/await使得异步代码看起来像同步代码，这正是它的魔力所在。</li>
+</ul>
+<h4 id="Async-Await语法"><a href="#Async-Await语法" class="headerlink" title="Async/Await语法"></a>Async/Await语法</h4><p>示例中，getJSON函数返回一个promise，这个promise成功resolve时会返回一个json对象。我们只是调用这个函数，打印返回的JSON对象，然后返回”done”。</p>
+<p>使用Promise是这样的:</p>
+<pre><code>const makeRequest = () =&gt;
+  getJSON()
+    .then(data =&gt; {
+      console.log(data)
+      return &quot;done&quot;
+    })
+
+makeRequest()
+</code></pre><p>使用Async/Await是这样的:</p>
+<pre><code>const makeRequest = async () =&gt; {
+  console.log(await getJSON())
+  return &quot;done&quot;
+}
+
+makeRequest()
+</code></pre><p><strong>区别</strong>:</p>
+<ul>
+<li><p>函数前面多了一个aync关键字。await关键字只能用在aync定义的函数内。async函数会隐式地返回一个promise，该promise的reosolve值就是函数return的值。(示例中reosolve值就是字符串”done”)</p>
+</li>
+<li><p>不能在最外层代码中使用await，因为不在async函数内。</p>
+</li>
+</ul>
+<h3 id="为什么Async-Await更好？"><a href="#为什么Async-Await更好？" class="headerlink" title="为什么Async/Await更好？"></a>为什么Async/Await更好？</h3><h4 id="1-简洁"><a href="#1-简洁" class="headerlink" title="1.简洁"></a>1.简洁</h4><p>由示例可知，使用Async/Await明显节约了不少代码。</p>
+<ul>
+<li>不需要写.then，</li>
+<li>不需要写匿名函数处理Promise的resolve值，</li>
+<li>不需要定义多余的data变量，还避免了嵌套代码。</li>
+</ul>
+<p>这些小的优点会迅速累计起来，这在之后的代码示例中会更加明显。</p>
+<h4 id="2-错误处理"><a href="#2-错误处理" class="headerlink" title="2.错误处理"></a>2.错误处理</h4><p>Async/Await让try/catch可以同时处理同步和异步错误。在下面的promise示例中，try/catch不能处理JSON.parse的错误，因为它在Promise中。我们需要使用.catch，这样错误处理代码非常冗余。并且，在我们的实际生产代码会更加复杂。</p>
+<pre><code>const makeRequest = () =&gt; {
+  try {
+    getJSON()
+      .then(result =&gt; {
+        // JSON.parse可能会出错
+        const data = JSON.parse(result)
+        console.log(data)
+      })
+      // 取消注释，处理异步代码的错误
+      // .catch((err) =&gt; {
+      //   console.log(err)
+      // })
+  } catch (err) {
+    console.log(err)
+  }
+}
+</code></pre><p>使用aync/await的话，catch能处理JSON.parse错误:</p>
+<pre><code>const makeRequest = async () =&gt; {
+  try {
+    // this parse may fail
+    const data = JSON.parse(await getJSON())
+    console.log(data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+</code></pre><ul>
+<li>3.条件语句</li>
+<li>4.中间值</li>
+<li>5.错误栈</li>
+<li>6.调试</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="cl6wzqen8000fk0wmxcdtdtpk" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/11/terminal/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          终端常用的快捷键
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/19/浏览器事件总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">浏览器的事件总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/17/english/7000/">sentence</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/24/keyboard/">keyboard</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
