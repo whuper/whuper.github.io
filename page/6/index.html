@@ -63,10 +63,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-JS运行机制" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-web实时通讯技术总结" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/04/11/JS运行机制/" class="article-date">
-  <time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished">2017-04-11</time>
+    <a href="/2017/11/11/web实时通讯技术总结/" class="article-date">
+  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">2017-11-11</time>
 </a>
     
   </div>
@@ -77,7 +77,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/11/JS运行机制/">JS的运行机制</a>
+      <a class="article-title" href="/2017/11/11/web实时通讯技术总结/">Web端即时通讯技术</a>
     </h1>
   
 
@@ -85,67 +85,158 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="事件循环（Event-Loop）和任务队列"><a href="#事件循环（Event-Loop）和任务队列" class="headerlink" title="事件循环（Event Loop）和任务队列"></a>事件循环（Event Loop）和任务队列</h2><h3 id="和JS运行有关的几个线程"><a href="#和JS运行有关的几个线程" class="headerlink" title="和JS运行有关的几个线程"></a>和JS运行有关的几个线程</h3><ul>
-<li>JS引擎线程</li>
-<li>事件触发线程</li>
-<li>定时触发器线程</li>
-</ul>
-<h4 id="JS引擎是单线程"><a href="#JS引擎是单线程" class="headerlink" title="JS引擎是单线程"></a>JS引擎是单线程</h4><ul>
-<li>JS分为同步任务和异步任务</li>
-<li>同步任务都在主线程上执行，形成一个<strong>执行栈</strong></li>
-<li>主线程之外，<strong>事件触发线程</strong>管理着一个任务队列，只要有异步任务，就在任务队列之中放置一个事件。</li>
-<li>一旦执行栈中的所有同步任务执行完毕（此时JS引擎空闲），主线程就会读取任务队列，将可运行的异步任务添加到可执行栈中，开始执行。</li>
-</ul>
-<p><img src="./images/a.png" alt=""></p>
-<blockquote>
-<p>到这里，应该就可以理解了：为什么有时候setTimeout推入的事件不能准时执行？因为可能在它推入到事件列表时，主线程还不空闲，正在执行其它代码，<br>所以自然有误差。</p>
+        <h2 id="Web端即时通讯技术"><a href="#Web端即时通讯技术" class="headerlink" title="Web端即时通讯技术"></a>Web端即时通讯技术</h2><blockquote>
+<p>传统Web的通信原理</p>
+<p>浏览器本身作为一个瘦客户端，不具备直接通过系统调用来达到和处于异地的另外一个客户端浏览器通信的功能。这和我们桌面应用的工作方式是不同的，通常桌面应用通过socket可以和远程主机上另外一端的一个进程建立TCP连接，从而达到全双工的即时通信。</p>
+<p>浏览器从诞生开始一直走的是客户端请求服务器，服务器返回结果的模式，即使发展至今仍然没有任何改变。所以可以肯定的是，要想实现两个客户端的通信，必然要通过服务器进行信息的转发。例如A要和B通信，则应该是A先把信息发送给IM应用服务器，服务器根据A信息中携带的接收者将它再转发给B，同样B到A也是这种模式，如下所示：</p>
 </blockquote>
-<h3 id="事件循环机制"><a href="#事件循环机制" class="headerlink" title="事件循环机制"></a>事件循环机制</h3><p><img src="./images/b.png" alt=""></p>
-<p><a href="http://vimeo.com/96425312" target="_blank" rel="noopener">Help, I’m stuck in an event-loop</a></p>
-<p>上图大致描述就是：</p>
-<p>主线程运行时会产生执行栈，<br>栈中的代码调用某些api时，它们会在事件队列中添加各种事件（当满足触发条件后，如ajax请求完毕）</p>
-<ul>
-<li>而栈中的代码执行完毕，就会读取事件队列中的事件，去执行那些回调</li>
-<li>如此循环</li>
-<li>注意，总是要等待栈中的代码执行完毕后才会去读取事件队列中的事件</li>
-</ul>
-<h3 id="定时器线程"><a href="#定时器线程" class="headerlink" title="定时器线程"></a>定时器线程</h3><p><strong>上述事件循环机制的核心是：JS引擎线程和事件触发线程</strong></p>
-<p>但事实上，里面还有一些隐藏细节，譬如调用setTimeout后，是如何等待特定时间后才添加到事件队列中的？</p>
-<h4 id="是JS引擎检测的么？"><a href="#是JS引擎检测的么？" class="headerlink" title="是JS引擎检测的么？"></a>是JS引擎检测的么？</h4><p>不是。<strong>它是由定时器线程控制</strong></p>
-<h4 id="为什么要单独的定时器线程？"><a href="#为什么要单独的定时器线程？" class="headerlink" title="为什么要单独的定时器线程？"></a>为什么要单独的定时器线程？</h4><p>因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确，因此很有必要单独开一个线程用来计时。</p>
-<h4 id="什么时候会用到定时器线程？"><a href="#什么时候会用到定时器线程？" class="headerlink" title="什么时候会用到定时器线程？"></a>什么时候会用到定时器线程？</h4><p>当使用setTimeout或setInterval时，它需要定时器线程计时，计时完成后就会将特定的事件推入事件队列中。</p>
-<p>譬如:</p>
-<pre><code>setTimeout(function(){
-    console.log(&apos;hello!&apos;);
-}, 1000);
-</code></pre><p>这段代码的作用是当1000毫秒计时完毕后（由定时器线程计时），将回调函数推入事件队列中，等待主线程执行</p>
-<pre><code>setTimeout(function(){
-    console.log(&apos;hello!&apos;);
-}, 0);
+<p>常见的实现即时通讯实现方法</p>
+<blockquote>
+<p>轮询：客户端定时向服务器发送Ajax请求，服务器接到请求后马上返回响应信息并关闭连接。<br>优点：后端程序编写比较容易。<br>缺点：请求中有大半是无用，浪费带宽和服务器资源。<br>实例：适于小型应用。</p>
+<p>长轮询：客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。<br>优点：在无消息的情况下不会频繁的请求，耗费资源小。<br>缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护。<br>实例：WebQQ、Hi网页版、Facebook IM。</p>
+<p>长连接：在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。<br>优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>缺点：服务器维护一个长连接会增加开销。<br>实例：Gmail聊天</p>
+</blockquote>
+<p>基于web实现IM软件依然要走浏览器请求服务器的模式，这种方式下，针对IM软件的开发需要解决如下三个问题：</p>
+<h4 id="1-双全工通信："><a href="#1-双全工通信：" class="headerlink" title="1 双全工通信："></a>1 双全工通信：</h4><p>即达到浏览器拉取（pull）服务器数据，服务器推送（push）数据到浏览器；</p>
+<h4 id="2-低延迟："><a href="#2-低延迟：" class="headerlink" title="2 低延迟："></a>2 低延迟：</h4><p>即浏览器A发送给B的信息经过服务器要快速转发给B，同理B的信息也要快速交给A，实际上就是要求任何浏览器能够快速请求服务器的数据，服务器能够快速推送数据到浏览器；</p>
+<h4 id="3-支持跨域："><a href="#3-支持跨域：" class="headerlink" title="3 支持跨域："></a>3 支持跨域：</h4><p>通常客户端浏览器和服务器都是处于网络的不同位置，浏览器本身不允许通过脚本直接访问不同域名下的服务器，即使IP地址相同域名不同也不行，域名相同端口不同也不行，这方面主要是为了安全考虑。</p>
+<h3 id="从技术实现上，大致有4种："><a href="#从技术实现上，大致有4种：" class="headerlink" title="从技术实现上，大致有4种："></a>从技术实现上，大致有4种：</h3><ol>
+<li>Ajax短轮询</li>
+<li>Comet 别名叫(彗星)</li>
+<li>Websocket</li>
+<li>SSE（Server-sent Events）</li>
+</ol>
+<h2 id="1-Ajax短轮询"><a href="#1-Ajax短轮询" class="headerlink" title="1. Ajax短轮询"></a>1. Ajax短轮询</h2><p>传统的web应用要想与服务器交互，必须提交一个表单（form），服务器接收并处理传来的表单，然后返回全新的页面，因为前后两个页面的数据大部分都是相同的，这个过程传输了很多冗余的数据、浪费了带宽。于是Ajax技术便应运而生。</p>
+<blockquote>
+<p>Ajax是Asynchronous JavaScript and XML的简称，由Jesse James Garrett 首先提出。这种技术开创性地允许浏览器脚本（JS）发送http请求。</p>
+</blockquote>
+<blockquote>
+<p>XMLHttpRequest 是 AJAX 的基础。<br>XMLHttpRequest 对象<br>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
+</blockquote>
+<p>创建 XMLHttpRequest 对象：</p>
+<pre><code>var xml = new XMLHttpRequest();
+</code></pre><p>老版本的ie就不再列举了，毕竟是快要被淘汰的东西，不具有可持续性。。。</p>
+<p>这种浏览器端的小技术毕竟还是基于http协议，http协议要求的请求/响应的模式也是无法改变的，除非http协议本身有所改变。</p>
+<p><strong>具体实现：用定时器，每间隔一定的时间，就发送请求，获取数据。。。简单粗暴，造成很多资源浪费</strong></p>
+<hr>
+<h2 id="Comet-基于-HTTP长连接的“服务器推”技术"><a href="#Comet-基于-HTTP长连接的“服务器推”技术" class="headerlink" title="Comet(基于 HTTP长连接的“服务器推”技术)"></a>Comet(基于 HTTP长连接的“服务器推”技术)</h2><p>是一种hack技术</p>
+<blockquote>
+<p>Ajax通信方式是http协议的经典使用方式，要想取得数据，必须首先发送请求。在Low Latency要求比较高的web应用中，只能增加服务器请求的频率。</p>
+<p>Comet则不同，客户端与服务器端保持一个长连接，只有客户端需要的数据更新时，服务器才主动将数据推送给客户端。<br>Comet的实现主要有两种方式：</p>
+</blockquote>
+<ol>
+<li>基于Ajax的长轮询（long-polling）</li>
+<li>基于 Iframe 及 htmlfile 的流（http streaming）</li>
+</ol>
+<h4 id="1-基于Ajax的长轮询（long-polling）方式"><a href="#1-基于Ajax的长轮询（long-polling）方式" class="headerlink" title="1 基于Ajax的长轮询（long-polling）方式"></a>1 基于Ajax的长轮询（long-polling）方式</h4><p>浏览器发出XMLHttpRequest 请求，服务器端接收到请求后，会阻塞请求直到有数据或者超时才返回，浏览器JS在处理请求返回信息（超时或有效数据）后再次发出请求，重新建立连接。在此期间服务器端可能已经有新的数据到达，服务器会选择把数据保存，直到重新建立连接，浏览器会把所有数据一次性取回。</p>
+<p>在XHR对象的readySate为4的时候，表示服务器已经返回数据，本次连接已断开，再次请求服务器建立连接。</p>
+<h4 id="2-基于-Iframe-及-htmlfile-的流（http-streaming）方式"><a href="#2-基于-Iframe-及-htmlfile-的流（http-streaming）方式" class="headerlink" title="2 基于 Iframe 及 htmlfile 的流（http streaming）方式"></a>2 基于 Iframe 及 htmlfile 的流（http streaming）方式</h4><p>iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，然后将这个隐蔵帧的 <strong>SRC 属性设为对一个长连接的请求</strong>，服务器端就能源源不断地往客户端输入数据。</p>
+<p>在第一种方式中，浏览器在收到数据后会直接调用JS回调函数，但是这种方式该如何响应数据呢？可以通过在返回数据中嵌入JS脚本的方式，如<code>&lt;script type=&quot;text/javascript&quot;&gt;js_func(“data from server ”)&lt;/script&gt;</code>，服务器端将返回的数据作为回调函数的参数，浏览器在收到数据后就会执行这段JS脚本。</p>
+<p>但是这种方式有一个明显的不足之处：IE、Morzilla Firefox 下端的进度栏都会显示加载没有完成，而且 IE 上方的图标会不停的转动，表示加载正在进行，并且底部也显示正在加载，这对于一个产品来讲用户体验是不好的</p>
+<h4 id="2-1-基于-Iframe的优化"><a href="#2-1-基于-Iframe的优化" class="headerlink" title="2.1 基于 Iframe的优化"></a>2.1 基于 Iframe的优化</h4><p>谷歌想出了一中hack方式。就是在IE中，动态生成一个<strong>htmlfile对象</strong>，这个对象ActiveX形式的com组件，它实际上就是一个在内存中实现的HTML文档，通过将生成的iframe添加到这个内存中的HTMLfile中，并利用iframe的数据流通信方式达到上面的效果。同时由于HTMLfile对象并不是直接添加到页面上的，所以并没有造成浏览器显示正在加载的现象。</p>
+<p>这种方法应用到了 gmail+gtalk 产品中</p>
+<p><a href="http://www.52im.net/thread-334-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-334-1-1.html</a></p>
+<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>在上面的这些解决方案中，都是利用浏览器单向请求服务器或者服务器单向推送数据到浏览器这些技术组合在一起而形成的hack技术，在HTML5中，为了加强web的功能，提供了websocket技术，它不仅是一种web通信方式，也是一种应用层协议。</p>
+<p>它提供了浏览器和服务器之间原生的双全工跨域通信，通过浏览器和服务器之间建立websocket连接（实际上是TCP连接）,在同一时刻能够实现客户端到服务器和服务器到客户端的数据发送。</p>
+<p>首先是客户端new 一个websocket对象，该对象会发送一个http请求到服务端，服务端发现这是个webscoket请求，会同意协议转换，发送回客户端一个101状态码的response，以上过程称之为一次握手，经过这次握手之后，客户端就和服务端建立了一条TCP连接，在该连接上，服务端和客户端就可以进行双向通信了。</p>
+<p>这时的双向通信在应用层走的就是ws或者wss协议了，和http就没有关系了。</p>
+<p>所谓的ws协议，就是要求客户端和服务端遵循某种格式发送数据报文（帧），然后对方才能够理解。</p>
+<p>客户端参考代码</p>
+<pre><code>window.onload=function(){
+        var ws=new WebSocket(&quot;ws://127.0.0.1:8088&quot;);
+        var oText=document.getElementById(&apos;message&apos;);
+        var oSend=document.getElementById(&apos;send&apos;);
+        var oClose=document.getElementById(&apos;close&apos;);
+        var oUl=document.getElementsByTagName(&apos;ul&apos;)[0];
+        ws.onopen=function(){
+            oSend.onclick=function(){
+                if(!/^\s*$/.test(oText.value)){
+                    ws.send(oText.value);
+                }
+            };
 
-console.log(&apos;begin&apos;);
-</code></pre><p>这段代码的效果是最快的时间内将回调函数推入事件队列中，等待主线程执行</p>
-<p><strong>注意：</strong></p>
-<p>执行结果是：先begin后hello!</p>
+        };
+        ws.onmessage=function(msg){
+          var str=&quot;&lt;li&gt;&quot;+msg.data+&quot;&lt;/li&gt;&quot;;
+          oUl.innerHTML+=str;
+        };
+        ws.onclose=function(e){
+            console.log(&quot;已断开与服务器的连接&quot;);
+            ws.close();
+        }
+    }
+</code></pre><hr>
+<p>WebSocket在支持它的浏览器上确实提供了一种全双工跨域的通信方案，所以在各以上各种方案中，我们的首选无疑是WebSocket。</p>
 <blockquote>
-<p>虽然代码的本意是0毫秒后就推入事件队列，但是W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。<br>(不过也有一说是不同浏览器有不同的最小时间设定)</p>
-<p>就算不等待4ms，就算假设0毫秒就推入事件队列，也会先执行begin（因为只有可执行栈内空了后才会主动读取事件队列）</p>
+<p>socket.io介绍</p>
+<p>socket.io封装了websocket，同时包含了其它的连接方式，比如Ajax。原因在于不是所有的浏览器都支持websocket，通过socket.io的封装，不用关心里面用了什么连接方式。</p>
+<p>在任何浏览器里都可以使用socket.io来建立异步的连接。socket.io包含了服务端和客户端的库，如果在浏览器中使用了socket.io的js，服务端也必须同样适用。如果你很清楚你需要的就是websocket，那可以直接使用websocket。</p>
 </blockquote>
-<h3 id="setTimeout和setInterval"><a href="#setTimeout和setInterval" class="headerlink" title="setTimeout和setInterval"></a>setTimeout和setInterval</h3><p>用setTimeout模拟定期计时和直接用setInterval是有区别的。</p>
-<p><strong>setTimeout</strong>每次计时到后就会去执行，然后执行一段时间后才会继续setTimeout，中间就多了误差（误差多少与代码执行时间有关）</p>
-<p><strong>setInterval</strong>则是每次都精确的隔一段时间推入一个事件<br>（但是，事件的实际执行时间不一定就准确，还有可能是这个事件还没执行完毕，下一个事件就来了）</p>
-<h4 id="setInterval有一些比较致命的问题就是："><a href="#setInterval有一些比较致命的问题就是：" class="headerlink" title="setInterval有一些比较致命的问题就是："></a>setInterval有一些比较致命的问题就是：</h4><p><strong>累计效应</strong>，如果setInterval代码在（setInterval）再次添加到队列之前还没有完成执行，<br>就会导致定时器代码连续运行好几次，而之间没有间隔。</p>
-<p>就算正常间隔执行，多个setInterval的代码执行时间可能会比预期小（因为代码执行需要一定时间）</p>
-<blockquote>
-<p>而且把浏览器最小化显示等操作时，setInterval并不是不执行程序，<br>它会把setInterval的回调函数放在队列中，等浏览器窗口再次打开时，一瞬间全部执行时</p>
-</blockquote>
-<p>目前一般认为的最佳方案是：用setTimeout模拟setInterval，或者特殊场合直接用requestAnimationFrame</p>
+<h2 id="SSE"><a href="#SSE" class="headerlink" title="SSE"></a>SSE</h2><p>SSE（Server-Sent Event，服务端推送事件）是一种允许服务端向客户端推送新数据的HTML5技术。与由客户端每隔几秒从服务端轮询拉取新数据相比，这是一种更优的解决方案。</p>
+<p>与WebSocket相比，它也能从服务端向客户端推送数据。那如何决定你是用SSE还是WebSocket呢？概括来说，WebSocket能做的，SSE也能做，反之亦然，但在完成某些任务方面，它们各有千秋。</p>
+<p>SSE技术提供的是从服务器单向推送数据给浏览器的功能，但是配合浏览器主动请求，实际上就实现了客户端和服务器的双向通信。它的原理是在客户端构造一个eventSource对象，该对象具有readySate属性，分别表示如下：</p>
+<ol>
+<li>正在连接到服务器；</li>
+<li>打开了连接；</li>
+<li>关闭了连接。</li>
+</ol>
+<p>同时eventSource对象会保持与服务器的长连接，断开后会自动重连，如果要强制断开可以调用它的close方法。</p>
+<p>监听onmessage事件，服务端遵循SSE数据传输的格式给客户端，客户端在onmessage事件触发时就能够接收到数据，从而进行某种处理，代码如下。</p>
+<p>客户端</p>
+<pre><code>var source=new EventSource(&apos;http://localhost:8088/evt&apos;);
+    source.addEventListener(&apos;message&apos;, function(e) {
+        console.log(e.data);
+    }, false);
+    source.onopen=function(){
+        console.log(&apos;connected&apos;);
+    }
+    source.onerror=function(err){
+        console.log(err);
+    }
+</code></pre><p>服务端</p>
+<pre><code>var http=require(&apos;http&apos;);
+var fs = require(&quot;fs&quot;);
+var count=0;
+var server=http.createServer(function(req,res){
+    if(req.url==&apos;/evt&apos;){
+        //res.setHeader(&apos;content-type&apos;, &apos;multipart/octet-stream&apos;);
+        res.writeHead(200, {&quot;Content-Type&quot;:&quot;tex&quot; +
+            &quot;t/event-stream&quot;, &quot;Cache-Control&quot;:&quot;no-cache&quot;,
+            &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;,
+            &quot;Connection&quot;:&quot;keep-alive&quot;});
+        var timer=setInterval(function(){
+            if(++count==10){
+                clearInterval(timer);
+                res.end();
+            }else{
+                res.write(&apos;id: &apos; + count + &apos;\n&apos;);
+                res.write(&quot;data: &quot; + new Date().toLocaleString() + &apos;\n\n&apos;);
+            }
+        },2000);
+
+    };
+    if(req.url==&apos;/&apos;){
+        fs.readFile(&quot;./sse.html&quot;, &quot;binary&quot;, function(err, file) {
+            if (!err) {
+                res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/html&apos;});
+                res.write(file, &quot;binary&quot;);
+                res.end();
+            }
+        });
+    }
+}).listen(8088,&apos;localhost&apos;);
+</code></pre><p>WebSocket是一种更为复杂的服务端实现技术，但它是真正的双向传输技术，既能从服务端向客户端推送数据，也能从客户端向服务端推送数据。</p>
+<p>与WebSocket相比，SSE有一些显著的优势，便利：不需要添加任何新组件，用任何你习惯的后端语言和框架就能继续使用。你不用为新建虚拟机、弄一个新的IP或新的端口号而劳神，就像在现有网站中新增一个页面那样简单。我喜欢把这称为既存基础设施优势。</p>
+<p>SSE的第二个优势是服务端的简洁。相对而言，WebSocket则很复杂，不借助辅助类库基本搞不定</p>
+<p>WebSocket和SSE（Server-sent Events）两种技术方案都是html5引进的</p>
+<p>参考：<br><a href="http://www.52im.net/thread-338-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-338-1-1.html</a></p>
+<p><a href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=338" target="_blank" rel="noopener">http://www.52im.net/forum.php?mod=viewthread&amp;tid=338</a></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/04/11/JS运行机制/" data-id="cl6x0og0z00011nwmezdnehpw" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cl6x0zs2y000a66wm46qn3eb2" class="article-share-link">Share</a>
       
 
       
@@ -158,10 +249,10 @@ console.log(&apos;begin&apos;);
 
 
   
-    <article id="post-mac-vim" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/03/30/mac-vim/" class="article-date">
-  <time datetime="2017-03-29T16:00:00.000Z" itemprop="datePublished">2017-03-30</time>
+    <a href="/2017/10/11/terminal/" class="article-date">
+  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
 </a>
     
   </div>
@@ -172,7 +263,7 @@ console.log(&apos;begin&apos;);
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/30/mac-vim/">mac-vim</a>
+      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
     </h1>
   
 
@@ -180,39 +271,34 @@ console.log(&apos;begin&apos;);
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="macvim配置"><a href="#macvim配置" class="headerlink" title="macvim配置"></a>macvim配置</h2><p>安装macvim</p>
-<h3 id="查看预装vim版本"><a href="#查看预装vim版本" class="headerlink" title="查看预装vim版本"></a>查看预装vim版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim --version</span><br></pre></td></tr></table></figure>
-<h3 id="查看预装vim路径"><a href="#查看预装vim路径" class="headerlink" title="查看预装vim路径"></a>查看预装vim路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where vim</span><br></pre></td></tr></table></figure>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>有两种方式来安装macvim:</p>
-<ul>
-<li>Github上下载macvim.dmg安装包进行安装</li>
-<li>使用Homebrew安装</li>
-</ul>
-<p>brew的方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install macvim</span><br></pre></td></tr></table></figure>
-<h3 id="建立软链接"><a href="#建立软链接" class="headerlink" title="建立软链接"></a>建立软链接</h3><h4 id="为macvim中的vim创建别名，将其添加至-bash-profile配置文件"><a href="#为macvim中的vim创建别名，将其添加至-bash-profile配置文件" class="headerlink" title="为macvim中的vim创建别名，将其添加至~/.bash_profile配置文件"></a>为macvim中的vim创建别名，将其添加至~/.bash_profile配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias mvim=&apos;/Applications/MacVim.app/Contents/MacOS/MacVim&apos;</span><br></pre></td></tr></table></figure>
-<p>或将可执行文件mvim复制到/usr/local/bin/路径下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /Applications/MacVim.app/Contents/MacOS/MacVim /usr/local/bin/mvim</span><br></pre></td></tr></table></figure>
-<p>或者在/usr/local/bin/路径中为mvim建立软链接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /Applications/MacVim.app/Contents/MacOS/MacVim /usr/local/bin/mvim</span><br></pre></td></tr></table></figure>
-<h3 id="source-bash-profile"><a href="#source-bash-profile" class="headerlink" title="source ~/.bash_profile"></a>source ~/.bash_profile</h3><p>完成！～</p>
-<p>###安装Vundle，在终端输入以下代码即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</span><br></pre></td></tr></table></figure>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title=".vimrc"></a>.vimrc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/.vim    </span><br><span class="line">touch ~/.vimrc</span><br></pre></td></tr></table></figure>
-<h3 id="linux-mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴"><a href="#linux-mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴" class="headerlink" title="linux/mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴"></a>linux/mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;+y</span><br><span class="line">&quot;+p</span><br></pre></td></tr></table></figure>
+        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
 <hr>
-<p>上述命令不能用的话是因为vim的clipboard选项没有打开</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim --version |grep clipboard #查看该选项 +clipboard表示选项开启，-clipboard表示未开启</span><br></pre></td></tr></table></figure>
-<p>可以下载源码重新编译，在configure的时候增加 –with-features=huge</p>
-<hr>
-<h3 id="附-linux源码方式编译安装vim"><a href="#附-linux源码方式编译安装vim" class="headerlink" title="附 linux源码方式编译安装vim"></a>附 linux源码方式编译安装vim</h3><p>配置选项</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure --with-features=huge --enable-pythoninterp=yes  --enable-cscope \</span><br><span class="line"> --enable-luainterp --with-lua-prefix=/usr/local/  --enable-fontset --enable-perlinterp --enable-rubyinterp \</span><br><span class="line">--with-python-config-dir=/usr/lib/python2.6/config \</span><br><span class="line">--disable-gui --prefix=/opt/local/vim</span><br></pre></td></tr></table></figure>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
+<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
+<p>例如：要找redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
+<p>mac 显示隐藏文件<br>打开终端，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
+<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
+<p>Mac 更新系统后无法使用git</p>
+<p>解决方案：</p>
+<p>在终端输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
+<p>如果需要禁止spotlight, 在终端中运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
+<p>开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
+<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
+<p>为了查看它的状态，可以运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="cl6x0og1h00051nwmd8sc4ww3" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="cl6x0zs2q000666wmoq61qvdw" class="article-share-link">Share</a>
       
 
       
@@ -225,10 +311,10 @@ console.log(&apos;begin&apos;);
 
 
   
-    <article id="post-同步和异步" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-back/about跨域" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/03/16/同步和异步/" class="article-date">
-  <time datetime="2017-03-15T16:00:00.000Z" itemprop="datePublished">2017-03-16</time>
+    <a href="/2017/09/22/back/about跨域/" class="article-date">
+  <time datetime="2017-09-21T16:00:00.000Z" itemprop="datePublished">2017-09-22</time>
 </a>
     
   </div>
@@ -239,7 +325,7 @@ console.log(&apos;begin&apos;);
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/16/同步和异步/">同步和异步</a>
+      <a class="article-title" href="/2017/09/22/back/about跨域/">跨域问题总结</a>
     </h1>
   
 
@@ -247,41 +333,57 @@ console.log(&apos;begin&apos;);
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><p>所谓同步，是指一个进程必需等待另一个进程的结果。</p>
-<p>所谓异步，是指不需要等待其他进程，继续做自己的事件</p>
-<p><strong>静态资源的加载没有异步同步一说（script 例外），浏览器默认都是并行加载静态资源的</strong></p>
-<p><code>&lt;script&gt;</code>标签是同步加载的</p>
-<p>加载外部脚本时，浏览器会暂停页面渲染，等待脚本下载并执行完成后，再继续渲染。原因是JavaScript可以修改DOM（比如使用document.write方法），所以必须把控制权让给它。</p>
+        <h2 id="造成跨域的两种情况"><a href="#造成跨域的两种情况" class="headerlink" title="造成跨域的两种情况"></a>造成跨域的两种情况</h2><p>造成跨域的两种策略浏览器的同源策略会导致跨域，这里同源策略又分为以下两种</p>
+<ol>
+<li>DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。</li>
+<li>XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求。</li>
+</ol>
 <blockquote>
-<p>如果外部脚本加载时间很长（比如一直无法完成下载），就会造成网页长时间失去响应，浏览器就会呈现“假死”状态，这被称为“阻塞效应”。</p>
+<p>只要协议、域名、端口有任何一个不同，都被当作是不同的域，之间的请求就是跨域操作。</p>
 </blockquote>
-<p>为了避免这种情况，较好的做法是将<code>&lt;script&gt;</code>标签都放在页面底部，而不是头部</p>
-<p>defer属性</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有defer属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-浏览器完成解析HTML网页，此时再执行下载的脚本
-</code></pre><p>async属性</p>
-<p>async属性的作用是，使用另一个进程下载脚本，下载时不会阻塞渲染。(执行是同步的)</p>
-<pre><code>浏览器开始解析HTML网页
-解析过程中，发现带有async属性的script标签
-浏览器继续往下解析HTML网页，同时并行下载script标签中的外部脚本
-
-**脚本下载完成，浏览器暂停解析HTML网页，开始执行下载的脚本**
-
-脚本执行完毕，浏览器恢复解析HTML网页
-</code></pre><p>async属性可以保证脚本下载的同时，浏览器继续渲染。需要注意的是，一旦采用这个属性，<strong>就无法保证脚本的执行顺序</strong>。哪个脚本先下载结束，就先执行那个脚本。如果同时使用async和defer属性，后者不起作用，浏览器行为由async属性决定。</p>
-<h2 id="nodejs的异步非阻塞和python的同步"><a href="#nodejs的异步非阻塞和python的同步" class="headerlink" title="nodejs的异步非阻塞和python的同步"></a>nodejs的异步非阻塞和python的同步</h2><p>Node.js一直都标榜自己是non-blocking I/O，不标榜自己是Asynchronous I/O。<br>所以异步I/O并不是说Node.js的特色，非阻塞才是。<br>nodejs是单线程异步</p>
+<h3 id="为什么要有跨域限制"><a href="#为什么要有跨域限制" class="headerlink" title="为什么要有跨域限制"></a>为什么要有跨域限制</h3><p>了解完跨域之后，想必大家都会有这么一个思考，为什么要有跨域的限制，浏览器这么做是出于何种原因呢。其实仔细想一想就会明白，跨域限制主要是为了安全考虑。</p>
 <blockquote>
-<p>单线程指的是主线程是“单线程”的，所有阻塞的部分交给一个线程池处理，然后这个主线程通过一个队列跟线程池协作，于是对我们写到的js代码部分，不再关心线程问题，代码也主要由一堆callback回调构成，然后主线程在不停的循环过程中，适时调用这些代码。</p>
+<p>AJAX同源策略主要用来防止CSRF攻击。如果没有AJAX同源策略，相当危险，我们发起的每一次HTTP请求都会带上请求地址对应的cookie，那么可以做如下攻击：</p>
 </blockquote>
-<p>python可以用多线程实现异步</p>
+<ol>
+<li>用户登录了自己的银行页面 <a href="http://mybank.com，http://mybank.com向用户的cookie中添加用户标识。" target="_blank" rel="noopener">http://mybank.com，http://mybank.com向用户的cookie中添加用户标识。</a></li>
+<li>用户浏览了恶意页面 <a href="http://evil.com。执行了页面中的恶意AJAX请求代码。" target="_blank" rel="noopener">http://evil.com。执行了页面中的恶意AJAX请求代码。</a></li>
+<li><a href="http://evil.com向http://mybank.com发起AJAX" target="_blank" rel="noopener">http://evil.com向http://mybank.com发起AJAX</a> HTTP请求，请求会默认把<a href="http://mybank.com对应cookie也同时发送过去。" target="_blank" rel="noopener">http://mybank.com对应cookie也同时发送过去。</a></li>
+<li>银行页面从发送的cookie中提取用户标识，验证用户无误，response中返回请求数据。此时数据就泄露了。</li>
+<li>而且由于Ajax在后台执行，用户无法感知这一过程。</li>
+</ol>
+<h4 id="DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击："><a href="#DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击：" class="headerlink" title="DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击："></a>DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击：</h4><ol>
+<li>做一个假网站，里面用iframe嵌套一个银行网站 <a href="http://mybank.com。" target="_blank" rel="noopener">http://mybank.com。</a></li>
+<li>把iframe宽高啥的调整到页面全部，这样用户进来除了域名，别的部分和银行的网站没有任何差别。</li>
+<li>这时如果用户输入账号密码，我们的主网站可以跨域访问到<a href="http://mybank.com的dom节点，就可以拿到用户的输入了，那么就完成了一次攻击。" target="_blank" rel="noopener">http://mybank.com的dom节点，就可以拿到用户的输入了，那么就完成了一次攻击。</a></li>
+</ol>
+<p>所以说有了跨域跨域限制之后，我们才能更安全的上网了。</p>
+<p>作者：黄家兴<br>链接：<a href="https://www.zhihu.com/question/26376773/answer/244453931" target="_blank" rel="noopener">https://www.zhihu.com/question/26376773/answer/244453931</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h3 id="跨域的解决方式"><a href="#跨域的解决方式" class="headerlink" title="跨域的解决方式"></a>跨域的解决方式</h3><h4 id="跨域资源共享"><a href="#跨域资源共享" class="headerlink" title="跨域资源共享"></a>跨域资源共享</h4><p>CORS是一个W3C标准，全称是”跨域资源共享”（Cross-origin resource sharing）。 </p>
+<p>大体流程。</p>
+<ol>
+<li>对于客户端，我们还是正常使用xhr对象发送ajax请求。唯一需要注意的是，我们需要设置我们的xhr属性withCredentials为true，不然的话，cookie是带不过去的哦，设置： xhr.withCredentials = true;</li>
+<li>对于服务器端，需要在 response header中设置如下两个字段:Access-Control-Allow-Origin: <a href="http://www.yourhost.comAccess-Control-Allow-Credentials:true这样，我们就可以跨域请求接口了。" target="_blank" rel="noopener">http://www.yourhost.comAccess-Control-Allow-Credentials:true这样，我们就可以跨域请求接口了。</a></li>
+</ol>
+<h4 id="jsonp实现跨域"><a href="#jsonp实现跨域" class="headerlink" title="jsonp实现跨域"></a>jsonp实现跨域</h4><p>基本原理就是通过动态创建script标签,然后利用src属性进行跨域。</p>
+<h4 id="服务器代理"><a href="#服务器代理" class="headerlink" title="服务器代理"></a>服务器代理</h4><p>浏览器有跨域限制，但是服务器不存在跨域问题，所以可以由服务器请求所要域的资源再返回给客户端。</p>
+<blockquote>
+<p>服务器代理是万能的。</p>
+</blockquote>
+<p>####使用postMessage实现页面之间通信</p>
+<p>信息传递除了客户端与服务器之前的传递，还存在以下几个问题：</p>
+<ol>
+<li>页面和新开的窗口的数据交互。</li>
+<li>多窗口之间的数据交互。</li>
+<li>页面与所嵌套的iframe之间的信息传递。</li>
+</ol>
+<p>window.postMessage是一个HTML5的api，允许两个窗口之间进行跨域发送消息。这个应该就是以后解决dom跨域通用方法了，具体可以参照MDN。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/03/16/同步和异步/" data-id="cl6x0og25000g1nwm4hbullf3" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/09/22/back/about跨域/" data-id="cl6x0zs4e000k66wmwhfg76sp" class="article-share-link">Share</a>
       
 
       
@@ -297,7 +399,7 @@ console.log(&apos;begin&apos;);
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -327,7 +429,7 @@ console.log(&apos;begin&apos;);
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -339,23 +441,23 @@ console.log(&apos;begin&apos;);
       <ul>
         
           <li>
-            <a href="/2022/08/17/english/7000/">sentence</a>
+            <a href="/2022/08/17/back/front-end-learn/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+            <a href="/2022/08/17/back/js中数组的合并和对象的合并/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+            <a href="/2022/08/17/back/mac-os/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/24/keyboard/">keyboard</a>
+            <a href="/2022/08/17/back/数组和对象区分/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+            <a href="/2022/08/17/back/匿名函数/">(no title)</a>
           </li>
         
       </ul>

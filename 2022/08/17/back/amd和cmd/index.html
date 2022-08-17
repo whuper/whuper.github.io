@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目前，通行的JavaScript模块规范主要有两种：CommonJS和AMD CommonJS我们先从CommonJS谈起，因为在网页端没有模块化编程只是页面JavaScript逻辑复杂，但也可以工作下去，在服务器端却一定要有模块，所以虽然JavaScript在web端发展这么多年，第一个流行的模块化规范却由服务器端的JavaScript应用带来，CommonJS规范是由NodeJS发扬光大，这标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wenhao&#39;s Blog">
+<meta property="og:url" content="https://whuper.github.io/2022/08/17/back/amd和cmd/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="目前，通行的JavaScript模块规范主要有两种：CommonJS和AMD CommonJS我们先从CommonJS谈起，因为在网页端没有模块化编程只是页面JavaScript逻辑复杂，但也可以工作下去，在服务器端却一定要有模块，所以虽然JavaScript在web端发展这么多年，第一个流行的模块化规范却由服务器端的JavaScript应用带来，CommonJS规范是由NodeJS发扬光大，这标">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-17T01:03:48.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wenhao&#39;s Blog">
+<meta name="twitter:description" content="目前，通行的JavaScript模块规范主要有两种：CommonJS和AMD CommonJS我们先从CommonJS谈起，因为在网页端没有模块化编程只是页面JavaScript逻辑复杂，但也可以工作下去，在服务器端却一定要有模块，所以虽然JavaScript在web端发展这么多年，第一个流行的模块化规范却由服务器端的JavaScript应用带来，CommonJS规范是由NodeJS发扬光大，这标">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-back/amd和cmd" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/17/back/amd和cmd/" class="article-date">
+  <time datetime="2022-08-17T01:03:48.810Z" itemprop="datePublished">2022-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目前，通行的JavaScript模块规范主要有两种：CommonJS和AMD</p>
+<h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>我们先从CommonJS谈起，因为在网页端没有模块化编程只是页面JavaScript逻辑复杂，但也可以工作下去，在服务器端却一定要有模块，所以虽然JavaScript在web端发展这么多年，第一个流行的模块化规范却由服务器端的JavaScript应用带来，<strong>CommonJS规范是由NodeJS发扬光大</strong>，这标志着JavaScript模块化编程正式登上舞台。</p>
+<p>1、定义模块<br>根据CommonJS规范，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，也就是说，在该模块内部定义的变量，无法被其他模块读取，除非定义为global对象的属性</p>
+<p>2、模块输出：<br>模块只有一个出口，module.exports对象，我们需要把模块希望输出的内容放入该对象</p>
+<p>3、加载模块：<br>加载模块使用require方法，该方法读取一个文件并执行，返回文件内部的module.exports对象</p>
+<p>看个例子</p>
+<pre><code>//模块定义 myModel.js
+
+var name = &apos;Byron&apos;;
+
+function printName(){
+    console.log(name);
+}
+
+function printFullName(firstName){
+    console.log(firstName + name);
+}
+
+module.exports = {
+    printName: printName,
+    printFullName: printFullName
+}
+
+//加载模块
+
+var nameModule = require(&apos;./myModel.js&apos;);
+
+nameModule.printName();
+</code></pre><p>不同的实现对require时的路径有不同要求，一般情况可以省略js拓展名，可以使用相对路径，也可以使用绝对路径，甚至可以省略路径直接使用模块名（前提是该模块是系统内置模块）</p>
+<p>尴尬的浏览器</p>
+<p>仔细看上面的代码，会发现require是同步的。模块系统需要同步读取模块文件内容，并编译执行以得到模块接口。</p>
+<p>这在服务器端实现很简单，也很自然，然而， 想在浏览器端实现问题却很多。</p>
+<p>浏览器端，加载JavaScript最佳、最容易的方式是在document中插入script 标签。但脚本标签天生异步，传统CommonJS模块在浏览器环境中无法正常加载。</p>
+<p>解决思路之一是，开发一个服务器端组件，对模块代码作静态分析，将模块与它的依赖列表一起返回给浏览器端。 这很好使，但需要服务器安装额外的组件，并因此要调整一系列底层架构。</p>
+<p>另一种解决思路是，用一套标准模板来封装模块定义，但是对于模块应该怎么定义和怎么加载，又产生的分歧：</p>
+<h2 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h2><p>AMD 即Asynchronous Module Definition，中文名是异步模块定义的意思。它是一个在浏览器端模块化开发的规范</p>
+<p>由于不是JavaScript原生支持，使用AMD规范进行页面开发需要用到对应的库函数，也就是大名鼎鼎RequireJS，实际上AMD 是 RequireJS 在推广过程中对模块定义的规范化的产出</p>
+<p>requireJS主要解决两个问题</p>
+<p>1、多个js文件可能有依赖关系，被依赖的文件需要早于依赖它的文件加载到浏览器<br>2、js加载的时候浏览器会停止页面渲染，加载文件越多，页面失去响应时间越长<br>看一个使用requireJS的例子</p>
+<pre><code>// 定义模块 myModule.js
+define([&apos;dependency&apos;], function(){
+    var name = &apos;Byron&apos;;
+    function printName(){
+        console.log(name);
+    }
+
+    return {
+        printName: printName
+    };
+});
+
+// 加载模块
+require([&apos;myModule&apos;], function (my){
+　 my.printName();
+});
+</code></pre><p>语法</p>
+<p>requireJS定义了一个函数 define，它是全局变量，用来定义模块</p>
+<p>define(id?, dependencies?, factory);</p>
+<p>id：可选参数，用来定义模块的标识，如果没有提供该参数，脚本文件名（去掉拓展名）</p>
+<p>dependencies：是一个当前模块依赖的模块名称数组</p>
+<p>factory：工厂方法，模块初始化要执行的函数或对象。如果为函数，它应该只被执行一次。如果是对象，此对象应该为模块的输出值 </p>
+<p>在页面上使用require函数加载模块<br>require([dependencies], function(){});<br>require()函数接受两个参数</p>
+<p>第一个参数是一个数组，表示所依赖的模块<br>第二个参数是一个回调函数，当前面指定的模块都加载成功后，它将被调用。加载的模块会以参数形式传入该函数，从而在回调函数内部就可以使用这些模块<em>**</em></p>
+<p>require()函数在加载依赖的函数的时候是异步加载的，这样浏览器不会失去响应，它指定的回调函数，只有前面的模块都加载成功后，才会运行，解决了依赖性的问题。</p>
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><p>CMD 即Common Module Definition通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同<br>语法<br>Sea.js 推崇一个模块一个文件，遵循统一的写法<br>define(id?, deps?, factory)<br>因为CMD推崇</p>
+<p>一个文件一个模块，所以经常就用文件名作为模块id<br>CMD推崇依赖就近，所以一般不在define的参数中写依赖，在factory中写<br>factory是一个函数，有三个参数，function(require, exports, module)</p>
+<p>require 是一个方法，接受 模块标识 作为唯一参数，用来获取其他模块提供的接口：require(id)<br>exports 是一个对象，用来向外提供模块接口<br>module 是一个对象，上面存储了与当前模块相关联的一些属性和方法<br>看个例子：</p>
+<pre><code>// 定义模块  myModule.js
+define(function(require, exports, module) {
+  var $ = require(&apos;jquery.js&apos;)
+  $(&apos;div&apos;).addClass(&apos;active&apos;);
+});
+
+// 加载模块
+seajs.use([&apos;myModule.js&apos;], function(my){
+
+});
+</code></pre><h3 id="AMD与CMD区别"><a href="#AMD与CMD区别" class="headerlink" title="AMD与CMD区别"></a>AMD与CMD区别</h3><p>关于这两个的区别网上可以搜出一堆文章，简单总结一下</p>
+<p>最明显的区别就是在模块定义时对依赖的处理不同</p>
+<p>1、AMD推崇依赖前置，在定义模块的时候就要声明其依赖的模块 </p>
+<p>2、CMD推崇就近依赖，只有在用到某个模块的时候再去require<br>这种区别各有优劣，只是语法上的差距，而且requireJS和SeaJS都支持对方的写法</p>
+<p>AMD和CMD最大的区别是对依赖模块的执行时机处理不同，注意不是加载的时机或者方式不同</p>
+<blockquote>
+<p>很多人说requireJS是异步加载模块，SeaJS是同步加载模块，这么理解实际上是不准确的，其实加载模块都是异步的，只不过AMD依赖前置，js可以方便知道依赖模块是谁，立即加载，而CMD就近依赖，需要使用把模块变为字符串解析一遍才知道依赖了那些模块，这也是很多人诟病CMD的一点，牺牲性能来带来开发的便利性，实际上解析模块用的时间短到可以忽略</p>
+</blockquote>
+<blockquote>
+<p>为什么我们说两个的区别是依赖模块执行时机不同，为什么很多人认为ADM是异步的，CMD是同步的（除了名字的原因。。。）</p>
+<p>同样都是异步加载模块，AMD在加载模块完成后就会执行改模块，所有模块都加载执行完后会进入</p>
+</blockquote>
+<p><strong>require的回调函数，执行主逻辑，这样的效果就是依赖模块的执行顺序和书写顺序不一定一致，看网络速度，哪个先下载下来，哪个先执行，但是主逻辑一定在所有依赖加载完成后才执行</strong></p>
+<p>CMD加载完某个依赖模块后并不执行，只是下载而已，在所有依赖模块加载完成后进入主逻辑，<strong>遇到require语句的时候才执行对应的模块</strong>，这样模块的执行顺序和书写顺序是完全一致的</p>
+<p>这也是很多人说AMD用户体验好，因为没有延迟，依赖模块提前执行了，CMD性能好，因为只有用户需要的时候才执行的原因</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2022/08/17/back/amd和cmd/" data-id="cl6x0zs4b000j66wmb44vb905" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/17/back/匿名函数/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/03/vue与react/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Vue 与 React各方面对比</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/17/back/front-end-learn/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/js中数组的合并和对象的合并/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/mac-os/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/数组和对象区分/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/匿名函数/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

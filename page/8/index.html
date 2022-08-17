@@ -63,10 +63,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-函数节流(throttle)与函数去抖(debounce)" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-session-cookie-token的区别" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/04/16/函数节流(throttle)与函数去抖(debounce)/" class="article-date">
-  <time datetime="2016-04-15T16:00:00.000Z" itemprop="datePublished">2016-04-16</time>
+    <a href="/2017/04/18/session-cookie-token的区别/" class="article-date">
+  <time datetime="2017-04-17T16:00:00.000Z" itemprop="datePublished">2017-04-18</time>
 </a>
     
   </div>
@@ -77,7 +77,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/16/函数节流(throttle)与函数去抖(debounce)/">函数节流（throttle）与函数去抖（debounce）</a>
+      <a class="article-title" href="/2017/04/18/session-cookie-token的区别/">session cookie token</a>
     </h1>
   
 
@@ -85,107 +85,232 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="函数节流（throttle）与函数去抖（debounce）"><a href="#函数节流（throttle）与函数去抖（debounce）" class="headerlink" title="函数节流（throttle）与函数去抖（debounce）"></a>函数节流（throttle）与函数去抖（debounce）</h3><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>鼠标的mousemove、scroll，浏览器窗口的resize事件等，都是在短时间内重复触发。以onresize事件为例，若事件处理程序需要进行修改元素宽度高度等操作，那么频繁的触发事件会导致频繁的重绘页面。</p>
-<p>DOM操作比非DOM交互需要更多的内存和CPU时间，连续尝试进行过多的DOM相关操作可能会导致浏览器挂起，有时候甚至会崩溃。为了解决这个问题，需要使用定时器对该函数进行节流。</p>
-<p><strong>函数节流</strong>，简单地讲，就是让一个函数无法在很短的时间间隔内连续调用，只有当上一次函数执行后过了你规定的时间间隔，才能进行下一次该函数的调用</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>当触发一个事件时，先setTimout让这个事件延迟一会再执行，如果在这个时间间隔内又触发了事件，就clear掉原来的定时器，再setTimeout一个新的定时器延迟一会执行。</p>
-<p><strong>2018 05-09更新 (其实这个应该叫做函数去抖debounce)</strong></p>
-<p>代码实现</p>
-<pre><code>function throttle(method, context) {
-    clearTimeout(methor.tId);
-    method.tId = setTimeout(function(){
-        method.call(context);
-    }， 100);
+        <h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>session的中文翻译是“会话”，当用户打开某个web应用时，便与web服务器产生一次session。</p>
+<p>服务器使用session把用户的信息临时保存在了服务器上，用户离开网站后session会被销毁。</p>
+<p><strong>session的存储是需要空间的,用户量很大的时候会对服务器的性能有影响</strong></p>
+<p>这种用户信息存储方式相对cookie来说更安全，可是session有一个缺陷：如果web服务器做了负载均衡，那么下一个操作请求到了另一台服务器的时候session会丢失。</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>cookie是保存在本地终端的数据。cookie可以由服务器生成，发送给浏览器，浏览器把cookie以kv形式保存到某个目录下的文本文件内，下一次请求同一网站时会把该cookie发送给服务器。由于cookie是存在客户端上的，所以浏览器加入了一些限制确保cookie不会被恶意使用，同时不会占据太多磁盘空间，所以每个域的cookie数量是有限的。</p>
+<p>cookie的组成有：名称(key)、值(value)、有效域(domain)、路径(域的路径，一般设置为全局:”\”)、失效时间、安全标志(指定后，cookie只有在使用SSL连接时才发送到服务器(https))。</p>
+<p>js使用cookie的例子:</p>
+<h4 id="创建cookie"><a href="#创建cookie" class="headerlink" title="创建cookie:"></a>创建cookie:</h4><pre><code>document.cookie = &quot;id=&quot;+result.data[&apos;id&apos;]+&quot;; path=/&quot;;
+
+document.cookie = &quot;name=&quot;+result.data[&apos;name&apos;]+&quot;; path=/&quot;;
+
+document.cookie = &quot;avatar=&quot;+result.data[&apos;avatar&apos;]+&quot;; path=/&quot;;
+</code></pre><h4 id="获取解析cookie："><a href="#获取解析cookie：" class="headerlink" title="获取解析cookie："></a>获取解析cookie：</h4><pre><code>var cookie = document.cookie;var cookieArr = cookie.split(&quot;;&quot;);var user_info = {};for(var i = 0; i &lt; cookieArr.length; i++) {
+
+    user_info[cookieArr[i].split(&quot;=&quot;)[0]] = cookieArr[i].split(&quot;=&quot;)[1];
+
 }
-</code></pre><p>调用</p>
-<pre><code>window.onresize = function(){
-    throttle(myFunc);
-}
-</code></pre><p>这样两次函数调用之间至少间隔100ms。</p>
-<p>impress用的是另一个封装函数：</p>
-<pre><code>var throttle = function(fn, delay){
-     var timer = null;
-     return function(){
-         var context = this, args = arguments;
-         clearTimeout(timer);
-         timer = setTimeout(function(){
-             fn.apply(context, args);
-         }, delay);
-     };
- };
-</code></pre><p>它使用闭包的方法形成一个私有的作用域来存放定时器变量timer。而调用方法为</p>
-<pre><code>window.onresize = throttle(myFunc, 100);
-</code></pre><blockquote>
-<p>两种方法各有优劣，前一个封装函数的优势在把上下文变量当做函数参数，直接可以定制执行函数的this变量；后一个函数优势在于把延迟时间当做变量（当然，前一个函数很容易做这个拓展），而且个人觉得使用闭包代码结构会更优，且易于拓展定制其他私有变量，缺点就是虽然使用apply把调用throttle时的this上下文传给执行函数，但毕竟不够灵活。</p>
-</blockquote>
-<p>以上参考<br><a href="http://www.alloyteam.com/2012/11/javascript-throttle/" target="_blank" rel="noopener">http://www.alloyteam.com/2012/11/javascript-throttle/</a></p>
-<h3 id="相关问题"><a href="#相关问题" class="headerlink" title="相关问题"></a>相关问题</h3><hr>
-<h2 id="防止重复发送-Ajax-请求"><a href="#防止重复发送-Ajax-请求" class="headerlink" title="防止重复发送 Ajax 请求"></a>防止重复发送 Ajax 请求</h2><blockquote>
-<p>最简单粗暴的是设置flag做判断，或者暂时禁掉按钮</p>
-</blockquote>
-<p>不推荐用外部变量锁定或修改按钮状态的方式，因为那样比较难：</p>
-<ul>
-<li>要考虑并理解 success, complete, error, timeout 这些事件的区别，并注册正确的事件，一旦失误，功能将不再可用；</li>
-<li>不可避免地比普通流程要要多注册一个 complete 事件；</li>
-<li>恢复状态的代码很容易和不相干的代码混合在一起；</li>
-</ul>
-<p>我推荐用主动查询状态的方式（A、B，jQuery 为例）或工具函数的方式（C、D）来去除重复操作，并提供一些例子作为参考：</p>
-<h4 id="A-独占型提交"><a href="#A-独占型提交" class="headerlink" title="A. 独占型提交"></a>A. 独占型提交</h4><p>只允许同时存在一次提交操作，并且直到本次提交完成才能进行下一次提交。</p>
-<pre><code>module.submit = function() {
-  if (this.promise_.state() === &apos;pending&apos;) {
-    return
-  }
-  return this.promise_ = $.post(&apos;/api/save&apos;)
-}
-</code></pre><h4 id="B-贪婪型提交"><a href="#B-贪婪型提交" class="headerlink" title="B. 贪婪型提交"></a>B. 贪婪型提交</h4><p>无限制的提交，但是以最后一次操作为准；亦即需要尽快给出最后一次操作的反馈，而前面的操作结果并不重要。</p>
-<pre><code>module.submit = function() {
-  if (this.promise_.state() === &apos;pending&apos;) {
-    this.promise_.abort()
-  }
-  // todo
-}
-</code></pre><p>比如某些应用的条目中，有一些进行类似「喜欢」或「不喜欢」操作的二态按钮。如果按下后不立即给出反馈，用户的目光焦点就可能在那个按钮上停顿许久；如果按下时即时切换按钮的状态，再在程序上用 abort 来实现积极的提交，这样既能提高用户体验，还能降低服务器压力，皆大欢喜。</p>
-<h4 id="C-节制型提交"><a href="#C-节制型提交" class="headerlink" title="C. 节制型提交"></a>C. 节制型提交</h4><p>无论提交如何频繁，任意两次有效提交的间隔时间必定会大于或等于某一时间间隔；即以一定频率提交。</p>
-<pre><code>module.submit = throttle(150, function() {
-  // todo
-})
-</code></pre><p>如果客户发送每隔100毫秒发送过来10次请求，此模块将只接收其中6个（每个在时间线上距离为150毫秒）进行处理。</p>
-<p>这也是解决查询冲突的一种可选手段，比如以知乎草稿举例，仔细观察可以发现：</p>
-<p>编辑器的 blur 事件会立即触发保存；</p>
-<p>保存按钮的 click 事件也会立即触发保存；</p>
-<p>但是存在一种情况会使这两个事件在数毫秒内连续发生——当焦点在编辑器内部，并且直接去点击保存按钮——这时用 throttle 来处理是可行的。</p>
-<p>另外还有一些事件处理会很频繁地使用 throttle，如： resize、scroll、mousemove。</p>
-<h4 id="D-懒惰型提交"><a href="#D-懒惰型提交" class="headerlink" title="D. 懒惰型提交"></a>D. 懒惰型提交</h4><p>任意两次提交的间隔时间，必须大于一个指定时间，才会促成有效提交；即不给休息不干活。</p>
-<pre><code>module.submit = debounce(150, function() {
-  // todo
-})
-</code></pre><p>还是以知乎草稿举例，当在编辑器内按下 ctrl + s 时，可以手动保存草稿；如果你连按，程序会表示不理解为什么你要连按，只有等你放弃连按，它才会继续。</p>
-<hr>
-<p>更多记忆中的例子方式 C 和 方式 D 有时更加通用，比如这些情况：</p>
-<p>游戏中你捡到一把威力强大的高速武器，为了防止你的子弹在屏幕上打成一条直线，可以 throttle 来控制频率；</p>
-<p>在弹幕型游戏里，为了防止你把射击键夹住来进行无脑游戏，可以用 debounce 来控制频率；</p>
-<p>在编译任务里，守护进程监视了某一文件夹里所有的文件（如任一文件的改变都可以触发重新编译，一次执行就需要2秒），但某种操作能够瞬间造成大量文件改变（如 git checkout），这时一个简单的 debounce 可以使编译任务只执行一次。</p>
-<p>而方式 C 甚至可以和方式 B 组合使用，比如自动完成组件（Google 首页的搜索就是）：</p>
-<ul>
-<li><p>当用户快速输入文本时（特别是打字能手），可以 throttle  keypress 事件处理函数，以指定时间间隔来提取文本域的值，然后立即进行新的查询；</p>
+
+$(&apos;#user_name&apos;).text(user_info[&apos; name&apos;]);
+
+$(&apos;#user_avatar&apos;).attr(&quot;src&quot;, user_info[&apos; avatar&apos;]);
+
+$(&apos;#user_id&apos;).val(user_info[&apos; id&apos;]);
+</code></pre><h2 id="token"><a href="#token" class="headerlink" title="token"></a>token</h2><p>token的意思是“令牌”，是用户身份的验证方式，最简单的token组成:uid(用户唯一的身份标识)、time(当前时间的时间戳)、sign(签名，由token的前几位+盐以哈希算法压缩成一定长的十六进制字符串，可以防止恶意第三方拼接token请求服务器)。</p>
+<p>可以用url传参，也可以用post提交，也可以夹在http的header中</p>
+<p>还可以把不变的参数也放进token，避免多次查库</p>
+<h2 id="cookie-和session的区别"><a href="#cookie-和session的区别" class="headerlink" title="cookie 和session的区别"></a>cookie 和session的区别</h2><ol>
+<li><p>cookie数据存放在客户的浏览器上，session数据放在服务器上。</p>
 </li>
-<li><p>当新的查询需要发送，但上一个查询还没返回结果时，可以 abort 未完成的查询，并立即发送新查询；</p>
+<li><p>cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗<br>考虑到安全应当使用session。</p>
 </li>
-</ul>
-<h2 id="表单防止重复提交"><a href="#表单防止重复提交" class="headerlink" title="表单防止重复提交"></a>表单防止重复提交</h2><h3 id="1-用js为添加禁用"><a href="#1-用js为添加禁用" class="headerlink" title="1 用js为添加禁用"></a>1 用js为添加禁用</h3><h3 id="2-使用Post-Redirect-Get"><a href="#2-使用Post-Redirect-Get" class="headerlink" title="2 使用Post/Redirect/Get"></a>2 使用Post/Redirect/Get</h3><p>PRG设计模式并不适用所有的重复提交情况，比如：</p>
-<p>1）由于服务器响应缓慢，用户刷新提交POST请求造成的重复提交。</p>
-<p>2）用户点击后退按钮，返回到数据提交界面，导致的数据重复提交。</p>
-<p>3）用户多次点击提交按钮，导致的数据重复提交。</p>
-<p>4）用户恶意避开客户端预防多次提交手段，进行重复数据提交。</p>
-<p>###3 使用session／token设置令牌</p>
-<p>产生页面时，服务器为每次产生的Form分配唯一的随机标识号(比如时间戳)，并且在form的一个隐藏字段中设置这个标识号，同时在当前用户的Session中保存这个标识号。</p>
-<p>当提交表单时，服务器比较hidden和session中的标识号是否相同，相同则继续，处理完后清空Session，否则服务器忽略请求。</p>
+<li><p>session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能<br>考虑到减轻服务器性能方面，应当使用COOKIE。</p>
+</li>
+<li><p>单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。</p>
+</li>
+<li><p>所以个人建议：<br>将登陆信息等重要信息存放为SESSION<br>其他信息如果需要保留，可以放在COOKIE中</p>
+</li>
+</ol>
+<h2 id="token-和session-的区别"><a href="#token-和session-的区别" class="headerlink" title="token 和session 的区别"></a>token 和session 的区别</h2><p>session 和 oauth token并不矛盾，作为身份认证 token安全性比session好，因为每个请求都有签名还能防止监听以及重放攻击，而session就必须靠链路层来保障通讯安全了。</p>
+<p>如上所说，如果你需要实现有状态的会话，仍然可以增加session来在服务器端保存一些状态</p>
+<blockquote>
+<p>App通常用restful api跟server打交道。Rest是stateless的，也就是app不需要像browser那样用cookie来保存session,因此用session token来标示自己就够了，session/state由api server的逻辑处理。 如果你的后端不是stateless的rest api, 那么你可能需要在app里保存session.可以在app里嵌入webkit,用一个隐藏的browser来管理cookie session.</p>
+</blockquote>
+<p><strong>Session 是一种HTTP存储机制，目的是为无状态的HTTP提供的持久机制。</strong></p>
+<p>所谓Session 认证只是简单的把User 信息存储到Session 里，因为SID 的不可预测性，暂且认为是安全的。这是一种认证手段。 </p>
+<p>而Token ，如果指的是OAuth Token 或类似的机制的话，提供的是 认证 和 授权 ，认证是针对用户，授权是针对App 。其目的是让 某App有权利访问 某用户 的信息。这里的 Token是唯一的。不可以转移到其它 App上，也不可以转到其它 用户 上。 </p>
+<p>转过来说Session 。Session只提供一种简单的认证，即有此 SID，即认为有此 User的全部权利。是需要严格保密的，这个数据应该只保存在站方，不应该共享给其它网站或者第三方App。 </p>
+<p>所以简单来说，如果你的用户数据可能需要和第三方共享，或者允许第三方调用 API 接口，用 Token 。</p>
+<p>如果永远只是自己的网站，自己的 App，用什么就无所谓了。</p>
+<p>token就是令牌，比如你授权（登录）一个程序时，他就是个依据，判断你是否已经授权该软件；</p>
+<p>cookie就是写在客户端的一个txt文件，里面包括你登录信息之类的，这样你下次在登录某个网站，就会自动调用cookie自动登录用户名；</p>
+<p>session和cookie差不多，只是session是写在服务器端的文件，也需要在客户端写入cookie文件，但是文件里是你的浏览器编号.Session的状态是存储在服务器端，客户端只有session id；</p>
+<p>session一般既包括客户端中的session_id，也包括服务器端内存或数据库中保存的session数据。</p>
+<p><strong>另外session一般只标识会话</strong>，用户身份的信息是间接保存在session数据中的，登录之前也有session，登出甚至换身份登录之后session_id可以保持不变；</p>
+<p><strong>token一般跟用户身份有一一对应的关系</strong></p>
+<p>登出之后token就失效。再有就是token从设计上必须通过get参数或者post参数提交，一般是不允许保存在cookies当中的，容易产生CSRF漏洞。</p>
+<h3 id="本质上的区别："><a href="#本质上的区别：" class="headerlink" title="本质上的区别："></a>本质上的区别：</h3><p>session的使用方式是客户端cookie里存id，服务端session存用户数据，客户端访问服务端的时候，根据id找用户数据。</p>
+<p>token的使用方式是客户端里存id（也就是token）、用户信息、密文 <strong>服务端什么也不存</strong>，<strong>服务端只有一段加密代码</strong>，用来判断当前加密后的密文是否和客户端传递过来的密文一致，如果不一致，就是客户端的用户数据被篡改了，如果一致，就代表客户端的用户数据正常且正确。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2016/04/16/函数节流(throttle)与函数去抖(debounce)/" data-id="cl6x0og22000c1nwmmkyg1hc2" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2017/04/18/session-cookie-token的区别/" data-id="cl6x0zs2n000566wmhqyse26d" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JS运行机制" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/11/JS运行机制/" class="article-date">
+  <time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished">2017-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/11/JS运行机制/">JS的运行机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="事件循环（Event-Loop）和任务队列"><a href="#事件循环（Event-Loop）和任务队列" class="headerlink" title="事件循环（Event Loop）和任务队列"></a>事件循环（Event Loop）和任务队列</h2><h3 id="和JS运行有关的几个线程"><a href="#和JS运行有关的几个线程" class="headerlink" title="和JS运行有关的几个线程"></a>和JS运行有关的几个线程</h3><ul>
+<li>JS引擎线程</li>
+<li>事件触发线程</li>
+<li>定时触发器线程</li>
+</ul>
+<h4 id="JS引擎是单线程"><a href="#JS引擎是单线程" class="headerlink" title="JS引擎是单线程"></a>JS引擎是单线程</h4><ul>
+<li>JS分为同步任务和异步任务</li>
+<li>同步任务都在主线程上执行，形成一个<strong>执行栈</strong></li>
+<li>主线程之外，<strong>事件触发线程</strong>管理着一个任务队列，只要有异步任务，就在任务队列之中放置一个事件。</li>
+<li>一旦执行栈中的所有同步任务执行完毕（此时JS引擎空闲），主线程就会读取任务队列，将可运行的异步任务添加到可执行栈中，开始执行。</li>
+</ul>
+<p><img src="./images/a.png" alt=""></p>
+<blockquote>
+<p>到这里，应该就可以理解了：为什么有时候setTimeout推入的事件不能准时执行？因为可能在它推入到事件列表时，主线程还不空闲，正在执行其它代码，<br>所以自然有误差。</p>
+</blockquote>
+<h3 id="事件循环机制"><a href="#事件循环机制" class="headerlink" title="事件循环机制"></a>事件循环机制</h3><p><img src="./images/b.png" alt=""></p>
+<p><a href="http://vimeo.com/96425312" target="_blank" rel="noopener">Help, I’m stuck in an event-loop</a></p>
+<p>上图大致描述就是：</p>
+<p>主线程运行时会产生执行栈，<br>栈中的代码调用某些api时，它们会在事件队列中添加各种事件（当满足触发条件后，如ajax请求完毕）</p>
+<ul>
+<li>而栈中的代码执行完毕，就会读取事件队列中的事件，去执行那些回调</li>
+<li>如此循环</li>
+<li>注意，总是要等待栈中的代码执行完毕后才会去读取事件队列中的事件</li>
+</ul>
+<h3 id="定时器线程"><a href="#定时器线程" class="headerlink" title="定时器线程"></a>定时器线程</h3><p><strong>上述事件循环机制的核心是：JS引擎线程和事件触发线程</strong></p>
+<p>但事实上，里面还有一些隐藏细节，譬如调用setTimeout后，是如何等待特定时间后才添加到事件队列中的？</p>
+<h4 id="是JS引擎检测的么？"><a href="#是JS引擎检测的么？" class="headerlink" title="是JS引擎检测的么？"></a>是JS引擎检测的么？</h4><p>不是。<strong>它是由定时器线程控制</strong></p>
+<h4 id="为什么要单独的定时器线程？"><a href="#为什么要单独的定时器线程？" class="headerlink" title="为什么要单独的定时器线程？"></a>为什么要单独的定时器线程？</h4><p>因为JavaScript引擎是单线程的, 如果处于阻塞线程状态就会影响记计时的准确，因此很有必要单独开一个线程用来计时。</p>
+<h4 id="什么时候会用到定时器线程？"><a href="#什么时候会用到定时器线程？" class="headerlink" title="什么时候会用到定时器线程？"></a>什么时候会用到定时器线程？</h4><p>当使用setTimeout或setInterval时，它需要定时器线程计时，计时完成后就会将特定的事件推入事件队列中。</p>
+<p>譬如:</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 1000);
+</code></pre><p>这段代码的作用是当1000毫秒计时完毕后（由定时器线程计时），将回调函数推入事件队列中，等待主线程执行</p>
+<pre><code>setTimeout(function(){
+    console.log(&apos;hello!&apos;);
+}, 0);
+
+console.log(&apos;begin&apos;);
+</code></pre><p>这段代码的效果是最快的时间内将回调函数推入事件队列中，等待主线程执行</p>
+<p><strong>注意：</strong></p>
+<p>执行结果是：先begin后hello!</p>
+<blockquote>
+<p>虽然代码的本意是0毫秒后就推入事件队列，但是W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。<br>(不过也有一说是不同浏览器有不同的最小时间设定)</p>
+<p>就算不等待4ms，就算假设0毫秒就推入事件队列，也会先执行begin（因为只有可执行栈内空了后才会主动读取事件队列）</p>
+</blockquote>
+<h3 id="setTimeout和setInterval"><a href="#setTimeout和setInterval" class="headerlink" title="setTimeout和setInterval"></a>setTimeout和setInterval</h3><p>用setTimeout模拟定期计时和直接用setInterval是有区别的。</p>
+<p><strong>setTimeout</strong>每次计时到后就会去执行，然后执行一段时间后才会继续setTimeout，中间就多了误差（误差多少与代码执行时间有关）</p>
+<p><strong>setInterval</strong>则是每次都精确的隔一段时间推入一个事件<br>（但是，事件的实际执行时间不一定就准确，还有可能是这个事件还没执行完毕，下一个事件就来了）</p>
+<h4 id="setInterval有一些比较致命的问题就是："><a href="#setInterval有一些比较致命的问题就是：" class="headerlink" title="setInterval有一些比较致命的问题就是："></a>setInterval有一些比较致命的问题就是：</h4><p><strong>累计效应</strong>，如果setInterval代码在（setInterval）再次添加到队列之前还没有完成执行，<br>就会导致定时器代码连续运行好几次，而之间没有间隔。</p>
+<p>就算正常间隔执行，多个setInterval的代码执行时间可能会比预期小（因为代码执行需要一定时间）</p>
+<blockquote>
+<p>而且把浏览器最小化显示等操作时，setInterval并不是不执行程序，<br>它会把setInterval的回调函数放在队列中，等浏览器窗口再次打开时，一瞬间全部执行时</p>
+</blockquote>
+<p>目前一般认为的最佳方案是：用setTimeout模拟setInterval，或者特殊场合直接用requestAnimationFrame</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/04/11/JS运行机制/" data-id="cl6x0zs22000166wm6nbmixiz" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mac-vim" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/30/mac-vim/" class="article-date">
+  <time datetime="2017-03-29T16:00:00.000Z" itemprop="datePublished">2017-03-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/30/mac-vim/">mac-vim</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="macvim配置"><a href="#macvim配置" class="headerlink" title="macvim配置"></a>macvim配置</h2><p>安装macvim</p>
+<h3 id="查看预装vim版本"><a href="#查看预装vim版本" class="headerlink" title="查看预装vim版本"></a>查看预装vim版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim --version</span><br></pre></td></tr></table></figure>
+<h3 id="查看预装vim路径"><a href="#查看预装vim路径" class="headerlink" title="查看预装vim路径"></a>查看预装vim路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where vim</span><br></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>有两种方式来安装macvim:</p>
+<ul>
+<li>Github上下载macvim.dmg安装包进行安装</li>
+<li>使用Homebrew安装</li>
+</ul>
+<p>brew的方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install macvim</span><br></pre></td></tr></table></figure>
+<h3 id="建立软链接"><a href="#建立软链接" class="headerlink" title="建立软链接"></a>建立软链接</h3><h4 id="为macvim中的vim创建别名，将其添加至-bash-profile配置文件"><a href="#为macvim中的vim创建别名，将其添加至-bash-profile配置文件" class="headerlink" title="为macvim中的vim创建别名，将其添加至~/.bash_profile配置文件"></a>为macvim中的vim创建别名，将其添加至~/.bash_profile配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias mvim=&apos;/Applications/MacVim.app/Contents/MacOS/MacVim&apos;</span><br></pre></td></tr></table></figure>
+<p>或将可执行文件mvim复制到/usr/local/bin/路径下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /Applications/MacVim.app/Contents/MacOS/MacVim /usr/local/bin/mvim</span><br></pre></td></tr></table></figure>
+<p>或者在/usr/local/bin/路径中为mvim建立软链接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /Applications/MacVim.app/Contents/MacOS/MacVim /usr/local/bin/mvim</span><br></pre></td></tr></table></figure>
+<h3 id="source-bash-profile"><a href="#source-bash-profile" class="headerlink" title="source ~/.bash_profile"></a>source ~/.bash_profile</h3><p>完成！～</p>
+<p>###安装Vundle，在终端输入以下代码即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</span><br></pre></td></tr></table></figure>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title=".vimrc"></a>.vimrc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/.vim    </span><br><span class="line">touch ~/.vimrc</span><br></pre></td></tr></table></figure>
+<h3 id="linux-mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴"><a href="#linux-mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴" class="headerlink" title="linux/mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴"></a>linux/mac版的vim中如何用快捷键进行与系统剪切板交互的复制粘贴</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;+y</span><br><span class="line">&quot;+p</span><br></pre></td></tr></table></figure>
+<hr>
+<p>上述命令不能用的话是因为vim的clipboard选项没有打开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim --version |grep clipboard #查看该选项 +clipboard表示选项开启，-clipboard表示未开启</span><br></pre></td></tr></table></figure>
+<p>可以下载源码重新编译，在configure的时候增加 –with-features=huge</p>
+<hr>
+<h3 id="附-linux源码方式编译安装vim"><a href="#附-linux源码方式编译安装vim" class="headerlink" title="附 linux源码方式编译安装vim"></a>附 linux源码方式编译安装vim</h3><p>配置选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure --with-features=huge --enable-pythoninterp=yes  --enable-cscope \</span><br><span class="line"> --enable-luainterp --with-lua-prefix=/usr/local/  --enable-fontset --enable-perlinterp --enable-rubyinterp \</span><br><span class="line">--with-python-config-dir=/usr/lib/python2.6/config \</span><br><span class="line">--disable-gui --prefix=/opt/local/vim</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/03/30/mac-vim/" data-id="cl6x0zs2e000366wmqqewjh9u" class="article-share-link">Share</a>
       
 
       
@@ -201,7 +326,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -231,7 +356,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -243,23 +368,23 @@
       <ul>
         
           <li>
-            <a href="/2022/08/17/english/7000/">sentence</a>
+            <a href="/2022/08/17/back/front-end-learn/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+            <a href="/2022/08/17/back/js中数组的合并和对象的合并/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+            <a href="/2022/08/17/back/mac-os/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/24/keyboard/">keyboard</a>
+            <a href="/2022/08/17/back/数组和对象区分/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+            <a href="/2022/08/17/back/匿名函数/">(no title)</a>
           </li>
         
       </ul>

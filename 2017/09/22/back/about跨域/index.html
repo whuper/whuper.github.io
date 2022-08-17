@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>跨域问题总结 | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="造成跨域的两种情况造成跨域的两种策略浏览器的同源策略会导致跨域，这里同源策略又分为以下两种  DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。 XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求。   只要协议、域名、端口有任何一个不同，都被当作是不同的域，之间的请求就是跨域操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域问题总结">
+<meta property="og:url" content="https://whuper.github.io/2017/09/22/back/about跨域/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="造成跨域的两种情况造成跨域的两种策略浏览器的同源策略会导致跨域，这里同源策略又分为以下两种  DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。 XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求。   只要协议、域名、端口有任何一个不同，都被当作是不同的域，之间的请求就是跨域操作">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-17T01:03:48.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨域问题总结">
+<meta name="twitter:description" content="造成跨域的两种情况造成跨域的两种策略浏览器的同源策略会导致跨域，这里同源策略又分为以下两种  DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。 XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求。   只要协议、域名、端口有任何一个不同，都被当作是不同的域，之间的请求就是跨域操作">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-back/about跨域" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/22/back/about跨域/" class="article-date">
+  <time datetime="2017-09-21T16:00:00.000Z" itemprop="datePublished">2017-09-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跨域问题总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="造成跨域的两种情况"><a href="#造成跨域的两种情况" class="headerlink" title="造成跨域的两种情况"></a>造成跨域的两种情况</h2><p>造成跨域的两种策略浏览器的同源策略会导致跨域，这里同源策略又分为以下两种</p>
+<ol>
+<li>DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。</li>
+<li>XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求。</li>
+</ol>
+<blockquote>
+<p>只要协议、域名、端口有任何一个不同，都被当作是不同的域，之间的请求就是跨域操作。</p>
+</blockquote>
+<h3 id="为什么要有跨域限制"><a href="#为什么要有跨域限制" class="headerlink" title="为什么要有跨域限制"></a>为什么要有跨域限制</h3><p>了解完跨域之后，想必大家都会有这么一个思考，为什么要有跨域的限制，浏览器这么做是出于何种原因呢。其实仔细想一想就会明白，跨域限制主要是为了安全考虑。</p>
+<blockquote>
+<p>AJAX同源策略主要用来防止CSRF攻击。如果没有AJAX同源策略，相当危险，我们发起的每一次HTTP请求都会带上请求地址对应的cookie，那么可以做如下攻击：</p>
+</blockquote>
+<ol>
+<li>用户登录了自己的银行页面 <a href="http://mybank.com，http://mybank.com向用户的cookie中添加用户标识。" target="_blank" rel="noopener">http://mybank.com，http://mybank.com向用户的cookie中添加用户标识。</a></li>
+<li>用户浏览了恶意页面 <a href="http://evil.com。执行了页面中的恶意AJAX请求代码。" target="_blank" rel="noopener">http://evil.com。执行了页面中的恶意AJAX请求代码。</a></li>
+<li><a href="http://evil.com向http://mybank.com发起AJAX" target="_blank" rel="noopener">http://evil.com向http://mybank.com发起AJAX</a> HTTP请求，请求会默认把<a href="http://mybank.com对应cookie也同时发送过去。" target="_blank" rel="noopener">http://mybank.com对应cookie也同时发送过去。</a></li>
+<li>银行页面从发送的cookie中提取用户标识，验证用户无误，response中返回请求数据。此时数据就泄露了。</li>
+<li>而且由于Ajax在后台执行，用户无法感知这一过程。</li>
+</ol>
+<h4 id="DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击："><a href="#DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击：" class="headerlink" title="DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击："></a>DOM同源策略也一样，如果iframe之间可以跨域访问，可以这样攻击：</h4><ol>
+<li>做一个假网站，里面用iframe嵌套一个银行网站 <a href="http://mybank.com。" target="_blank" rel="noopener">http://mybank.com。</a></li>
+<li>把iframe宽高啥的调整到页面全部，这样用户进来除了域名，别的部分和银行的网站没有任何差别。</li>
+<li>这时如果用户输入账号密码，我们的主网站可以跨域访问到<a href="http://mybank.com的dom节点，就可以拿到用户的输入了，那么就完成了一次攻击。" target="_blank" rel="noopener">http://mybank.com的dom节点，就可以拿到用户的输入了，那么就完成了一次攻击。</a></li>
+</ol>
+<p>所以说有了跨域跨域限制之后，我们才能更安全的上网了。</p>
+<p>作者：黄家兴<br>链接：<a href="https://www.zhihu.com/question/26376773/answer/244453931" target="_blank" rel="noopener">https://www.zhihu.com/question/26376773/answer/244453931</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h3 id="跨域的解决方式"><a href="#跨域的解决方式" class="headerlink" title="跨域的解决方式"></a>跨域的解决方式</h3><h4 id="跨域资源共享"><a href="#跨域资源共享" class="headerlink" title="跨域资源共享"></a>跨域资源共享</h4><p>CORS是一个W3C标准，全称是”跨域资源共享”（Cross-origin resource sharing）。 </p>
+<p>大体流程。</p>
+<ol>
+<li>对于客户端，我们还是正常使用xhr对象发送ajax请求。唯一需要注意的是，我们需要设置我们的xhr属性withCredentials为true，不然的话，cookie是带不过去的哦，设置： xhr.withCredentials = true;</li>
+<li>对于服务器端，需要在 response header中设置如下两个字段:Access-Control-Allow-Origin: <a href="http://www.yourhost.comAccess-Control-Allow-Credentials:true这样，我们就可以跨域请求接口了。" target="_blank" rel="noopener">http://www.yourhost.comAccess-Control-Allow-Credentials:true这样，我们就可以跨域请求接口了。</a></li>
+</ol>
+<h4 id="jsonp实现跨域"><a href="#jsonp实现跨域" class="headerlink" title="jsonp实现跨域"></a>jsonp实现跨域</h4><p>基本原理就是通过动态创建script标签,然后利用src属性进行跨域。</p>
+<h4 id="服务器代理"><a href="#服务器代理" class="headerlink" title="服务器代理"></a>服务器代理</h4><p>浏览器有跨域限制，但是服务器不存在跨域问题，所以可以由服务器请求所要域的资源再返回给客户端。</p>
+<blockquote>
+<p>服务器代理是万能的。</p>
+</blockquote>
+<p>####使用postMessage实现页面之间通信</p>
+<p>信息传递除了客户端与服务器之前的传递，还存在以下几个问题：</p>
+<ol>
+<li>页面和新开的窗口的数据交互。</li>
+<li>多窗口之间的数据交互。</li>
+<li>页面与所嵌套的iframe之间的信息传递。</li>
+</ol>
+<p>window.postMessage是一个HTML5的api，允许两个窗口之间进行跨域发送消息。这个应该就是以后解决dom跨域通用方法了，具体可以参照MDN。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2017/09/22/back/about跨域/" data-id="cl6x0zs4e000k66wmwhfg76sp" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/11/terminal/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          终端常用的快捷键
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/19/回调-事件-promise和asyncawait/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">回调函数 钩子(hook) promise和async await</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/17/back/front-end-learn/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/js中数组的合并和对象的合并/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/mac-os/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/数组和对象区分/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/back/匿名函数/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

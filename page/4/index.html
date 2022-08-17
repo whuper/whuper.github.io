@@ -63,10 +63,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-web实时通讯技术总结" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="tags-english/sentence" class="article article-type-tags" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/11/web实时通讯技术总结/" class="article-date">
-  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">2017-11-11</time>
+    <a href="/2019/01/19/english/sentence/" class="article-date">
+  <time datetime="2019-01-19T13:05:02.000Z" itemprop="datePublished">2019-01-19</time>
 </a>
     
   </div>
@@ -77,7 +77,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/11/web实时通讯技术总结/">Web端即时通讯技术</a>
+      <a class="article-title" href="/2019/01/19/english/sentence/">Model Sentence</a>
     </h1>
   
 
@@ -85,158 +85,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Web端即时通讯技术"><a href="#Web端即时通讯技术" class="headerlink" title="Web端即时通讯技术"></a>Web端即时通讯技术</h2><blockquote>
-<p>传统Web的通信原理</p>
-<p>浏览器本身作为一个瘦客户端，不具备直接通过系统调用来达到和处于异地的另外一个客户端浏览器通信的功能。这和我们桌面应用的工作方式是不同的，通常桌面应用通过socket可以和远程主机上另外一端的一个进程建立TCP连接，从而达到全双工的即时通信。</p>
-<p>浏览器从诞生开始一直走的是客户端请求服务器，服务器返回结果的模式，即使发展至今仍然没有任何改变。所以可以肯定的是，要想实现两个客户端的通信，必然要通过服务器进行信息的转发。例如A要和B通信，则应该是A先把信息发送给IM应用服务器，服务器根据A信息中携带的接收者将它再转发给B，同样B到A也是这种模式，如下所示：</p>
-</blockquote>
-<p>常见的实现即时通讯实现方法</p>
-<blockquote>
-<p>轮询：客户端定时向服务器发送Ajax请求，服务器接到请求后马上返回响应信息并关闭连接。<br>优点：后端程序编写比较容易。<br>缺点：请求中有大半是无用，浪费带宽和服务器资源。<br>实例：适于小型应用。</p>
-<p>长轮询：客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。<br>优点：在无消息的情况下不会频繁的请求，耗费资源小。<br>缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护。<br>实例：WebQQ、Hi网页版、Facebook IM。</p>
-<p>长连接：在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。<br>优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>缺点：服务器维护一个长连接会增加开销。<br>实例：Gmail聊天</p>
-</blockquote>
-<p>基于web实现IM软件依然要走浏览器请求服务器的模式，这种方式下，针对IM软件的开发需要解决如下三个问题：</p>
-<h4 id="1-双全工通信："><a href="#1-双全工通信：" class="headerlink" title="1 双全工通信："></a>1 双全工通信：</h4><p>即达到浏览器拉取（pull）服务器数据，服务器推送（push）数据到浏览器；</p>
-<h4 id="2-低延迟："><a href="#2-低延迟：" class="headerlink" title="2 低延迟："></a>2 低延迟：</h4><p>即浏览器A发送给B的信息经过服务器要快速转发给B，同理B的信息也要快速交给A，实际上就是要求任何浏览器能够快速请求服务器的数据，服务器能够快速推送数据到浏览器；</p>
-<h4 id="3-支持跨域："><a href="#3-支持跨域：" class="headerlink" title="3 支持跨域："></a>3 支持跨域：</h4><p>通常客户端浏览器和服务器都是处于网络的不同位置，浏览器本身不允许通过脚本直接访问不同域名下的服务器，即使IP地址相同域名不同也不行，域名相同端口不同也不行，这方面主要是为了安全考虑。</p>
-<h3 id="从技术实现上，大致有4种："><a href="#从技术实现上，大致有4种：" class="headerlink" title="从技术实现上，大致有4种："></a>从技术实现上，大致有4种：</h3><ol>
-<li>Ajax短轮询</li>
-<li>Comet 别名叫(彗星)</li>
-<li>Websocket</li>
-<li>SSE（Server-sent Events）</li>
-</ol>
-<h2 id="1-Ajax短轮询"><a href="#1-Ajax短轮询" class="headerlink" title="1. Ajax短轮询"></a>1. Ajax短轮询</h2><p>传统的web应用要想与服务器交互，必须提交一个表单（form），服务器接收并处理传来的表单，然后返回全新的页面，因为前后两个页面的数据大部分都是相同的，这个过程传输了很多冗余的数据、浪费了带宽。于是Ajax技术便应运而生。</p>
-<blockquote>
-<p>Ajax是Asynchronous JavaScript and XML的简称，由Jesse James Garrett 首先提出。这种技术开创性地允许浏览器脚本（JS）发送http请求。</p>
-</blockquote>
-<blockquote>
-<p>XMLHttpRequest 是 AJAX 的基础。<br>XMLHttpRequest 对象<br>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
-</blockquote>
-<p>创建 XMLHttpRequest 对象：</p>
-<pre><code>var xml = new XMLHttpRequest();
-</code></pre><p>老版本的ie就不再列举了，毕竟是快要被淘汰的东西，不具有可持续性。。。</p>
-<p>这种浏览器端的小技术毕竟还是基于http协议，http协议要求的请求/响应的模式也是无法改变的，除非http协议本身有所改变。</p>
-<p><strong>具体实现：用定时器，每间隔一定的时间，就发送请求，获取数据。。。简单粗暴，造成很多资源浪费</strong></p>
-<hr>
-<h2 id="Comet-基于-HTTP长连接的“服务器推”技术"><a href="#Comet-基于-HTTP长连接的“服务器推”技术" class="headerlink" title="Comet(基于 HTTP长连接的“服务器推”技术)"></a>Comet(基于 HTTP长连接的“服务器推”技术)</h2><p>是一种hack技术</p>
-<blockquote>
-<p>Ajax通信方式是http协议的经典使用方式，要想取得数据，必须首先发送请求。在Low Latency要求比较高的web应用中，只能增加服务器请求的频率。</p>
-<p>Comet则不同，客户端与服务器端保持一个长连接，只有客户端需要的数据更新时，服务器才主动将数据推送给客户端。<br>Comet的实现主要有两种方式：</p>
-</blockquote>
-<ol>
-<li>基于Ajax的长轮询（long-polling）</li>
-<li>基于 Iframe 及 htmlfile 的流（http streaming）</li>
-</ol>
-<h4 id="1-基于Ajax的长轮询（long-polling）方式"><a href="#1-基于Ajax的长轮询（long-polling）方式" class="headerlink" title="1 基于Ajax的长轮询（long-polling）方式"></a>1 基于Ajax的长轮询（long-polling）方式</h4><p>浏览器发出XMLHttpRequest 请求，服务器端接收到请求后，会阻塞请求直到有数据或者超时才返回，浏览器JS在处理请求返回信息（超时或有效数据）后再次发出请求，重新建立连接。在此期间服务器端可能已经有新的数据到达，服务器会选择把数据保存，直到重新建立连接，浏览器会把所有数据一次性取回。</p>
-<p>在XHR对象的readySate为4的时候，表示服务器已经返回数据，本次连接已断开，再次请求服务器建立连接。</p>
-<h4 id="2-基于-Iframe-及-htmlfile-的流（http-streaming）方式"><a href="#2-基于-Iframe-及-htmlfile-的流（http-streaming）方式" class="headerlink" title="2 基于 Iframe 及 htmlfile 的流（http streaming）方式"></a>2 基于 Iframe 及 htmlfile 的流（http streaming）方式</h4><p>iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，然后将这个隐蔵帧的 <strong>SRC 属性设为对一个长连接的请求</strong>，服务器端就能源源不断地往客户端输入数据。</p>
-<p>在第一种方式中，浏览器在收到数据后会直接调用JS回调函数，但是这种方式该如何响应数据呢？可以通过在返回数据中嵌入JS脚本的方式，如<code>&lt;script type=&quot;text/javascript&quot;&gt;js_func(“data from server ”)&lt;/script&gt;</code>，服务器端将返回的数据作为回调函数的参数，浏览器在收到数据后就会执行这段JS脚本。</p>
-<p>但是这种方式有一个明显的不足之处：IE、Morzilla Firefox 下端的进度栏都会显示加载没有完成，而且 IE 上方的图标会不停的转动，表示加载正在进行，并且底部也显示正在加载，这对于一个产品来讲用户体验是不好的</p>
-<h4 id="2-1-基于-Iframe的优化"><a href="#2-1-基于-Iframe的优化" class="headerlink" title="2.1 基于 Iframe的优化"></a>2.1 基于 Iframe的优化</h4><p>谷歌想出了一中hack方式。就是在IE中，动态生成一个<strong>htmlfile对象</strong>，这个对象ActiveX形式的com组件，它实际上就是一个在内存中实现的HTML文档，通过将生成的iframe添加到这个内存中的HTMLfile中，并利用iframe的数据流通信方式达到上面的效果。同时由于HTMLfile对象并不是直接添加到页面上的，所以并没有造成浏览器显示正在加载的现象。</p>
-<p>这种方法应用到了 gmail+gtalk 产品中</p>
-<p><a href="http://www.52im.net/thread-334-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-334-1-1.html</a></p>
-<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>在上面的这些解决方案中，都是利用浏览器单向请求服务器或者服务器单向推送数据到浏览器这些技术组合在一起而形成的hack技术，在HTML5中，为了加强web的功能，提供了websocket技术，它不仅是一种web通信方式，也是一种应用层协议。</p>
-<p>它提供了浏览器和服务器之间原生的双全工跨域通信，通过浏览器和服务器之间建立websocket连接（实际上是TCP连接）,在同一时刻能够实现客户端到服务器和服务器到客户端的数据发送。</p>
-<p>首先是客户端new 一个websocket对象，该对象会发送一个http请求到服务端，服务端发现这是个webscoket请求，会同意协议转换，发送回客户端一个101状态码的response，以上过程称之为一次握手，经过这次握手之后，客户端就和服务端建立了一条TCP连接，在该连接上，服务端和客户端就可以进行双向通信了。</p>
-<p>这时的双向通信在应用层走的就是ws或者wss协议了，和http就没有关系了。</p>
-<p>所谓的ws协议，就是要求客户端和服务端遵循某种格式发送数据报文（帧），然后对方才能够理解。</p>
-<p>客户端参考代码</p>
-<pre><code>window.onload=function(){
-        var ws=new WebSocket(&quot;ws://127.0.0.1:8088&quot;);
-        var oText=document.getElementById(&apos;message&apos;);
-        var oSend=document.getElementById(&apos;send&apos;);
-        var oClose=document.getElementById(&apos;close&apos;);
-        var oUl=document.getElementsByTagName(&apos;ul&apos;)[0];
-        ws.onopen=function(){
-            oSend.onclick=function(){
-                if(!/^\s*$/.test(oText.value)){
-                    ws.send(oText.value);
-                }
-            };
-
-        };
-        ws.onmessage=function(msg){
-          var str=&quot;&lt;li&gt;&quot;+msg.data+&quot;&lt;/li&gt;&quot;;
-          oUl.innerHTML+=str;
-        };
-        ws.onclose=function(e){
-            console.log(&quot;已断开与服务器的连接&quot;);
-            ws.close();
-        }
-    }
-</code></pre><hr>
-<p>WebSocket在支持它的浏览器上确实提供了一种全双工跨域的通信方案，所以在各以上各种方案中，我们的首选无疑是WebSocket。</p>
-<blockquote>
-<p>socket.io介绍</p>
-<p>socket.io封装了websocket，同时包含了其它的连接方式，比如Ajax。原因在于不是所有的浏览器都支持websocket，通过socket.io的封装，不用关心里面用了什么连接方式。</p>
-<p>在任何浏览器里都可以使用socket.io来建立异步的连接。socket.io包含了服务端和客户端的库，如果在浏览器中使用了socket.io的js，服务端也必须同样适用。如果你很清楚你需要的就是websocket，那可以直接使用websocket。</p>
-</blockquote>
-<h2 id="SSE"><a href="#SSE" class="headerlink" title="SSE"></a>SSE</h2><p>SSE（Server-Sent Event，服务端推送事件）是一种允许服务端向客户端推送新数据的HTML5技术。与由客户端每隔几秒从服务端轮询拉取新数据相比，这是一种更优的解决方案。</p>
-<p>与WebSocket相比，它也能从服务端向客户端推送数据。那如何决定你是用SSE还是WebSocket呢？概括来说，WebSocket能做的，SSE也能做，反之亦然，但在完成某些任务方面，它们各有千秋。</p>
-<p>SSE技术提供的是从服务器单向推送数据给浏览器的功能，但是配合浏览器主动请求，实际上就实现了客户端和服务器的双向通信。它的原理是在客户端构造一个eventSource对象，该对象具有readySate属性，分别表示如下：</p>
-<ol>
-<li>正在连接到服务器；</li>
-<li>打开了连接；</li>
-<li>关闭了连接。</li>
-</ol>
-<p>同时eventSource对象会保持与服务器的长连接，断开后会自动重连，如果要强制断开可以调用它的close方法。</p>
-<p>监听onmessage事件，服务端遵循SSE数据传输的格式给客户端，客户端在onmessage事件触发时就能够接收到数据，从而进行某种处理，代码如下。</p>
-<p>客户端</p>
-<pre><code>var source=new EventSource(&apos;http://localhost:8088/evt&apos;);
-    source.addEventListener(&apos;message&apos;, function(e) {
-        console.log(e.data);
-    }, false);
-    source.onopen=function(){
-        console.log(&apos;connected&apos;);
-    }
-    source.onerror=function(err){
-        console.log(err);
-    }
-</code></pre><p>服务端</p>
-<pre><code>var http=require(&apos;http&apos;);
-var fs = require(&quot;fs&quot;);
-var count=0;
-var server=http.createServer(function(req,res){
-    if(req.url==&apos;/evt&apos;){
-        //res.setHeader(&apos;content-type&apos;, &apos;multipart/octet-stream&apos;);
-        res.writeHead(200, {&quot;Content-Type&quot;:&quot;tex&quot; +
-            &quot;t/event-stream&quot;, &quot;Cache-Control&quot;:&quot;no-cache&quot;,
-            &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;,
-            &quot;Connection&quot;:&quot;keep-alive&quot;});
-        var timer=setInterval(function(){
-            if(++count==10){
-                clearInterval(timer);
-                res.end();
-            }else{
-                res.write(&apos;id: &apos; + count + &apos;\n&apos;);
-                res.write(&quot;data: &quot; + new Date().toLocaleString() + &apos;\n\n&apos;);
-            }
-        },2000);
-
-    };
-    if(req.url==&apos;/&apos;){
-        fs.readFile(&quot;./sse.html&quot;, &quot;binary&quot;, function(err, file) {
-            if (!err) {
-                res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/html&apos;});
-                res.write(file, &quot;binary&quot;);
-                res.end();
-            }
-        });
-    }
-}).listen(8088,&apos;localhost&apos;);
-</code></pre><p>WebSocket是一种更为复杂的服务端实现技术，但它是真正的双向传输技术，既能从服务端向客户端推送数据，也能从客户端向服务端推送数据。</p>
-<p>与WebSocket相比，SSE有一些显著的优势，便利：不需要添加任何新组件，用任何你习惯的后端语言和框架就能继续使用。你不用为新建虚拟机、弄一个新的IP或新的端口号而劳神，就像在现有网站中新增一个页面那样简单。我喜欢把这称为既存基础设施优势。</p>
-<p>SSE的第二个优势是服务端的简洁。相对而言，WebSocket则很复杂，不借助辅助类库基本搞不定</p>
-<p>WebSocket和SSE（Server-sent Events）两种技术方案都是html5引进的</p>
-<p>参考：<br><a href="http://www.52im.net/thread-338-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-338-1-1.html</a></p>
-<p><a href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=338" target="_blank" rel="noopener">http://www.52im.net/forum.php?mod=viewthread&amp;tid=338</a></p>
+        <p>Food is made up of <strong>carbohydrates</strong>, <strong>proteins</strong> and <strong>fats</strong>.<br>食物由碳水化合物、蛋白质和脂肪构成。</p>
+<p>冠词和介词是初学英语者的绊脚石。<br>Articles and prepositions are stumbling blocks to the beginners of english.</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cl6x0og23000d1nwmewvpdgt1" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2019/01/19/english/sentence/" data-id="cl6x0zs4j000q66wm6yujnbw3" class="article-share-link">Share</a>
       
 
       
@@ -249,10 +105,10 @@ var server=http.createServer(function(req,res){
 
 
   
-    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-english/7000" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/11/terminal/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
+    <a href="/2019/01/06/english/7000/" class="article-date">
+  <time datetime="2019-01-05T16:00:00.000Z" itemprop="datePublished">2019-01-06</time>
 </a>
     
   </div>
@@ -263,7 +119,7 @@ var server=http.createServer(function(req,res){
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
+      <a class="article-title" href="/2019/01/06/english/7000/">sentence</a>
     </h1>
   
 
@@ -271,39 +127,219 @@ var server=http.createServer(function(req,res){
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
-<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
-<p>例如：要找redis</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
-<p>mac 显示隐藏文件<br>打开终端，输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
-<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
-<p>Mac 更新系统后无法使用git</p>
-<p>解决方案：</p>
-<p>在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
-<p>如果需要禁止spotlight, 在终端中运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
-<p>开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
-<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
-<p>为了查看它的状态，可以运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
+        <h4 id="100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇。"><a href="#100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇。" class="headerlink" title="100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇。"></a>100套真题中提炼而出的100百个经典句子，包涵了7000个雅思词汇。</h4><ol>
+<li><p>Typical of the grassland dwellers of the continent is the American antelope, or pronghorn.<br>美洲羚羊，或称叉角羚，是该大陆典型的草原动物。</p>
+</li>
+<li><p>Of the millions who saw Haley’s comet in 1986, how many people will live long enough to see it return in the twenty-first century.<br>1986年看见哈雷慧星的千百万人当中，有多少人能够长寿到足以目睹它在二十一世纪的回归呢？</p>
+</li>
+<li><p>Anthropologists have discovered that fear, happiness, sadness, and surprise are universally reflected in facial expressions.<br>人类学家们已经发现，恐惧，快乐，悲伤和惊奇都会行之于色，这在全人类是共通的。</p>
+</li>
+<li><p>Because of its irritating effect on humans, the use of phenol as a general antiseptic has been largely discontinued.<br>由于苯酚对人体带有刺激性作用，它基本上已不再被当作常用的防腐剂了。</p>
+</li>
+<li><p>In group to remain in existence, a profit-making organization must, in the long run, produce something consumers consider useful or desirable.<br>任何盈利组织若要生存，最终都必须生产出消费者可用或需要的产品。</p>
+</li>
+<li><p>The greater the population there is in a locality; the greater the need there is for water, transportation, and disposal of refuse.<br>一个地方的人口越多，其对水，交通和垃圾处理的需求就会越大。</p>
+</li>
+<li><p>It is more difficult to write simply, directly, and effectively than to employ flowery but vague expressions that only obscure one’s meaning.<br>简明，直接，有力的写作难于花哨，含混而意义模糊的表达。</p>
+</li>
+<li><p>With modern offices becoming more mechanized, designers are attempting to personalize them with warmer, less severe interiors.<br>随着现代办公室的日益自动化，设计师们正试图利用较为温暖而不太严肃的内部装饰来使其具有亲切感。</p>
+</li>
+<li><p>The difference between libel and slander is that libel is printed while slander is spoken.<br>诽谤和流言的区别在于前者是书面的，而后者是口头的。</p>
+</li>
+<li><p>The knee is the joints where the thigh bone meets the large bone of the lower leg.<br>膝盖是大腿骨和小腿胫的连接处。</p>
+</li>
+<li><p>Acids are chemical compounds that, in water solution, have a sharp taste, a corrosive action on metals, and the ability to turn certain blue vegetable dyes red.<br>酸是一种化合物，它在溶于水时具有强烈的气味和对金属的腐蚀性，并且能够使某些蓝色植物染料变红。</p>
+</li>
+<li><p>Billie Holiday’s reputation as a great jazz-blues singer rests on her ability to give emotional depth to her songs.<br>Billie Holiday’s作为一个爵士布鲁斯乐杰出歌手的名声建立在能够赋予歌曲感情深度的能力。</p>
+</li>
+<li><p>Essentially, a theory is an abstract, symbolic representation of what is conceived to be reality.<br>理论在本质上是对认识了的现实的一种抽象和符号化的表达。</p>
+</li>
+<li><p>Long before children are able to speak or understand a language, they communicate through facial expressions and by making noises.<br>儿童在能说或能听懂语言之前，很久就会通过面部表情和靠发出噪声来与人交流了。</p>
+</li>
+<li><p>Thanks to modern irrigation, crops now grow abundantly in areas where once nothing but cacti and sagebrush could live.<br>受当代灌溉(技术设施)之赐，农作物在原来只有仙人掌和荞属科植物才能生存的地方旺盛的生长。</p>
+</li>
+<li><p>The development of mechanical timepieces spurred the search for more accurate sundials with which to regulate them.<br>机械计时器的发展促使人们寻求更精确的日晷，以便校准机械计时器。</p>
+</li>
+<li><p>Anthropology is a science in that anthropologists use a rigorous set of methods and techniques to document observations that can be checked by others.<br>人类学是一门科学，因为人类学家采用一整套强有力的方法和技术来记录观测结果，而这样记录下来的观测结果是供他人核查的。</p>
+</li>
+<li><p>Fungi are important in the process of decay, which returns ingredients to the soil, enhances soil fertility, and decomposes animal debris.<br>真菌在腐化过程中十分重要，而腐化过程将化学物质回馈于土壤，提高其肥力，并分解动物粪便。</p>
+</li>
+<li><p>When it is struck, a tuning fork produces an almost pure tone, retaining its pitch over a long period of time.<br>音叉被敲击时，产生几乎纯质的音调，其音量经久不衰。</p>
+</li>
+<li><p>Although pecans are most plentiful in the southeastern part of the United States, they are found as far north as Ohio and Illinois.<br>虽然美洲山河桃树最集中于美国的东南部但是在北至俄亥俄州及伊利诺州也能看见它们。</p>
+</li>
+<li><p>Eliminating problems by transferring the blame to others is often called scape-goating.<br>用怪罪别人的办法来解决问题通常被称为寻找替罪羊。</p>
+</li>
+<li><p>The chief foods eaten in any country depend largely on what grows best in its climate and soil.<br>一个国家的主要食物是什么，大体取决于什么作物在其天气和土壤条件下生长得最好。</p>
+</li>
+<li><p>Over a very large number of trials, the probability of an event’s occurring is equal to the probability that it will not occur.<br>在大量的实验中，某一事件发生的几率等于它不发生的几率。</p>
+</li>
+<li><p>Most substance contract when they freeze so that the density of a substance’s solid is higher than the density of its liquid.<br>大多数物质遇冷收缩，所以他们的密度在固态时高于液态。</p>
+</li>
+<li><p>The mechanism by which brain cells store memories is not clearly understood.<br>25.大脑细胞储存记忆的机理并不为人明白。</p>
+</li>
+<li><p>By the middle of the twentieth century, painters and sculptors in the United States had begun to exert a great worldwide influence over art.<br>26.到了二十一世纪中叶，美国画家和雕塑家开始在世界范围内对艺术产生重大影响。</p>
+</li>
+<li><p>In the eastern part of New Jersey lies the city of Elizabeth, a major shipping and manufacturing center.<br>伊丽莎白市，一个重要的航运和制造业中心，坐落于新泽西州的东部。</p>
+</li>
+<li><p>Elizabeth Blackwell, the first woman medical doctor in the United States, founded the New York Infirmary, an institution that has always had a completely female medical staff.<br>Elizabeth Blackwell，美国第一个女医生，创建了员工一直为女性纽约诊所。</p>
+</li>
+<li><p>Alexander Graham Bell once told his family that he would rather be remembered as a teacher of the deaf than as the inventor of the telephone.<br>Alexander Graham Bell曾告诉家人，他更愿意让后人记住他是聋子的老师，而非电话的发明者。</p>
+</li>
+</ol>
+<ol start="30">
+<li><p>Because its leaves remain green long after being picked, rosemary became associated with the idea of remembrance.<br>采摘下的迷迭香树叶常绿不衰，因此人们把迷迭香树与怀念联系在一起。</p>
+</li>
+<li><p>Although apparently rigid, bones exhibit a degree of elasticity that enables the skeleton to withstand considerable impact.<br>骨头看起来是脆硬的，但它也有一定的弹性，使得骨骼能够承受相当的打击。</p>
+</li>
+<li><p>That xenon could not FORM chemical compounds was once believed by scientists.<br>科学家曾相信：氙气是不能形成化合物的。</p>
+</li>
+<li><p>Research into the dynamics of storms is directed toward improving the ability to predict these events and thus to minimize damage and avoid loss of life.<br>对风暴动力学的研究是为了提高风暴预测从而减少损失，避免人员伤亡。</p>
+</li>
+<li><p>The elimination of inflation would ensure that the amount of money used in repaying a loan would have the same value as the amount of money borrowed.<br>消除通货膨胀应确保还贷的钱应与所贷款的价值相同。</p>
+</li>
+<li><p>Futurism, an early twentieth-century movement in art, rejected all traditions and attempted to glorify contemporary life by emphasizing the machine and motion.<br>未来主义，二十世纪早期的一个艺术思潮。拒绝一切传统，试图通过强调机械和动态来美化生活。</p>
+</li>
+<li><p>One of the wildest and most inaccessible parts of the United States is the Everglades where wildlife is abundant and largely protected.<br>Everglades是美国境内最为荒凉和人迹罕至的地区之一，此处有大量的野生动植物而且大多受(法律)保护。</p>
+</li>
+<li><p>Lucretia Mott’s influence was so significant that she has been credited by some authorities as the originator of feminism in the United States.<br>Lucretia Mott’s的影响巨大，所以一些权威部门认定她为美国女权运动的创始人。</p>
+</li>
+<li><p>The activities of the international marketing researcher are frequently much broader than those of the domestic marketer.<br>国际市场研究者的活动范围常常较国内市场研究者广阔。</p>
+</li>
+<li><p>The continental divide refers to an imaginary line in the North American Rockies that divides the waters flowing into the Atlantic Ocean from those flowing into the Pacific.<br>大陆分水岭是指北美洛矶山脉上的一道想象线，该线把大西洋流域和太平洋流域区分开来。</p>
+</li>
+<li><p>Studies of the gravity field of the Earth indicate that its crust and mantle yield when unusual weight is placed on them.<br>对地球引力的研究表明，在不寻常的负荷之下地壳和地幔会发生位移。</p>
+</li>
+<li><p>The annual worth of Utah’s manufacturing is greater than that of its mining and farming combined.<br>尤它州制造业的年产值大于其工业和农业的总和。</p>
+</li>
+<li><p>The wallflower is so called because its weak stems often grow on walls and along stony cliffs for support.<br>墙花之所以叫墙花，是因为其脆弱的枝干经常要靠墙壁或顺石崖生长，以便有所依附。</p>
+</li>
+<li><p>It is the interaction between people, rather than the events that occur in their lives, that is the main focus of social psychology.<br>社会心理学的主要焦点是人与人之间的交往，而不是他们各自生活中的事件。</p>
+</li>
+<li><p>No social crusade aroused Elizabeth Williams’ enthusiasm more than the expansion of educational facilities for immigrants to the United States.<br>给美国的新移民增加教育设施比任何社会运动都更多的激发了Elizabeth Williams的热情。</p>
+</li>
+<li><p>Quails typically have short rounded wings that enable them to spring into full flight instantly when disturbed in their hiding places.<br>典型的鹌鹑都长有短而圆的翅膀，凭此他们可以在受惊时一跃而起，飞离它们的躲藏地。</p>
+</li>
+<li><p>According to anthropologists, the earliest ancestors of humans that stood upright resembled chimpanzees facially, with sloping foreheads and protruding brows.<br>根据人类学家的说法，直立行走的人的鼻祖面部轮廓与黑猩猩相似，额头后倾，眉毛突出。</p>
+</li>
+<li><p>Not until 1866 was the fully successful transatlantic cable finally laid.<br>直到1866年第一条横跨大西洋的电缆才完全成功的架通。</p>
+</li>
+<li><p>In his writing, John Crowe Ransom describes what he considers the spiritual barrenness of society brought about by science and technology.<br>John Crowe Ransom在他的著作中描述了他认为是由科学技术给社会带来的精神贫困。</p>
+</li>
+<li><p>Children with parents whose guidance is firm, consistent, and rational are inclined to possess high levels of self-confidence.<br>父母的教导如果坚定，始终如一和理性，孩子就有可能充满自信。</p>
+</li>
+<li><p>The ancient Hopewell people of North America probably cultivated corn and other crops, but hunting and gathering were still of critical importance in their economy.<br>北美远古的Hopewell人很可能种植了玉米和其他农作物，但打猎和采集对他们的经济贸易仍是至关重要的。</p>
+</li>
+<li><p>Using many symbols makes it possible to put a large amount of information on a single map.<br>使用多种多样的符号可以在一张地图里放进大量的信息。 </p>
+</li>
+<li><p>Anarchism is a term describing a cluster of doctrines and attitudes whose principal uniting feature is the belief that government is both harmful and unnecessary.<br>无政府主义这个词描述的是一堆理论和态度，它们的主要共同点在于相信政府是有害的，没有必要的。</p>
+</li>
+<li><p>Probably no man had more effect on the daily lives of most people in the Untied States than did Henry Ford a pioneer in automobile production.<br>恐怕没有谁对大多数美国人的日常生活影响能超过汽车生产的先驱亨利.福特。</p>
+</li>
+<li><p>The use of well-chosen nonsense words makes possible the testing of many basic hypotheses in the field of language learning.<br>使用精心挑选的无意义词汇，可以检验语言学科里许多基本的假定。</p>
+</li>
+<li><p>The history of painting is a fascinating chain of events that probably began with the very first pictures ever made.<br>优化历史是由一连串的迷人事件组成，其源头大概可以上溯到最早的图画。</p>
+</li>
+<li><p>Perfectly matched pearls, strung into a necklace, bring a far higher price than the same pearls told individually.<br>相互般配的珍珠，串成一条项链，就能卖到比单独售出好得多的价钱。</p>
+</li>
+<li><p>During the eighteenth century, Little Turtle was chief of the Miami tribe whose territory became what is now Indiana and Ohio.<br>十八世纪时，“小乌龟”是迈阿密部落的酋长，该部落的地盘就是今天的印第安那州和俄亥俄州。</p>
+</li>
+<li><p>Among almost seven hundred species of bamboo, some are fully grown at less than a foot high, while others can grow three feet in twenty-four hours.<br>在竹子的近七百个品种中，有的全长成还不到一英尺，有的却能在二十四小时内长出三英尺。</p>
+</li>
+<li><p>Before staring on a sea voyage, prudent navigators learn the sea charts, study the sailing directions, and memorize lighthouse locations to prepare themselves for any conditions they might encounter.<br>谨慎的航海员在出航前，会研究航向，记录的灯塔的位置，以便对各种可能出现的情况做到有备无患。</p>
+</li>
+<li><p>Of all the economically important plants, palms have been the least studied.<br>在所有的经济作物中，棕榈树得到的研究最少。</p>
+</li>
+<li><p>Buyers and sellers should be aware of new developments in technology can and does affect marketing activities.<br>购买者和销售者都应该留意技术的新发展，原因很简单，因为技术能够并且已经影响着营销活动。</p>
+</li>
+<li><p>The application of electronic controls made possible by the microprocessor and computer storage have multiplied the uses of the modern typewriter.<br>电脑储存和由于电子微处理机得以实现的电控运用成倍的增加了现代打字机的功能。</p>
+</li>
+<li><p>The human skeleton consists of more than two hundred bones bound together by tough and relatively inelastic connective tissues called ligaments.<br>人类骨骼有二百多块骨头组成，住些骨头石油坚韧而相对缺乏弹性的，被称为韧带的结蒂组连在一起。</p>
+</li>
+<li><p>The pigmentation of a pearl is influenced by the type of oyster in which it develops and by the depth, temperature, and the salt content of the water in which the oyster lives.<br>珍珠的色泽受到作为其母体牡蛎种类及牡蛎生活水域的深度，温度和含盐度的制约。</p>
+</li>
+<li><p>Although mockingbirds superbly mimic the songs and calls of many birds, they can nonetheless be quickly identified as mockingbirds by certain aural clues.<br>尽管模仿鸟学很多种鸟的鸣叫声惟妙惟肖，但人类还是能够依其声音上的线索很快识别它们。</p>
+</li>
+<li><p>Not only can walking fish live out of water, but they can also travel short distances over land.<br>鲇鱼不仅可以离开水存活，还可以在岸上短距离移动。</p>
+</li>
+<li><p>Scientists do not know why dinosaurs became extinct, but some theories postulate that changers in geography, climate, and sea levels were responsible.<br>科学家不知道恐龙为何绝种了，但是一些理论推断是地理，气候和海平面的变化造成的。</p>
+</li>
+<li><p>The science of horticulture, in which the primary concerns are maximum yield and superior quality, utilizes inFORMation derived from other sciences.<br>主要目的在于丰富和优质的农艺学利用了其他科学的知识。</p>
+</li>
+<li><p>Snow aids farmers by keeping heart in the lower ground levels, thereby saving the seeds from freezing.<br>雪对农民是一种帮助，因为它保持地层土壤的温度，使种子不致冻死。</p>
+</li>
+<li><p>Even though the precise qualities of hero in literary words may vary over time, the basic exemplary function of the hero seems to remain constant.<br>历代文学作品中的英雄本色虽各有千秋，但其昭世功力却是恒古不变的。</p>
+</li>
+<li><p>People in prehistoric times created paints by grinding materials such as plants and clay into power and then adding water.<br>史前的人们制造颜料是将植物和泥土等原料磨成粉末，然后加水。</p>
+</li>
+<li><p>Often very annoying weeds, goldenrods crowd out less hardy plants and act as hosts to many insect pests.<br>黄菊花通常令人生厌，它挤走不那么顽强的植物，并找来很多害虫。</p>
+</li>
+<li><p>Starting around 7000 B.C., and for the next four thousand years, much of the Northern Hemisphere experienced temperatures warmer than at present.<br>大约从公元前七千年开始，在四千年当中，北半球的温度比现在高。</p>
+</li>
+<li><p>When Henry Ford first sought financial backing for making cars, the very notion of farmers and clerks owning automobiles was considered ridiculous.<br>当亨利.福特最初制造汽车为寻求资金支持时，农民和一般职员也能拥有汽车的想法被认为是可笑的。</p>
+</li>
+<li><p>Though once quite large, the population of the bald eagle across North America has drastically declined in the past forty years.<br>北美秃头鹰的数量一度很多，但在近四十年中全北美的秃头鹰数量急剧下降。</p>
+</li>
+<li><p>The beaver chews down trees to get food and material with which to build its home.<br>水獭啃倒树木，以便取食物并获得造窝的材料。</p>
+</li>
+<li><p>Poodles were once used as retrievers in duck hunting, but the American Kennel Club does not consider them sporting dogs because they are now primarily kept as pets.<br>长卷毛狗曾被用作猎鸭时叼回猎物的猎犬，但是美国Kennel Club却不承认它们为猎犬，因为它们现在大多数作为宠物饲养。</p>
+</li>
+<li><p>As a result of what is now know in physics and chemistry, scientists have been able to make important discoveries in biology and medicine.<br>物理学和化学的一个成果是使得科学家们能在生物学和医学上获得重大发现。</p>
+</li>
+<li><p>The practice of making excellent films based on rather obscure novels has been going on so long in the United States as to constitute a tradition.<br>根据默默无闻的小说制作优秀影片在美国由来已久，已经成为传统。</p>
+</li>
+<li><p>Since the consumer considers the best fruit to be that which is the most attractive, the grower must provide products that satisfy the discerning eye.<br>因为顾客认为最好的水果应该看起来也是最漂亮的，所以种植者必须提供能满足挑剔眼光的产品。</p>
+</li>
+<li><p>Television the most pervasive and persuasive of modern technologies, marked by rapid change and growth, is moving into a new era, an era of extraordinary sophistication and versatility, which promises to reshape our lives and our world.<br>电视，这项从迅速变化和成长为标志的最普及和最有影响力的现代技术，正在步入一个新时代，一个极为成熟和多样化的时代，这将重塑我们的生活和世界。</p>
+</li>
+<li><p>William Rainey Harper lured him to the new university of Chicago, where he remained officially for exactly a generation and where his students in advanced composition found him terrifyingly frigid in the classroom but sympathetic and understanding in their personal conferences.<br>他的教书生涯始于麻省理工学院，但是William Rainey Harper把他吸引到了新成立的芝加哥大学。他在那里正式任职长达整整一代人的时间。他的高级作文课上的学生觉得他在课上古板得可怕，但私下交流却富有同情和理解。</p>
+</li>
+<li><p>The sloth pays such little attention to its personal hygiene that green algae grow on its coarse hair and communities of a parasitic moth live in the depths of its coat producing caterpillars which graze on its mouldy hair. Its muscles are such that it is quits incapable of moving at a speed of over a kilometer an hour even over the shortest distances and the swiftest movement it can make is a sweep of its hooked arm.<br>树獭即不讲究卫生，以至于它粗糙的毛发上生出绿苔，成群的寄生蛾生长在它的皮毛深处，变成毛毛虫，并以它的脏毛为食。她的肌肉不能让他哪怕在很短的距离以内以每小时一公里的速度移动。它能做的最敏捷的动作就是挥一挥它弯曲的胳膊。</p>
+</li>
+<li><p>Artificial flowers are used for scientific as well as for decorative purposes. They are made from a variety of materials, such as way and glass, so skillfully that they can scarcely be distinguished from natural flowers.<br>人造花卉即可用于科学目的，也可用于装饰目的，它们可以用各种各样的材料制成，臂如蜡和玻璃；其制作如此精巧，几乎可以以假乱真。</p>
+</li>
+<li><p>Three years of research at an abandoned coal mine in Argonne, Illinois, have resulted in findings that scientists believe can help reclaim thousands of mine disposal sites that scar the coal-rich regions of the United States.<br>在伊利诺州Angonne市的一个废弃煤矿的三年研究取得了成果，科学家们相信这些成果可以帮助改造把美国产煤区弄得伤痕累累的数千个旧煤场。</p>
+</li>
+<li><p>When the persuading and the planning for the western railroads had finally been completed, the really challenging task remained: the dangerous, sweaty, backbreaking, brawling business of actually building the lines.<br>当有关西部铁路的说服和规划工作终于完成后，真正艰难的任务还没有开始；即危险，吃力，需要伤筋动骨和吵吵嚷嚷的建造这些铁路的实际工作。</p>
+</li>
+<li><p>Because of the space crunch, the Art Museum has become increasingly cautious in considering acquisitions and donations of art, in some cases passing up opportunities to strengthen is collections.<br>由于空间不足，艺术博物馆在考虑购买和接受捐赠的艺术品是越来越慎重，有些情况下放弃其进一步改善收藏的机会。</p>
+</li>
+<li><p>The United States Constitution requires that President be a natural-born citizen, thirty-five years of age or older, who has lived in the United States for a minimum of fourteen years.<br>美国宪法要求总统是生于美国本土的公民，三十五岁以上，并且在美国居住了至少十四年。</p>
+</li>
+<li><p>Arid regions in the southwestern United States have become increasingly inviting playgrounds for the growing number of recreation seekers who own vehicles such as motorcycles or powered trail bikes and indulge in hill-climbing contests or in caving new trails in the desert.<br>美国西部的不毛之地正成为玩耍的地方，对越来越多拥有摩托车或越野单车类车辆的，喜欢放纵于爬坡比赛或开辟新的沙漠通道的寻欢作乐者具有不断增长的吸引力。</p>
+</li>
+<li><p>Stone does decay, and so tools of long ago have remained when even the bones of the man who made them have disappeared without trace.<br>石头不会腐烂，所以以前的(石器)工具能保存下来，虽然它们的制造者已经消失的无影无踪。</p>
+</li>
+<li><p>Insects would make it impossible for us to live in the world; they would devour all our crops and kill our flocks and herds, if it were not for the protection we get from insect-eating animals.<br>昆虫就将会使我们无法在这个世界上居住；如果我们没有受到以昆虫为食的动物的保护，昆虫就会吞嚼掉我们所有的庄稼并杀死我们饲养的禽兽。</p>
+</li>
+<li><p>It is true that during their explorations they often faced difficulties and dangers of the most perilous nature, equipped in a manner which would make a modern climber shudder at the thought, but they did not go out of their way to court such excitement.<br>确实，他们在探险中遇到了极具威胁性的困难和危险，而他们的装备会让一个现代登山者想一想都会浑身颤栗。不过他们并不是刻意去追求刺激的。</p>
+</li>
+<li><p>There is only one difference between an old man and a young one: the young man has a glorious future before him and old one has a splendid future behind him: and maybe that is where the rub is.<br>老人和年轻人之间只有一个区别：年轻人的前面有辉煌的未来，老年人灿烂的未来却已在它们身后。这也许就是困难之所在。</p>
+</li>
+<li><p>I find young people exciting. They have an air of freedom, and they have not a dreary commitment to mean ambitions or love comfort. They are not anxious social climbers, and they have no devotion to material things.<br>96.我们位年强人振奋。它们带有自由的气息，他们不会为狭隘的野心和贪婪享受而孜孜以求。他们不是焦虑的向上爬的人，他们不会对物质性的东西难舍难分。</p>
+</li>
+<li><p>I am always amazed when I hear people saying that sport creates goodwill between the nations, and that if only the common peoples of the world could meet one another at football or cricket, they would have no inclination to meet on the battlefield.<br>每次我听说体育运动能够在国家间建立起友好感情，说世界各地的普通人只要能在足球场或板球场上相遇就会没有兴趣在战场上相遇的话，我都倍感诧异。</p>
+</li>
+<li><p>It is impossible to say simply for the fun and exercise: as soon as the question of prestige arises, as soon as you feel that you and some larger unit will be disgraced if you lose, the most savage combative instincts are around.<br>没有可能仅仅为了娱乐或锻炼而运动：一旦有了问题，一旦你觉得你输了你和你所属团体会有失体面时，你最野蛮的好斗本能就会被激发出来。</p>
+</li>
+<li><p>It has been found that certain bats emit squeaks and by receiving the echoes, they can locate and steer clear of obstacles——or locate flying insects on which they feed. This echo-location in bats is often compared with radar, the principle of which is similar.<br>人们已经发现，某些蝙蝠发出尖叫声并靠接受回响来锁定和避免障碍物——或者找到它们赖以为生的昆虫。蝙蝠这种回响定位法常拿来和原理与之很相近似的雷达相比。</p>
+</li>
+<li><p>As the time and cost of making a clip drop to a few days and a few hundred dollars, engineers may soon be free to let their imaginations soar without being penalized by expensive failure.<br>随着芯片制造时间和费用降低到了几天和几百美元，工程师们可能很快可以任他们的想象驰骋而不会被昂贵的失败所惩罚。</p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="cl6x0og1v00071nwm1st9rrrv" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2019/01/06/english/7000/" data-id="cl6x0zs4k000r66wmd3dia9y2" class="article-share-link">Share</a>
       
 
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/english/">english</a></li></ul>
+
     </footer>
   </div>
   
@@ -311,10 +347,10 @@ var server=http.createServer(function(req,res){
 
 
   
-    <article id="post-回调-事件-promise和asyncawait" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-english/english-summary" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/09/19/回调-事件-promise和asyncawait/" class="article-date">
-  <time datetime="2017-09-18T16:00:00.000Z" itemprop="datePublished">2017-09-19</time>
+    <a href="/2019/01/06/english/english-summary/" class="article-date">
+  <time datetime="2019-01-05T16:00:00.000Z" itemprop="datePublished">2019-01-06</time>
 </a>
     
   </div>
@@ -325,7 +361,7 @@ var server=http.createServer(function(req,res){
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/19/回调-事件-promise和asyncawait/">回调函数 钩子(hook) promise和async await</a>
+      <a class="article-title" href="/2019/01/06/english/english-summary/">english-summary</a>
     </h1>
   
 
@@ -333,143 +369,472 @@ var server=http.createServer(function(req,res){
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="回调-钩子-promise和async-await"><a href="#回调-钩子-promise和async-await" class="headerlink" title="回调-钩子 promise和async await"></a>回调-钩子 promise和async await</h2><h3 id="回调函数-callback"><a href="#回调函数-callback" class="headerlink" title="回调函数(callback)"></a>回调函数(callback)</h3><p>回调函数的英文解释为：</p>
+        <h3 id="英语语法简单总结"><a href="#英语语法简单总结" class="headerlink" title="英语语法简单总结"></a>英语语法简单总结</h3><h1 id="初级句型"><a href="#初级句型" class="headerlink" title="初级句型"></a>初级句型</h1><h2 id="基本句型及补语"><a href="#基本句型及补语" class="headerlink" title="基本句型及补语"></a>基本句型及补语</h2><h4 id="五种简单的基本句型"><a href="#五种简单的基本句型" class="headerlink" title="五种简单的基本句型"></a>五种简单的基本句型</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">5种</th>
+<th style="text-align:center">S+V…</th>
+<th style="text-align:center">主语+动词+…</th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">S+V</td>
+<td style="text-align:center">主语+动词</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">S+V+O</td>
+<td style="text-align:center">主句+动词+宾语</td>
+<td style="text-align:center">S：主语</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">S+V+C</td>
+<td style="text-align:center">主语+动词+补语</td>
+<td style="text-align:center">V：动词</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">S+V+O+O</td>
+<td style="text-align:center">主语+动词+宾语+宾语</td>
+<td style="text-align:center">O：宾语</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">S+V+O+C</td>
+<td style="text-align:center">主语+动词+宾语+补语</td>
+<td style="text-align:center">C：补语</td>
+</tr>
+</tbody>
+</table>
+<h2 id="名词词组与冠词"><a href="#名词词组与冠词" class="headerlink" title="名词词组与冠词"></a>名词词组与冠词</h2><h4 id="名词短语"><a href="#名词短语" class="headerlink" title="名词短语"></a>名词短语</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">Noun Phrases</th>
+<th style="text-align:center">名词短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><em>a</em> new book</td>
+<td style="text-align:center">一本新书</td>
+</tr>
+<tr>
+<td style="text-align:center"><em>many</em> good students</td>
+<td style="text-align:center">许多好学生</td>
+</tr>
+<tr>
+<td style="text-align:center"><em>his</em> beautiful wife</td>
+<td style="text-align:center">他美丽的妻子</td>
+</tr>
+<tr>
+<td style="text-align:center"><em>the</em> best answer</td>
+<td style="text-align:center">最好的答案</td>
+</tr>
+<tr>
+<td style="text-align:center"><em>those</em> sweet roses</td>
+<td style="text-align:center">那些芳香的玫瑰花</td>
+</tr>
+</tbody>
+</table>
+<p> 名词短语：限定词+（形容词）+名词，每个部分都可以省略</p>
+<p><strong>在语源学上,<code>the</code>可视为 that 或 those 的弱化形式.</strong> , a 是 one 的弱化</p>
 <blockquote>
-<p>A callback is a function that is passed as an argument to another function and is executed after its parent function has completed.</p>
+<p><strong>that或those</strong> 是指示形容词,有<strong>明确的</strong>指示功能</p>
 </blockquote>
-<p>翻译过来就是：回调函数是一个作为变量传递给另外一个函数的函数，它在主体函数执行完之后执行。</p>
-<p>function A有一个参数function B，function B会在function A执行完成之后被调用执行。</p>
-<h3 id="钩子函数-hook"><a href="#钩子函数-hook" class="headerlink" title="钩子函数(hook)"></a>钩子函数(hook)</h3><blockquote>
-<p>钩子的概念源于Windows的消息处理机制，通过设置钩子，应用程序可以对所有的消息事件进行拦截，然后执行钩子函数，对消息进行想要的处理方式。</p>
+<p>专有名词的定义是: 只有一个对象存在的名词,前面不加<strong>限定词</strong>(冠词或者定冠词)</p>
+<p>如果加了定冠词 <strong>the</strong>,就表示这个东西又两个以上,也就不是专有名词了.</p>
+<h4 id="复合名词"><a href="#复合名词" class="headerlink" title="复合名词"></a>复合名词</h4><ol>
+<li>动名词的一些变化</li>
+</ol>
+<blockquote>
+<p>例1：Picking strawberries can be fun.<br>S V C （采草莓很好玩。）<br>例2：The picking of strawberries requires patience.<br>S V O （采草莓要有耐心。）<br>例3：Strawberry-picking is a strenuous job.<br>S V C （采草莓是很费力的工作。） </p>
 </blockquote>
-<p><strong>钩子函数在捕获消息的第一时间执行</strong>，回调函数不是</p>
-<h3 id="钩子函数和回调函数"><a href="#钩子函数和回调函数" class="headerlink" title="钩子函数和回调函数"></a>钩子函数和回调函数</h3><ul>
-<li><p>js派函数监听事件 =&gt; 监听函数就是所谓的钩子函数=&gt;函数钩取事件：<strong>函数主动找事件</strong>=&gt;钩子函数</p>
-</li>
-<li><p>js预留函数给dom事件，dom事件调用js预留的函数 =&gt;事件派发给函数：<strong>事件调用函数</strong>=&gt;回调函数</p>
-</li>
-</ul>
-<h3 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h3><pre><code>let btn = document.getElementById(&quot;btn&quot;);
-btn.onclick = () =&gt; {
-    console.log(&quot;i&apos;m a hook&quot;);
-}
-</code></pre><h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><pre><code>btn.addEventListener(&quot;click&quot;,() =&gt;{
-    console.log(this.onclick);//undefined
-});
-</code></pre><p>JS由于自身的特殊性（单线程），上面的两段代码都是异步的。</p>
-<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>JavaScript的代码都是单线程执行的。</p>
-<p>导致JavaScript的所有网络操作，浏览器事件，都必须是异步执行。</p>
-<p>异步执行可以用回调函数实现,但是不好看，而且不利于代码复用</p>
-<p>所谓Promise ，简单说就是一个容器，里面保存着某个未来才回结束的事件(通常是一个异步操作）的结果。从语法上说，Promise是一个对象，从它可以获取异步操作的消息。</p>
-<p>Promise 对象的状态不受外界影响</p>
-<p>三种状态:</p>
+<p><strong>第一句中</strong>，picking strawberries 可以看出有动词 pick 和宾语 strawberries 。主语被省略了，看不出来是谁，只是笼统的 anybody 。所以，这句可以还原为：</p>
+<blockquote>
+<p>That anybody picks strawberries can be fun.<br>S V C</p>
+</blockquote>
+<p><strong>主语部分本来是名词从句，现在简化为动名词短语</strong> picking strawberries ，其中 strawberries 是 pick 的宾语。</p>
+<p><strong>第二个例句中</strong>，picking 前面加上了定冠词 the ，这样是把 the picking 当做一个名词短语来使用。所以 picking 后面不能再有宾语，而要改成介系词短语 of strawberries 做为修饰语，形容 the picking。</p>
+<p><strong>在第三句中</strong>，主语 strawberry-picking 是个复合字。<br>把 strawberries 拿到动名词 picking 的前面，也就是把它放在形容词位置使用，这也是为什么要改成单数的原因：英语形容词是没有复数的。中间再加上 hyphen(连字符) ，就串连成复合名词 strawberry-picking 。<br>这个构造和 mountain-climbing 是相同的。</p>
 <ul>
-<li>pending：进行中</li>
-<li>fulfilled :已经成功</li>
-<li>rejected 已经失败</li>
+<li>Chinese Map 属于中国的地图（不一定是中国地图)</li>
+<li>Map of China 中国地图</li>
 </ul>
-<p>状态改变：<br>Promise对象的状态改变，只有两种可能：</p>
+<hr>
 <ul>
-<li>从pending变为fulfilled</li>
-<li>从pending变为rejected。</li>
+<li>Chinese bank 意思为中国的银行（只说明这东西属于中国,来自中国）</li>
+<li>Bank of China 中国银行</li>
 </ul>
-<p>这两种情况只要发生，状态就凝固了，不会再变了，这时就称为resolved（已定型）</p>
-<p>基本用法<br>ES6规定，Promise对象是一个构造函数，用来生成Promise实例</p>
-<pre><code>const promist = new Promise(function(resolve,reject){
-    if(/*异步操作成功*/){
-        resolve(value);
-    }else{
-        reject(error);
-    }
-})
-</code></pre><p>resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<br>reject函数的作用是，将Promise对象的状态从“未完成”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
-<p>Promise 实例生成以后，可以用then 方法分别指定resolved状态和rejected状态的回调函数。</p>
-<pre><code>promise.then(function(value){
-//success
-},function(error){
-//failure
-});
-</code></pre><h3 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h3><ul>
-<li>async/await是写异步代码的新方式，以前的方法有回调函数和Promise。</li>
-<li>async/await是基于Promise实现的，它不能用于普通的回调函数。</li>
-<li>async/await与Promise一样，是非阻塞的。</li>
-<li>async/await使得异步代码看起来像同步代码，这正是它的魔力所在。</li>
-</ul>
-<h4 id="Async-Await语法"><a href="#Async-Await语法" class="headerlink" title="Async/Await语法"></a>Async/Await语法</h4><p>示例中，getJSON函数返回一个promise，这个promise成功resolve时会返回一个json对象。我们只是调用这个函数，打印返回的JSON对象，然后返回”done”。</p>
-<p>使用Promise是这样的:</p>
-<pre><code>const makeRequest = () =&gt;
-  getJSON()
-    .then(data =&gt; {
-      console.log(data)
-      return &quot;done&quot;
-    })
-
-makeRequest()
-</code></pre><p>使用Async/Await是这样的:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  console.log(await getJSON())
-  return &quot;done&quot;
-}
-
-makeRequest()
-</code></pre><p><strong>区别</strong>:</p>
+<hr>
 <ul>
-<li><p>函数前面多了一个aync关键字。await关键字只能用在aync定义的函数内。async函数会隐式地返回一个promise，该promise的reosolve值就是函数return的值。(示例中reosolve值就是字符串”done”)</p>
+<li>My photo 属于我的照片</li>
+<li>photo of me 我的照片</li>
+</ul>
+<hr>
+<p>shoe store 和 store of shoe ??</p>
+<p>Book Shop<br>Pencil Box<br>Key Chain  </p>
+<h2 id="动词时态"><a href="#动词时态" class="headerlink" title="动词时态"></a>动词时态</h2><p>一、把be动词当动词看，句子就只剩两种状态：<strong>一般时与完成时</strong>。<br>二、一般时是以括弧型的时间来表达。<br>三、完成时是以箭头型的时间来表达。<br>四、be动词后面的分词当作形容词补语。现在分词有正在进行的意思，过去分词有被动的意思。  </p>
+<h4 id="一般时"><a href="#一般时" class="headerlink" title="一般时"></a>一般时</h4><p>一般时的动词可以清楚交代此动作是发生于（哪个时段）。而与它搭配的时间副词通常会明确标示出一个时段。也就是说：一般时的时间是（括弧的形状），我们可以用括弧把（简单式的时间括起来）。<br>在以下的叙述中，我们就以括弧来表示简单式中所描述的时间，这个括弧大小不拘，可以小到一个点，也可以大到无限，可是必须标示得很明确。</p>
+<h4 id="完成时"><a href="#完成时" class="headerlink" title="完成时"></a>完成时</h4><p>另一种主要的状态是完成式。相对于一般时用括弧形状来表达时间，完成时则是以（箭头形状→）来表达时间，表示（动作的截止时间）。从功能上来看，一般时是交代动作发生的时段，而完成时并不对动作发生的时段作明确的交代，只表示“曾经”、“做过”的意思。</p>
+<h3 id="不及物动词没有被动语态"><a href="#不及物动词没有被动语态" class="headerlink" title="不及物动词没有被动语态"></a>不及物动词没有被动语态</h3><h2 id="不定式短语"><a href="#不定式短语" class="headerlink" title="不定式短语"></a>不定式短语</h2><h4 id="不定式与助动词的共同点"><a href="#不定式与助动词的共同点" class="headerlink" title="不定式与助动词的共同点"></a>不定式与助动词的共同点</h4><ol>
+<li>后面都要接原形动词</li>
+<li>都有「不确定」的语气</li>
+<li>都要用完成式来表达相对的过去时间</li>
+<li>所有重要的语气助动词，都可以改写为不定词。</li>
+</ol>
+<p>从以上四点来看，不定词与助动词其实是同一种东西的相互变化，凡是不定词出现的地方，都可以看成是另外一个从句的省略，把主语省略，助动词改为不定词。</p>
+<h4 id="不定词与动名词的区分"><a href="#不定词与动名词的区分" class="headerlink" title="不定词与动名词的区分"></a>不定词与动名词的区分</h4><h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><ul>
+<li>动名词带有<strong>确定性</strong>语气</li>
+<li>不定词是助动词的变化，带有<strong>不确定</strong>语气。</li>
+</ul>
+<h2 id="动名词"><a href="#动名词" class="headerlink" title="动名词"></a>动名词</h2><h3 id="动名词的特性"><a href="#动名词的特性" class="headerlink" title="动名词的特性"></a>动名词的特性</h3><h4 id="一-动名词与普通名词的比较"><a href="#一-动名词与普通名词的比较" class="headerlink" title="一 动名词与普通名词的比较"></a>一 动名词与普通名词的比较</h4><ul>
+<li><strong>动名词:</strong> 持续性与动作性 </li>
+<li><strong>普通名词:</strong> 一种抽象概念</li>
+</ul>
+<h4 id="二-动名词短语与名词从句的比较"><a href="#二-动名词短语与名词从句的比较" class="headerlink" title="二 动名词短语与名词从句的比较"></a>二 动名词短语与名词从句的比较</h4><p>动名词短语可以视为名词从句的变化。只要把主语和 be 动词放回去，就会出现完整的名词从句</p>
+<h3 id="动名词的一些变化"><a href="#动名词的一些变化" class="headerlink" title="动名词的一些变化"></a>动名词的一些变化</h3><h4 id="一、复合字"><a href="#一、复合字" class="headerlink" title="一、复合字"></a>一、复合字</h4><blockquote>
+<p>例1：Picking strawberries can be fun.</p>
+<p>S V C （采草莓很好玩。）</p>
+<p>例2：The picking of strawberries requires patience.</p>
+<p>S V O （采草莓要有耐心。）</p>
+<p>例3：Strawberry-picking is a strenuous job.</p>
+<p>S V C （采草莓是很费力的工作。）</p>
+</blockquote>
+<h4 id="二、主词不能省略时的处理方式"><a href="#二、主词不能省略时的处理方式" class="headerlink" title="二、主词不能省略时的处理方式"></a>二、主词不能省略时的处理方式</h4><h4 id="三、动名词的被动式：being-Ven"><a href="#三、动名词的被动式：being-Ven" class="headerlink" title="三、动名词的被动式：being Ven"></a>三、动名词的被动式：being Ven</h4><p>动名词与现在分词的分辨</p>
+<p><strong>这两种动状词写起来一样，有时又出现在同样的位置，不习惯的话不太容易有所区分</strong>。还好因为写来完全相同，所以你不会分辨也没关系！不过，为求充分理解，我们还是来仔细分析一下。</p>
+<blockquote>
+<p>That flying bird is a black-faced spoonbill. （那只在飞的鸟是黑面琵鹭。）</p>
+</blockquote>
+<p>这个 flying 出现在名词短语 that bird 中间的形容词位置，是现在分词。现在分词都是形容词，强烈暗示“进行”的动作。</p>
+<p>为了要验证它的确是现在分词，可以把它移到形容词的另一个位置：补语位置来看看。</p>
+<blockquote>
+<p>That bird is flying.<br>S V C</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>That <strong>flying</strong> jacket looks smart on you.<br>（那件飞行装你穿起来很帅。）</p>
+<p>这里的 flying 也是放在名词短语中的形容词位置，可是它不是现在分词，而是动名词，只是借放在这个位置做复合名词。</p>
+</blockquote>
+<h3 id="结语-1"><a href="#结语-1" class="headerlink" title="结语"></a>结语</h3><ul>
+<li>一、不定词是助动词的变化，带有不确定语气。</li>
+<li>二、动名词的结构接近普通名词，可是往往带有「动作、持续」的意味。</li>
+</ul>
+<h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><h3 id="分词与形容词的比较"><a href="#分词与形容词的比较" class="headerlink" title="分词与形容词的比较"></a>分词与形容词的比较</h3><p>形容词是用来形容名词的，在句中有两种位置:</p>
+<ol>
+<li>名词短语中</li>
+<li>补语位置<br>这两个位置都可以放分词来取代形容词,同样达到修饰名词的目的。</li>
+</ol>
+<h4 id="一、现在分词与形容词的关系"><a href="#一、现在分词与形容词的关系" class="headerlink" title="一、现在分词与形容词的关系"></a>一、现在分词与形容词的关系</h4><blockquote>
+<p>That black dog doesn’t bite.<br>（那只黑狗不咬人。）</p>
+<p>A barking dog doesn’t bite.<br>（爱叫的狗不咬人。）</p>
+</blockquote>
+<p>现在分词 barking 和普通形容词 black 都出现于 be 动词后面，都可以视为补语，形容主语 dog ，只不过<strong>现在分词</strong> -ing 字尾要加上<strong>进行</strong>的暗示</p>
+<h4 id="二、过去分词与形容词的关系"><a href="#二、过去分词与形容词的关系" class="headerlink" title="二、过去分词与形容词的关系"></a>二、过去分词与形容词的关系</h4><p><strong>过去分词</strong>与现在分词一样，可以出现在两种形容词位置来形容名词，不过它的弦外之音是被动或完成的暗示，要加上<strong>“被”、“已经”</strong>来解释。</p>
+<hr>
+<p>动词+ing 形式可用于动名词和现在分词两种形式。</p>
+<p>现在分词在句中作为谓语<strong>进行时</strong></p>
+<h2 id="形容词"><a href="#形容词" class="headerlink" title="形容词"></a>形容词</h2><p>英语的修饰语有两种词类：形容词和副词。<br>形容词是修饰名词用的。<br>副词则用来修饰名词以外的词类，包括动词、形容词与其他副词。</p>
+<p>广义的形容词包括形容词从句、简化形容词从句（包含分词短语、同位语、不定词）、介词、复合词及单词等等。  </p>
+<p>单词形状的形容词，通常在句子中只有两种位置可能出现：</p>
+<ol>
+<li>名词短语中</li>
+<li>补语位置</li>
+</ol>
+<p>名词短语中的形容词</p>
+<p>这一类的形容词一般是出现在限定词（像a、the、this、some、five、John’s等词）与名词中间。</p>
+<p>这种形容词英语称为attributive adjectives，是用来表示该名词属性(attribute)的形容词</p>
+<h4 id="放在名词后面的形容词"><a href="#放在名词后面的形容词" class="headerlink" title="放在名词后面的形容词"></a>放在名词后面的形容词</h4><h4 id="名词专用为形容词"><a href="#名词专用为形容词" class="headerlink" title="名词专用为形容词"></a>名词专用为形容词</h4><p>这可以视为复合名词来看待。例如：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">限定词</th>
+<th style="text-align:center">形容词</th>
+<th style="text-align:center">名词</th>
+<th style="text-align:center">词意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a</td>
+<td style="text-align:center">government</td>
+<td style="text-align:center">store</td>
+<td style="text-align:center">（一家公营商店）</td>
+</tr>
+<tr>
+<td style="text-align:center">my</td>
+<td style="text-align:center">pencil</td>
+<td style="text-align:center">sharpener</td>
+<td style="text-align:center">（我的削铅笔机）</td>
+</tr>
+<tr>
+<td style="text-align:center">a</td>
+<td style="text-align:center">cigarette</td>
+<td style="text-align:center">box</td>
+<td style="text-align:center">（一个香烟盒）</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">movie</td>
+<td style="text-align:center">theaters</td>
+<td style="text-align:center">（电影院）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="复合词形容词"><a href="#复合词形容词" class="headerlink" title="复合词形容词"></a>复合词形容词</h4><p>单词形状的形容词才能够放入名词短语中间的位置。如果是短语形状而要放到名词短语中，就必须先加上hyphen制造成复合词。 如果原先的短语中有复数的名词存在，还得先把-s去掉，因为要当形容词单词使用，不能有复数。例如：</p>
+<blockquote>
+<p>a turn-of-the-century publication<br>（一册在世纪转换之际出版的作品）<br>an eye-opening experience<br>（令人大开眼界的经验）<br>a five-year-old child<br>（一个五岁小孩）<br>a 100-watt light bulb<br>（一支100瓦的灯泡）  </p>
+</blockquote>
+<p>请注意例句中的 eye, year, watt 等字都是因为转作形容词使用而把 -s 去掉。</p>
+<blockquote>
+<p>名词短语中的形容词叫做 attributive adjectives，用来表达该名词的属(attribute)。<br>补语位置的形容词叫做 predicative adjectives, 用来补述（predicate)关于名词的事项。<br>补语位置的形容词距离名词最远，惯常用来对名词做一些临时性、补充性的叙述</p>
+</blockquote>
+<h2 id="副词"><a href="#副词" class="headerlink" title="副词"></a>副词</h2><p>八大词类当中，属于修饰语性质的有形容词和副词两种。<br>这两种词类之间的分工，在语法书中都是说形容词用来修饰名词，而副词用来修饰名词以外的词类（包括动词、形容词与副词）</p>
+<h3 id="各种副词之间位置的变化。"><a href="#各种副词之间位置的变化。" class="headerlink" title="各种副词之间位置的变化。"></a>各种副词之间位置的变化。</h3><p>方法、状态的副词(Adverbs of Manner)  </p>
+<p>这一类的副词是修饰动词专用的，典型的拼法是形容词加上 -ly 字尾。既然它是修饰动词的，<strong>那么原则上它的位置应该尽量和动词接近，通常是放在动词后面的位置。</strong>可是，副词是修饰语，属于比较不重要的元素，如果在句中有宾语、补语等主要元素存在时，方法、状态的副词就要向后挪,让宾语、补语等元素先出来。 假如后移的结果造成副词与它所修饰的动词之间距离太远,那么也可以另辟蹊径，把方法、状态的副词调到动词前面的位置去，以维持修饰语必须和它所修饰的对象接近的原则。</p>
+<h2 id="语气"><a href="#语气" class="headerlink" title="语气"></a>语气</h2><p>语气(Moods)是利用动词变化来表达“真、假” 口吻的方式。 依各种不同程度的“真、假” 口吻，<strong>可以细分为四种语气</strong>：</p>
+<p>一、 叙述事实语（Indicative）: 表示所说的是真的。  </p>
+<blockquote>
+<p>同时叙述到两件未来的事情,而两者之间有时间或条件的关联性时，往往其中一件（副词从句中的那件——何谓副词从句，将来会再作说明）要改成现在式</p>
+</blockquote>
+<p>二、 条件语（Conditional）: 表示真假还不能确定。  (叫 “判断语气” 更合适?)  </p>
+<ul>
+<li>用完成式表达对过去的猜测</li>
+</ul>
+<blockquote>
+<p>语气助动词用来猜测过去的事情时，因为缺乏表达过去时间的能力，所以要借助完成式来表达对过去的猜测。例如：</p>
+</blockquote>
+<blockquote>
+<p>It may rain any minute now.<br>（随时可能会下雨。）<br>It may have rained a little last night.<br>（昨晚可能下过一点雨。）  </p>
+</blockquote>
+<p>三、 假设语（Subjunctive）: 说反话，表示所说的与事实相反。  </p>
+<blockquote>
+<p>这是一种“说反话”的语气，表示所说的话和事实相反。这种语气是以<strong>动词的过去形态</strong>作为表达“非事实”的手段。</p>
+</blockquote>
+<p>四、 祈使语（Imperative）: 表示希望能成真，但尚未实现。  </p>
+<p>祈使句又称为命令句。<strong>这种语气可视为是条件语气中，省略助动词</strong>来表示“希望能成真，但尚未实现”。</p>
+<p>例如：  </p>
+<blockquote>
+<p>Come in! 可以视为 You may come in! 的省略。</p>
+</blockquote>
+<p>如果法官直接对证人提出要求，他会说：</p>
+<blockquote>
+<p>(You must) Leave the courtroom! (离开法庭！)</p>
+</blockquote>
+<hr>
+<p>四种不同的语气，看起来好像很复杂，不过各有各的重点，只要能掌握重点，便不难区分，也不需死背</p>
+<h2 id="介词"><a href="#介词" class="headerlink" title="介词"></a>介词</h2><p>在英语语法中,介词^1可以说是最简单、也可以说是最难的东西。<br>说它简单，是因为它没有什么观念可言，不像时态、语气、句型等，要求系统性的理解，所以在介词的部分，不会有“不懂” 的问题。然而介词之难，也就难在它缺乏观念性，不能以一套观念来涵盖所有介词的用法。英语中的介词虽然没有多少个，可是在短语中的用法却变化多端。就算有多年英语写作经验的人，也可能用错</p>
+<h3 id="介词短语"><a href="#介词短语" class="headerlink" title="介词短语"></a>介词短语</h3><p>所谓“介词短语”，就是由介词加上一个名词短语所构成的意义单元，在句中常被当做修饰语(形容词短语或副词短语)，用来修饰名词、动词、形容词与副词等各种词类</p>
+<blockquote>
+<p>Cherries are in season now.<br>（现在正是樱桃生产的季节。)<br>名词 介词短语<br>Eggs are sold by the dozen.<br>（鸡蛋是论打出售的。）<br>动词 介词短语<br>The box is full of chocolates.<br>（盒子里装满了巧克力。）<br>形容词 介词短语<br>He’ll return tomorrow at the latest.<br>（他最晚明天回来。）<br>副词 介词短语</p>
+</blockquote>
+<h3 id="空间的介词"><a href="#空间的介词" class="headerlink" title="空间的介词"></a>空间的介词</h3><ul>
+<li>点 at</li>
+<li>线 on. along</li>
+<li>面 on</li>
+<li>体 in</li>
+</ul>
+<h3 id="时间的介词"><a href="#时间的介词" class="headerlink" title="时间的介词"></a>时间的介词</h3><p><strong>以 at 表示“点”，以 in 表示“长时间”，以 on 标示出特定日期。</strong></p>
+<h2 id="主语动词一致性"><a href="#主语动词一致性" class="headerlink" title="主语动词一致性"></a>主语动词一致性</h2><h4 id="主语是一个还是两个人（或物）？"><a href="#主语是一个还是两个人（或物）？" class="headerlink" title="主语是一个还是两个人（或物）？"></a>主语是一个还是两个人（或物）？</h4><p>一般说来，对等连接词 and 出现在主语中,往往表示主语有两个人（或物)，所以应该是复数</p>
+<p>限定词可以帮助判断名词短语的单复数</p>
+<h4 id="主语是哪一个？"><a href="#主语是哪一个？" class="headerlink" title="主语是哪一个？"></a>主语是哪一个？</h4><h4 id="主语是关系代名词时"><a href="#主语是关系代名词时" class="headerlink" title="主语是关系代名词时"></a>主语是关系代名词时</h4><p>关系代名词代表其先行词。它本身没有单复数的变化，作主语时完全要看它代表的先行词是什么</p>
+<h4 id="以单位做主语时"><a href="#以单位做主语时" class="headerlink" title="以单位做主语时"></a>以单位做主语时</h4><p>度量衡、时间、金钱等单位常以复数形态出现，做主语时却<strong>不一定要当复数</strong>看</p>
+<h4 id="主语后面有介词短语时"><a href="#主语后面有介词短语时" class="headerlink" title="主语后面有介词短语时"></a>主语后面有介词短语时</h4><p>一般说来，介词短语并不能影响主语是单数还是复数，所以在判断一致性时可以不去管它。不过有些情况还是需要留意。</p>
+<p>主语为空的字眼时 如果主语是空的，只表达“全部/部分”的概念，看不出是什么东西，这时才要看后面的介词短语来判断单复数。</p>
+<h4 id="集合名词"><a href="#集合名词" class="headerlink" title="集合名词"></a>集合名词</h4><p>集合名词在英语中不多，常见的只有 staff (员工、幕僚）、faculty (教员）、以及 family、police、committee、crew(机员、船员）这几个字。<br>这种词用来表示“一个单位、集团”时要用单数动词，但是不加-s,而用来表示单位内的“成员”时，要用复数动词。</p>
+<h4 id="一些以-S-结尾的名词"><a href="#一些以-S-结尾的名词" class="headerlink" title="一些以 S 结尾的名词"></a>一些以 S 结尾的名词</h4><p>名词词尾的 S 不见得是复数，有些反而只能用单数形式，像有些代表学科、疾病的字眼经常是如此</p>
+<blockquote>
+<p>以上所述，大致涵盖了处理一致性的所有重要原则。不过这方面的问题是知易行难。<br>读者一定要多读多写，才能避免错误。</p>
+</blockquote>
+<h1 id="中级句型"><a href="#中级句型" class="headerlink" title="中级句型"></a>中级句型</h1><h2 id="名词从句"><a href="#名词从句" class="headerlink" title="名词从句"></a>名词从句</h2><p><strong>特征</strong>  </p>
+<ol>
+<li>本身原来是一个完整、独立的简单句。</li>
+<li>前面加上连接词 that 。这个连接词没有意义，只有语法功能，表示后面跟着一个名词从句。</li>
+<li>名词从句须放在主要子句的名词位置（主语、宾语、补语、同位语等位置），当作名词使用。</li>
+</ol>
+<p><strong>名词从句出现的各种位置</strong></p>
+<ul>
+<li>主语位置</li>
+<li>宾语位置 </li>
+<li>补语位置</li>
+<li>同位语位置</li>
+</ul>
+<p><strong>名词从句大概有两种：</strong></p>
+<p><strong>一、</strong>一个直述句外加连接词 that 所构成，表示 that thing (那件事)。<br>例如：</p>
+<blockquote>
+<p>He said (that) he would call. (他说过要打电话来。)<br>S V O (名词从句)</p>
+</blockquote>
+<p><strong>二、</strong>由疑问词引导的疑问句改造而成，表示 a question (—个问题)。<br>例如：</p>
+<blockquote>
+<p>He asked how much it was.（他问它多少钱。）<br>S V O (名词从句)</p>
+</blockquote>
+<p>这个例子中的名词从句就是由疑问句 How much is it 改造而成</p>
+<h2 id="副词从句"><a href="#副词从句" class="headerlink" title="副词从句"></a>副词从句</h2><p>副词从句是三种从属从句（名词、定语、副词从句）中最简单的一种。它与主要从句之间，<strong>有点像并列从句</strong>的关系，</p>
+<h3 id="名词从句和副词从句"><a href="#名词从句和副词从句" class="headerlink" title="名词从句和副词从句"></a>名词从句和副词从句</h3><p>共同点:</p>
+<ol>
+<li>两者原来都是完整、独立的简单句</li>
+<li>两者都是加上从属连接词构成从属从句</li>
+</ol>
+<p>不同点:</p>
+<blockquote>
+<p>名词从句加的连接词是 that ，表示“那件事情”，此外没有别的意义<br>副词从句加的连接词，都是有意义的连接词，表达两句话之间的逻辑关系：though 表示让步，because 表示原因， if 表示条件。</p>
+</blockquote>
+<ol>
+<li><p><strong>使用的连接词不同，一个有意义，一个没有意义，这是副词从句和名词从句第一个重要的差别。</strong></p>
 </li>
-<li><p>不能在最外层代码中使用await，因为不在async函数内。</p>
+<li><p>第二个差别是：名词从句属于名词类，要放在主要从句中的名词位置使用，副词从句则不然。</p>
 </li>
-</ul>
-<h3 id="为什么Async-Await更好？"><a href="#为什么Async-Await更好？" class="headerlink" title="为什么Async/Await更好？"></a>为什么Async/Await更好？</h3><h4 id="1-简洁"><a href="#1-简洁" class="headerlink" title="1.简洁"></a>1.简洁</h4><p>由示例可知，使用Async/Await明显节约了不少代码。</p>
+</ol>
+<h4 id="副词从句的种类"><a href="#副词从句的种类" class="headerlink" title="副词从句的种类"></a>副词从句的种类</h4><p>副词从句因为结构十分单纯，所以学习副词从句的重点只是在认识各种连接词，以便写作时可以选择贴切的连接词来表达各种逻辑关系。</p>
+<p>按照各种逻辑关系把副词从句的连接词大略分类  <em>**</em></p>
 <ul>
-<li>不需要写.then，</li>
-<li>不需要写匿名函数处理Promise的resolve值，</li>
-<li>不需要定义多余的data变量，还避免了嵌套代码。</li>
+<li>时间、地方</li>
+<li>条件</li>
+<li>原因，结果</li>
+<li>目的</li>
+<li>让步</li>
+<li>限制</li>
+<li>方法，状态</li>
 </ul>
-<p>这些小的优点会迅速累计起来，这在之后的代码示例中会更加明显。</p>
-<h4 id="2-错误处理"><a href="#2-错误处理" class="headerlink" title="2.错误处理"></a>2.错误处理</h4><p>Async/Await让try/catch可以同时处理同步和异步错误。在下面的promise示例中，try/catch不能处理JSON.parse的错误，因为它在Promise中。我们需要使用.catch，这样错误处理代码非常冗余。并且，在我们的实际生产代码会更加复杂。</p>
-<pre><code>const makeRequest = () =&gt; {
-  try {
-    getJSON()
-      .then(result =&gt; {
-        // JSON.parse可能会出错
-        const data = JSON.parse(result)
-        console.log(data)
-      })
-      // 取消注释，处理异步代码的错误
-      // .catch((err) =&gt; {
-      //   console.log(err)
-      // })
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><p>使用aync/await的话，catch能处理JSON.parse错误:</p>
-<pre><code>const makeRequest = async () =&gt; {
-  try {
-    // this parse may fail
-    const data = JSON.parse(await getJSON())
-    console.log(data)
-  } catch (err) {
-    console.log(err)
-  }
-}
-</code></pre><ul>
-<li>3.条件语句</li>
-<li>4.中间值</li>
-<li>5.错误栈</li>
-<li>6.调试</li>
+<hr>
+<h2 id="形容词从句"><a href="#形容词从句" class="headerlink" title="形容词从句"></a>形容词从句</h2><p><strong>特征</strong></p>
+<ol>
+<li>两个句子要有交集</li>
+<li>把交集点改写为关系词的拼法（wh-），让它产生连接词的功能</li>
+<li>将定语从句附于主要子句的交集点（名词），后面来修饰它（做形容词使用）</li>
+</ol>
+<p>由以上的分析可以看出，定语从句有一个很重要的特色：<strong>定语从句的连接词是从句中内含字眼的改写，而名词从句与副词从句的连接词都是外加的。</strong></p>
+<blockquote>
+<p>副词从句的连接词虽然是外加的,但是 <strong>有意义</strong></p>
+</blockquote>
+<p>定语从句中与主要从句的交叉点，可能是<strong>代名词</strong>，也可能是<strong>副词</strong>。改变为 wh- 的拼法后，分别称为关系代名词与关系副词。</p>
+<h4 id="何时该使用that？何时不该使用that？"><a href="#何时该使用that？何时不该使用that？" class="headerlink" title="何时该使用that？何时不该使用that？"></a>何时该使用that？何时不该使用that？</h4><h4 id="关系代名词的省略"><a href="#关系代名词的省略" class="headerlink" title="关系代名词的省略"></a>关系代名词的省略</h4><p>语法书列出规则：<strong>关系代名词作宾语使用时可以省略</strong>。这条规则没错，就是不太好背</p>
+<h4 id="先行词的省略"><a href="#先行词的省略" class="headerlink" title="先行词的省略"></a>先行词的省略</h4><blockquote>
+<p>关系代名词与先行词重复，有时候可以省略掉关系词。同样的，有时候可以选择把先行词省略掉。如果要省略掉先行词，首先这个先行词得是空的、没有内容的字眼，像 thing,people 等等空泛的字眼。<br>其次，定语从句与先行词之间不能有逗号断开。而且，因为先行词是名词类，属于重要元素，不是可有可无的修饰语，所以一旦省略掉先行词，在<strong>关系词</strong>的部分要有所表示。</p>
+</blockquote>
+<p>表示的方式可分成以下几种情形。</p>
+<ol>
+<li>what</li>
+<li>whoever</li>
+<li>whichever</li>
+</ol>
+<h4 id="定语从句的位置"><a href="#定语从句的位置" class="headerlink" title="定语从句的位置"></a>定语从句的位置</h4><p>例外丛生的规则，不仅没有指导的功能，甚至会妨碍判断，所以判断定语从句的位置，应该回到原点：<strong>放在哪个位置最清楚？以此作为判断的准则</strong>，远胜于死背规则</p>
+<p>没有助动词时，变成 Ving</p>
+<h4 id="关系副词"><a href="#关系副词" class="headerlink" title="关系副词"></a>关系副词</h4><p>如果关系从句中是以副词和主要从句中的先行词重复，就会改写为关系副词。关系副词因为是副词类，不像关系代名词是重要的名词类，所以关系副词可以比较自由省略。</p>
+<blockquote>
+<p>3.I need some time (when) I can be with my daughter.<br>先行词 关系从句</p>
+</blockquote>
+<p><strong>在定语从句中,表示名词的先行词不能省略！</strong><br>如果省略,就变成名词从句 or 副词从句了</p>
+<h4 id="Wh-ever与定语从句-gt-gt-让步状语从句"><a href="#Wh-ever与定语从句-gt-gt-让步状语从句" class="headerlink" title="Wh-ever与定语从句 --&gt;&gt; 让步状语从句"></a>Wh-ever与定语从句 <code>--&gt;&gt;</code> 让步状语从句</h4><p>wh-ever 解释为 <code>no matter wh-</code>，是表示让步、条件的语气，它的功能相当于定语从句的连接词，引导的就是定语从句。例如：</p>
+<blockquote>
+<p>Whenever(=No matter when) he gets upset, he turns on the radio.<br>（只要他心情不好，他就会打开收音机。）</p>
+</blockquote>
+<blockquote>
+<p>Whoever(=No matter who) stole the money, it can’t be John.<br>（不论钱是谁偷的，总之不会是约翰。）</p>
+</blockquote>
+<p>wh-ever 的构造，如果解释为 no matter wh- ，近似让步、条件的语气，其后的从句要当定语从句解释，直接附在主要从句上作修饰语。<br>但是如果解释为 anyone/anything that ，就是关系从句省略掉先行词，后面的从句因而要当名词从句解释, 在主要从句中扮演主语、宾语……等的名词角色。</p>
+<h2 id="并列连词与并列从句"><a href="#并列连词与并列从句" class="headerlink" title="并列连词与并列从句"></a>并列连词与并列从句</h2><p>并列连词（主要是 and，or 与 but 三个）用来连接句子中两个对等的部分（单词或短语)，也可以连接两个对等的从句。<br>所谓对等，指的是结构与内容两方面都要对称，而且对得越工整越好。</p>
+<ul>
+<li>not… but; </li>
+<li>not only…  but also; </li>
+<li>both… and; </li>
+<li>either… or</li>
 </ul>
+<h1 id="高级句型"><a href="#高级句型" class="headerlink" title="高级句型"></a>高级句型</h1><h2 id="从属从句简化的通则"><a href="#从属从句简化的通则" class="headerlink" title="从属从句简化的通则"></a>从属从句简化的通则</h2><p><strong>省略主语与 be 动词，只留补语</strong></p>
+<h4 id="为何省略主语？"><a href="#为何省略主语？" class="headerlink" title="为何省略主语？"></a>为何省略主语？</h4><p>如果从属从句的主语是空洞的字眼(one、everybody, people 等)，或者从属从句主语在主要从句中重复出现，从修辞的角度来看皆有违精简的原则，如果能省略会更简洁</p>
+<h4 id="为何省略-be-动词？"><a href="#为何省略-be-动词？" class="headerlink" title="为何省略 be 动词？"></a>为何省略 be 动词？</h4><p>有一种句型 <code>S+V+C</code>   它的动词没有意义（尤其是 be 动词)，不能告诉别人鸟在做什么，反而要靠补语来做全部的叙述，告诉别人“鸟怎么样”。 be 动词只扮演串连主语与补语的角色（所以叫做 Linking Verb 连缀动词）。<br>例如:</p>
+<blockquote>
+<p>Birds are lovely.（鸟很可爱。）<br>S V C(complement)</p>
+</blockquote>
+<p>这句中，be 动词完全不需翻译，因为它完全没有意义，只用来串连“鸟”和“很可爱”，是由补语来负责表达对于主语的叙述。</p>
+<p>所以，<strong>为什么省略be动词？</strong> 我们的答复是：<strong>因为be动词没有意义，省略不会影响原句的意思</strong>。</p>
+<h4 id="没有-be-动词怎么办？"><a href="#没有-be-动词怎么办？" class="headerlink" title="没有 be 动词怎么办？"></a>没有 be 动词怎么办？</h4><ol>
+<li>有助动词时，变成不定词</li>
+<li>没有助动词时，变成 Ving</li>
+</ol>
+<h2 id="形容词从句简化"><a href="#形容词从句简化" class="headerlink" title="形容词从句简化"></a>形容词从句简化</h2><p>简化主语（即关系词）和be动词，只留下补语</p>
+<h4 id="单纯be动词的时候"><a href="#单纯be动词的时候" class="headerlink" title="单纯be动词的时候"></a>单纯be动词的时候</h4><p>也是只留下补语</p>
+<h2 id="名词从句简化"><a href="#名词从句简化" class="headerlink" title="名词从句简化"></a>名词从句简化</h2><p>名词从句的简化与其他词类的从属从句相同，都是省略主语与be动词，只留下补语</p>
+<p>由于省略主语与动词之后，已经不再需要连接词，所以名词从句的连接词that也一并省略。<br>如果名词从句是由疑问句演变而来的，以疑问词（who、what, where等）充当连接词，那么疑问词就要保留，因为它和 that 不同，是有意义的字眼。</p>
+<p>名词从句简化之后，剩下来的补语有两种常见的形态：Ving与 to V (分别称为动名词与不定词)。这两种形态都可以当名词使用，所以可以取代原先的名词从句，不会有词类上的冲突。<br>至于第三种常见的补语 Ven (过去分词)，因为是形容词，不能取代名词类的从句，所以不能使用。<br>因此名词从句中如果是被动态 (be+Ven) ,简化时不能只是省略 be 留下 Ven ，而要在词类上进一步改造(<strong>以 being Ven 的形式…</strong>)</p>
+<p><strong>如果是现在分词呢?</strong>`</p>
+<hr>
+<blockquote>
+<p>That I am drinking good wine with friends is my greatest enjoyment.</p>
+</blockquote>
+<p>然后就可省略主语 I 与 be 动词，以及已经没有作用的连接词 that ，成为较紧凑的句子：</p>
+<blockquote>
+<p>Drinking good wine with friends is my greatest enjoyment.<br>简化名词从句</p>
+</blockquote>
+<h3 id="动词是单纯的-be-动词时"><a href="#动词是单纯的-be-动词时" class="headerlink" title="动词是单纯的 be 动词时"></a>动词是单纯的 be 动词时</h3><p>若名词从句中是 be 动词，后面接一般的名词或形容词作补语，则须加上 -ing 成为 being :</p>
+<blockquote>
+<p>Being a teacher requires a lot of patience.<br>简化名词从句</p>
+</blockquote>
+<h2 id="副词从句简化之一"><a href="#副词从句简化之一" class="headerlink" title="副词从句简化之一"></a>副词从句简化之一</h2><h3 id="1-简化为-Ving-补语"><a href="#1-简化为-Ving-补语" class="headerlink" title="1 简化为 Ving 补语"></a>1 简化为 Ving 补语</h3><h4 id="没有-be-动词与助动词时"><a href="#没有-be-动词与助动词时" class="headerlink" title="没有 be 动词与助动词时"></a>没有 be 动词与助动词时</h4><p>如果原来的副词从句没有 be 动词，也没有语气助动词( can、 must、may ),只有普通动词，那么就会成为 Ving 的形式</p>
+<h4 id="应该省略的连接词"><a href="#应该省略的连接词" class="headerlink" title="应该省略的连接词"></a>应该省略的连接词</h4><p>表示原因的连接词 because,since 等等通常要省略，若保留下来会显得相当刺眼。因为这种句型本身就强烈暗示因果关系，再加上 because 会十分累赘。</p>
+<h4 id="应该保留的连接词"><a href="#应该保留的连接词" class="headerlink" title="应该保留的连接词"></a>应该保留的连接词</h4><p>表达“相反”的逻辑关系的连接词(although,as if)，不宜省略</p>
+<h4 id="being-的运用"><a href="#being-的运用" class="headerlink" title="being 的运用"></a>being 的运用</h4><p>副词从句的 be 动词一般在简化时要省略，但有些状况下要以 being 的方式留下来</p>
+<h4 id="兼作介词的连接词：-before-after-since"><a href="#兼作介词的连接词：-before-after-since" class="headerlink" title="兼作介词的连接词： before, after, since"></a>兼作介词的连接词： before, after, since</h4><h4 id="时态的问题"><a href="#时态的问题" class="headerlink" title="时态的问题"></a>时态的问题</h4><h4 id="保留主语时的注意事项"><a href="#保留主语时的注意事项" class="headerlink" title="保留主语时的注意事项"></a>保留主语时的注意事项</h4><ol>
+<li>第一，连接词要省略。简化从句一般是省略主语、be动词与连接词 (视情形决定是否省略)。  </li>
+<li>第二件注意事项是：<strong>后面必须配合分词补语（现在分词或过去分词)</strong>。因为只有如此，才可明显看出这是省略be动词的简化从句。</li>
+</ol>
+<h2 id="副词从句简化之二"><a href="#副词从句简化之二" class="headerlink" title="副词从句简化之二"></a>副词从句简化之二</h2><h3 id="简化为-to-V"><a href="#简化为-to-V" class="headerlink" title="简化为 to V"></a>简化为 to V</h3><h3 id="单纯的-be-动词时"><a href="#单纯的-be-动词时" class="headerlink" title="单纯的 be 动词时"></a>单纯的 be 动词时</h3><p>如果副词从句的动词是单纯的 be 动词，后面可能是一般的名词、形容词类的补语。要简化时，首先得注意主语要和主要从句的主语相同，然后才可以把连接词留下来，省去主语和 be 动词，留下补语。</p>
+<ul>
+<li>介词短语</li>
+<li>形容词</li>
+<li>名词</li>
+</ul>
+<p>观察以上三种情形，可以作一归纳：</p>
+<p><strong>副词从句的连接词不同于名词从句或形容词从句，是有意义的连接词，简化时常要留下来</strong><br>一旦留下连接词，那么它是由副词从句简化而成这一点就十分明显。所以，拿掉主语与 be 动词后，不论什么词类的补语—名词、 形容词、介词短语—都可以留下来。</p>
+<p>不过有两点需要注意：</p>
+<p>如果连接词是 before 与 after 之类，简化后成为介词，后面只能接名词类。<br>另外，表示原因的连接词 because 与 sine ，简化后通常不能原样留下来，要改成 because of, as a result of 之类的介词。</p>
+<h3 id="改为介词短语"><a href="#改为介词短语" class="headerlink" title="改为介词短语"></a>改为介词短语</h3><p>副词从句的连接词有表达某种逻辑关系的意义。简化时有一种特别的做法，就是把连接词改为意义近似的介词，整个从句简化为名词后，作为介词的宾语。</p>
+<h2 id="简化从句练习"><a href="#简化从句练习" class="headerlink" title="简化从句练习"></a>简化从句练习</h2><h2 id="倒装句"><a href="#倒装句" class="headerlink" title="倒装句"></a>倒装句</h2><p>倒装句是一种把动词（或助动词）移到主语前面的句型。以这个定义来看，<strong>一般的疑问句</strong>都可以算是倒装句。</p>
+<h4 id="比较级的倒装"><a href="#比较级的倒装" class="headerlink" title="比较级的倒装"></a>比较级的倒装</h4><p>比较级需要用到倒装句的情形大抵都是这样：</p>
+<p>一、从属从句中的助动词或 be 动词不宜省略。<br>二、主语后面有比较长的修饰语。</p>
+<h4 id="关系从句的倒装"><a href="#关系从句的倒装" class="headerlink" title="关系从句的倒装"></a>关系从句的倒装</h4><p>关系从句中的关系词，如果原本不在句首位置，就要向前移到句首让它发挥连接词的功能</p>
+<h4 id="虚拟语气的倒装"><a href="#虚拟语气的倒装" class="headerlink" title="虚拟语气的倒装"></a>虚拟语气的倒装</h4><p>这种倒装比较单纯。在虚拟语气的副词从句中（往往是由if引导的)，如果有be动词或助动词，就可以考虑倒装。做法是把连接词（例如if)省略掉，把be动词或助动词移到主语前面来取代连接词的功能。</p>
+<p>但副词从句中若没有be动词或助动词，就缺乏可倒装的工具，因而不能使用倒装。</p>
+<h4 id="引用句的倒装"><a href="#引用句的倒装" class="headerlink" title="引用句的倒装"></a>引用句的倒装</h4><p>在直接引句（用到双引号者）与间接引句（没有用双引号者) 中，都可以选择使用倒装句来凸显出句中的重点。</p>
+<blockquote>
+<p>“None was killed in the accident. “ said the police.<br>O V S</p>
+</blockquote>
+<h4 id="类似there-is-are的倒装"><a href="#类似there-is-are的倒装" class="headerlink" title="类似there is/are的倒装"></a>类似there is/are的倒装</h4><h4 id="否定副词开头的倒装"><a href="#否定副词开头的倒装" class="headerlink" title="否定副词开头的倒装"></a>否定副词开头的倒装</h4><blockquote>
+<p>Don’t you cry</p>
+<p>Don’t you dare</p>
+</blockquote>
+<p>–</p>
+<blockquote>
+<p>He not only passed the exam but also scored at the top.<br>（他不但及格了，还考了第一。）</p>
+</blockquote>
+<blockquote>
+<p>Not only did he pass the exam but also he scored at the top.</p>
+</blockquote>
+<p>另有一些简单的倒装句，例如：</p>
+<blockquote>
+<p>Mary is pretty. So is her sister.<br>V S (玛丽很美，她妹妹也很美。）</p>
+</blockquote>
+<p>以及不常用的倒装句，像某些祈使句的句型：</p>
+<blockquote>
+<p>Long live the King!(国王万岁！）<br>V S</p>
+</blockquote>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/09/19/回调-事件-promise和asyncawait/" data-id="cl6x0og24000f1nwmy7fzhxdl" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2019/01/06/english/english-summary/" data-id="cl6x0zs4n000s66wmaeoajurf" class="article-share-link">Share</a>
       
 
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/english/">english</a></li></ul>
+
     </footer>
   </div>
   
@@ -480,7 +845,7 @@ makeRequest()
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -510,7 +875,7 @@ makeRequest()
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -522,23 +887,23 @@ makeRequest()
       <ul>
         
           <li>
-            <a href="/2022/08/17/english/7000/">sentence</a>
+            <a href="/2022/08/17/back/front-end-learn/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+            <a href="/2022/08/17/back/js中数组的合并和对象的合并/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+            <a href="/2022/08/17/back/mac-os/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/24/keyboard/">keyboard</a>
+            <a href="/2022/08/17/back/数组和对象区分/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2019/01/19/english/sentence/">Model Sentence</a>
+            <a href="/2022/08/17/back/匿名函数/">(no title)</a>
           </li>
         
       </ul>
