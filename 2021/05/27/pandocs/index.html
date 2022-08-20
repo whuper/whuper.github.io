@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>pandoc | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="pandoc引用多个文献用分号pandoc -o propose-template.docx --print-default-data-file reference.docx   pandoc -o paper-template.docx --print-default-data-file reference.docx   pandoc -s 片段.md --reference-doc=propo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pandoc">
+<meta property="og:url" content="https://whuper.github.io/2021/05/27/pandocs/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="pandoc引用多个文献用分号pandoc -o propose-template.docx --print-default-data-file reference.docx   pandoc -o paper-template.docx --print-default-data-file reference.docx   pandoc -s 片段.md --reference-doc=propo">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-20T13:26:54.635Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pandoc">
+<meta name="twitter:description" content="pandoc引用多个文献用分号pandoc -o propose-template.docx --print-default-data-file reference.docx   pandoc -o paper-template.docx --print-default-data-file reference.docx   pandoc -s 片段.md --reference-doc=propo">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-pandocs" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/27/pandocs/" class="article-date">
+  <time datetime="2021-05-26T16:00:00.000Z" itemprop="datePublished">2021-05-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pandoc
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="pandoc引用多个文献用分号"><a href="#pandoc引用多个文献用分号" class="headerlink" title="pandoc引用多个文献用分号"></a>pandoc引用多个文献用分号</h3><pre><code>pandoc -o propose-template.docx --print-default-data-file reference.docx 
+
+pandoc -o paper-template.docx --print-default-data-file reference.docx 
+
+pandoc -s 片段.md --reference-doc=propose-template.docx -o 片段.docx
+
+
+pandoc 写作笔记.md --reference-doc=/Users/wenhao/draft-template-new.docx -o 写作笔记.docx
+</code></pre><h2 id="生成paper"><a href="#生成paper" class="headerlink" title="生成paper"></a>生成paper</h2><pre><code>pandoc -s paper.md --reference-doc=propose-template.docx -o paper.docx
+</code></pre><h2 id="生成报告PPT"><a href="#生成报告PPT" class="headerlink" title="生成报告PPT"></a>生成报告PPT</h2><pre><code>pandoc 报告ppt.md --reference-doc=propose-template.pptx -o 报告PPT.pptx --slide-level=2
+
+pandoc -o custom-reference.pptx --print-default-data-file reference.pptx
+</code></pre><p>pandoc/模版文件/自定义模版</p>
+<pre><code>--data-dir 
+$HOME/.local/share/pandoc
+</code></pre><p><a href="https://github.com/jgm/pandoc-templates" target="_blank" rel="noopener">https://github.com/jgm/pandoc-templates</a></p>
+<h3 id="Zotero"><a href="#Zotero" class="headerlink" title="Zotero"></a>Zotero</h3><p>是一个免费易用的 Firefox 扩展与客户端软件，可以协助我们收集、管理及引用研究资源，包括期刊、书籍等各类文献和网页、图片等。与Endnote等不同的是，它既可以单独使用，也可以内嵌于 Firefox 与 Google 浏览器等环境下使用。随着互联网的发展，我们获取文献资源大都是通过浏览器，而 Zotero 与浏览器的密切结合使我们的工作更加方便。<br>Zotero 的最大优点是能够对在线文献数据库网页中的文献题录直接抓取。<br>如我们打开SD数据库中的某篇文献的网页，在安装有 Zotero 的 Firefox 的地址栏末端会出现一个“页面”标志。</p>
+<h3 id="NoteExpress"><a href="#NoteExpress" class="headerlink" title="NoteExpress"></a>NoteExpress</h3><p>是北京爱琴海软件公司开发的一款专业级别的文献检索与管理系统，其核心功能涵盖“知识采集，管理，应用，挖掘”的知识管理的所有环节，是学术研究，知识管理的必备工具，发表论文的好帮手。</p>
+<h3 id="Endnote"><a href="#Endnote" class="headerlink" title="Endnote"></a>Endnote</h3><p>由Thomson Corporation下属的Thomson ResearchSoft 开发。 Thomson ResearchSoft是以学术信息市场化和开发学术软件为宗旨的子公司。Thomson Corporation总部位于美国康涅狄格州的Stanford。</p>
+<h3 id="Mendeley"><a href="#Mendeley" class="headerlink" title="Mendeley"></a>Mendeley</h3><p>是一款免费的跨平台文献管理软件，同时也是一个在线的学术社交网络平台。可一键抓取网页上的文献信息添加到个人的library中。还可安装MS Word和Open Office插件，方便在文字编辑器中插入和管理参考文献。参考文献格式与Zotero一样用各种期刊格式的CLS文件。Mendeley还免费提供各2GB的文献存储和100MB的共享空间</p>
+<p>pandoc-fignos无法转换公式 错</p>
+<p>wps无法显示数学公式(已解决)</p>
+<p>markdown 文件包含</p>
+<p><a href="https://github.com/TomBener/pandoc-templates" target="_blank" rel="noopener">https://github.com/TomBener/pandoc-templates</a></p>
+<p><a href="https://sspai.com/post/64842" target="_blank" rel="noopener">https://sspai.com/post/64842</a></p>
+<p><a href="https://retompi.com/" target="_blank" rel="noopener">https://retompi.com/</a></p>
+<h2 id="Markdown-Editor"><a href="#Markdown-Editor" class="headerlink" title="Markdown Editor"></a>Markdown Editor</h2><p><a href="https://marketplace.visualstudio.com/items?itemName=zaaack.markdown-editor" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=zaaack.markdown-editor</a></p>
+<p>markdown 幻灯片<br>marp<br><a href="https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2021/05/27/pandocs/" data-id="cl71xrtn10009ifwmo916846h" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/03/vue与react/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vue 与 React各方面对比
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/11/back/angular-ngMaxlength/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ng-maxlength screws up my model</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/30/mac常用命令/">mac命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/pandocs/">pandoc</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/11/back/angular-ngMaxlength/">ng-maxlength screws up my model</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>ES6新特性 | Wenhao&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ECMAScript 6(ES2015 )European Computer Manufacturers Association Script, 欧洲计算机制造商协会 1 ECMAScript 和 JavaScript 的关系前者是后者的规格，后者是前者的一种实现 6 Babel 转码器Babel 是一个广泛使用的 ES6 转码器，可以将 ES6 代码转为 ES5 代码，从而在现有环境执行。这意味">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6新特性">
+<meta property="og:url" content="https://whuper.github.io/2020/04/12/ECMAScript6/index.html">
+<meta property="og:site_name" content="Wenhao&#39;s Blog">
+<meta property="og:description" content="ECMAScript 6(ES2015 )European Computer Manufacturers Association Script, 欧洲计算机制造商协会 1 ECMAScript 和 JavaScript 的关系前者是后者的规格，后者是前者的一种实现 6 Babel 转码器Babel 是一个广泛使用的 ES6 转码器，可以将 ES6 代码转为 ES5 代码，从而在现有环境执行。这意味">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-08-20T13:26:06.586Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES6新特性">
+<meta name="twitter:description" content="ECMAScript 6(ES2015 )European Computer Manufacturers Association Script, 欧洲计算机制造商协会 1 ECMAScript 和 JavaScript 的关系前者是后者的规格，后者是前者的一种实现 6 Babel 转码器Babel 是一个广泛使用的 ES6 转码器，可以将 ES6 代码转为 ES5 代码，从而在现有环境执行。这意味">
+  
+  
+    <link rel="icon" href="/images/favicon-16x16-next.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+</html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wenhao&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name="tn" type="hidden" value="bds">
+          <input name="cl" type="hidden" value="3">
+          <input name="ct" type="hidden" value="2097152">
+          <input type="hidden" name="si" value="whuper.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ECMAScript6" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/12/ECMAScript6/" class="article-date">
+  <time datetime="2020-04-11T16:00:00.000Z" itemprop="datePublished">2020-04-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ES6新特性
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ECMAScript-6-ES2015"><a href="#ECMAScript-6-ES2015" class="headerlink" title="ECMAScript 6(ES2015 )"></a>ECMAScript 6(ES2015 )</h2><p>European Computer Manufacturers Association Script, 欧洲计算机制造商协会</p>
+<h3 id="1-ECMAScript-和-JavaScript-的关系"><a href="#1-ECMAScript-和-JavaScript-的关系" class="headerlink" title="1 ECMAScript 和 JavaScript 的关系"></a>1 ECMAScript 和 JavaScript 的关系</h3><p>前者是后者的规格，后者是前者的一种实现</p>
+<h3 id="6-Babel-转码器"><a href="#6-Babel-转码器" class="headerlink" title="6 Babel 转码器"></a>6 Babel 转码器</h3><p>Babel 是一个广泛使用的 ES6 转码器，可以将 ES6 代码转为 ES5 代码，从而在现有环境执行。这意味着，你可以用 ES6 的方式编写程序，又不用担心现有环境是否支持。</p>
+<pre><code>// 转码前
+input.map(item =&gt; item + 1);
+
+// 转码后
+input.map(function (item) {
+  return item + 1;
+});
+</code></pre><p>上面的原始代码用了箭头函数，Babel 将其转为普通函数，就能在不支持箭头函数的 JavaScript 环境执行了。</p>
+<h3 id="1-变量声明const和let"><a href="#1-变量声明const和let" class="headerlink" title="1.变量声明const和let"></a>1.变量声明const和let</h3><blockquote>
+<p>不存在变量提升<br>var命令会发生”变量提升“现象，即变量可以在声明之前使用，值为undefined。这种现象多多少少是有些奇怪的，按照一般的逻辑，变量应该在声明语句之后才可以使用。</p>
+</blockquote>
+<p><strong>为了纠正这种现象，let命令改变了语法行为，它所声明的变量一定要在声明后使用，否则报错。</strong></p>
+<p>const声明的变量不得改变值，这意味着，const一旦声明变量，就必须立即初始化，不能留到以后赋值。</p>
+<p><strong>const的作用域与let命令相同：只在声明所在的块级作用域内有效。</strong></p>
+<p>我们都是知道在ES6以前，var关键字声明变量。无论声明在何处，都会被视为声明在函数的最顶部(不在函数内即在全局作用域的最顶部)。这就是函数变量提升例如:</p>
+<pre><code>function aa() {
+  if(bool) {
+      var test = &apos;hello man&apos;
+  } else {
+      console.log(test)
+  }
+}
+</code></pre><p>以上的代码实际上是：</p>
+<pre><code>function aa() {
+  var test // 变量提升
+  if(bool) {
+      test = &apos;hello man&apos;
+  } else {
+      //此处访问test 值为undefined
+      console.log(test)
+  }
+  //此处访问test 值为undefined
+}
+</code></pre><p>所以不用关心bool是否为true or false。实际上，无论如何test都会被创建声明。</p>
+<p>接下来ES6主角登场：<br>我们通常用let和const来声明，let表示变量、const表示常量。<br>let和const都是块级作用域。怎么理解这个块级作用域？</p>
+<p>在一个函数内部<br>在一个代码块内部</p>
+<blockquote>
+<p>说白了 {}大括号内的代码块即为let 和 const的作用域。<br>看以下代码：</p>
+</blockquote>
+<pre><code>function aa() {
+  if(bool) {
+     let test = &apos;hello man&apos;
+  } else {
+      //test 在此处访问不到
+      console.log(test)
+      //ReferenceError: Can&apos;t find variable: test
+  }
+}
+</code></pre><p><strong>let的作用域是在它所在当前代码块，但不会被提升到当前函数的最顶部。</strong></p>
+<p>再来说说const。</p>
+<pre><code>const name = &apos;lux&apos;
+name = &apos;joe&apos; //再次赋值此时会报错
+</code></pre><p>说一道面试题</p>
+<pre><code>var funcs = []
+for (var i = 0; i &lt; 10; i++) {
+    funcs.push(function() { console.log(i) })
+}
+funcs.forEach(function(func) {
+    func()
+})
+</code></pre><p>这样的面试题是大家常见，很多同学一看就知道输出 10 十次<br>但是如果我们想依次输出0到9呢？两种解决方法。直接上代码。</p>
+<pre><code>// ES5告诉我们可以利用闭包**(错误,应该叫立即执行函数)**解决这个问题
+var funcs = []
+for (var i = 0; i &lt; 10; i++) {
+    func.push((function(value) {
+        return function() {
+            console.log(value)
+        }
+    }(i)))
+}
+// es6
+for (let i = 0; i &lt; 10; i++) {
+    func.push(function() {
+        console.log(i)
+    })
+}
+</code></pre><p>达到相同的效果，es6简洁的解决方案是不是更让你心动！！！</p>
+<h3 id="2-模板字符串"><a href="#2-模板字符串" class="headerlink" title="2.模板字符串"></a>2.模板字符串</h3><p>es6模板字符简直是开发者的福音啊，解决了ES5在字符串功能上的痛点。</p>
+<p>第一个用途，基本的字符串格式化。将表达式嵌入字符串中进行拼接。用${}来界定。</p>
+<pre><code>//es5 
+var name = &apos;lux&apos;
+console.log(&apos;hello&apos; + name)
+//es6
+const name = &apos;lux&apos;
+console.log(`hello ${name}`) //hello lux
+</code></pre><p>第二个用途，在ES5时我们通过反斜杠()来做多行字符串或者字符串一行行拼接。ES6反引号(<code></code>)直接搞定。</p>
+<pre><code>// es5
+var msg = &quot;Hi \
+man!
+&quot;
+// es6
+const template = `&lt;div&gt;
+    &lt;span&gt;hello world&lt;/span&gt;
+&lt;/div&gt;`
+</code></pre><p>对于字符串es6当然也提供了很多厉害的方法。说几个常用的。</p>
+<pre><code>// 1.includes：判断是否包含然后直接返回布尔值
+let str = &apos;hahay&apos;
+console.log(str.includes(&apos;y&apos;)) // true
+// 2.repeat: 获取字符串重复n次
+let s = &apos;he&apos;
+console.log(s.repeat(3)) // &apos;hehehe&apos;
+//如果你带入小数, Math.floor(num) 来处理
+</code></pre><h3 id="3-函数-箭头函数"><a href="#3-函数-箭头函数" class="headerlink" title="3.函数  箭头函数"></a>3.函数  箭头函数</h3><p>函数默认参数</p>
+<p>在ES5我们给函数定义参数默认值是怎么样？</p>
+<pre><code>function action(num) {
+    num = num || 200
+    //当传入num时，num为传入的值
+    //当没传入参数时，num即有了默认值200
+    return num
+}
+</code></pre><p>但细心观察的同学们肯定会发现，num传入为0的时候就是false， 此时num = 200 与我们的实际要的效果明显不一样</p>
+<p>ES6为参数提供了默认值。在定义函数时便初始化了这个参数，以便在参数没有被传递进去时使用。</p>
+<pre><code>function action(num = 200) {
+    console.log(num)
+}
+action() //200
+action(300) //300
+</code></pre><h3 id="函数的快捷写法"><a href="#函数的快捷写法" class="headerlink" title="函数的快捷写法"></a>函数的快捷写法</h3><p>ES6很有意思的一部分就是函数的快捷写法。也就是箭头函数。</p>
+<p>箭头函数最直观的三个特点。</p>
+<p>不需要function关键字来创建函数<br>省略return关键字<br>继承当前上下文的 this 关键字<br>//例如：</p>
+<pre><code>[1,2,3].map( x =&gt; x + 1 )
+</code></pre><p>//等同于：</p>
+<pre><code>[1,2,3].map((function(x){
+    return x + 1
+}).bind(this))
+</code></pre><p>说个小细节。</p>
+<p>当你的函数有且仅有一个参数的时候，是可以省略掉括号的。</p>
+<p>当你函数返回有且仅有一个表达式的时候可以省略{}；</p>
+<p>例如:</p>
+<pre><code>var people = name =&gt; &apos;hello&apos; + name
+//参数name就没有括号
+</code></pre><p>作为参考</p>
+<pre><code>var people = (name, age) =&gt; {
+    const fullName = &apos;h&apos; + name
+    return fullName
+} 
+//如果缺少()或者{}就会报错
+</code></pre><h3 id="4-拓展的对象功能"><a href="#4-拓展的对象功能" class="headerlink" title="4.拓展的对象功能"></a>4.拓展的对象功能</h3><p>对象初始化简写</p>
+<p>ES5我们对于对象都是以键值对的形式书写，是有可能出现键值对重名的。例如：</p>
+<pre><code>function people(name, age) {
+    return {
+        name: name,
+        age: age
+    };
+}
+</code></pre><p><strong>键值对重名</strong>，ES6可以简写如下：</p>
+<pre><code>function people(name, age) {
+    return {
+        name,
+        age
+    };
+}
+</code></pre><p>ES6 同样改进了为对象字面量方法赋值的语法。ES5为对象添加方法：</p>
+<pre><code>const people = {
+    name: &apos;lux&apos;,
+    getName: function() {
+        console.log(this.name)
+    }
+}
+</code></pre><p>ES6通过省略冒号与 function 关键字，将这个语法变得更简洁</p>
+<pre><code>const people = {
+    name: &apos;lux&apos;,
+    getName () {
+        console.log(this.name)
+    }
+}
+</code></pre><p>ES6 对象提供了Object.assign()这个方法来实现浅复制。</p>
+<p>Object.assign()可以把任意多个源对象自身可枚举的属性拷贝给目标对象，然后返回目标对象。第一参数即为目标对象。在实际项目中，我们为了不改变源对象。一般会把目标对象传为{}</p>
+<pre><code>const obj = Object.assign({}, objA, objB)
+</code></pre><h3 id="5-更方便的数据访问–解构"><a href="#5-更方便的数据访问–解构" class="headerlink" title="5.更方便的数据访问–解构"></a>5.更方便的数据访问–解构</h3><p>数组和对象是JS中最常用也是最重要表示形式。为了简化提取信息，ES6新增了解构，这是将一个数据结构分解为更小的部分的过程</p>
+<p>ES5我们提取对象中的信息形式如下：</p>
+<pre><code>const people = {
+    name: &apos;lux&apos;,
+    age: 20
+}
+const name = people.name
+const age = people.age
+console.log(name + &apos; --- &apos; + age)
+</code></pre><p>是不是觉得很熟悉，没错，在ES6之前我们就是这样获取对象信息的，一个一个获取。现在，解构能让我们从对象或者数组里取出数据存为变量，例如</p>
+<pre><code>//对象
+const people = {
+    name: &apos;lux&apos;,
+    age: 20
+}
+const { name, age } = people
+console.log(`${name} --- ${age}`)
+//数组
+const color = [&apos;red&apos;, &apos;blue&apos;]
+const [first, second] = color
+console.log(first) //&apos;red&apos;
+console.log(second) //&apos;blue&apos;
+</code></pre><h3 id="6-Spread-Operator-展开运算符"><a href="#6-Spread-Operator-展开运算符" class="headerlink" title="6.Spread Operator 展开运算符"></a>6.Spread Operator 展开运算符</h3><p>ES6中另外一个好玩的特性就是Spread Operator 也是三个点儿…接下来就展示一下它的用途。</p>
+<p>组装对象或者数组</p>
+<pre><code>//数组
+const color = [&apos;red&apos;, &apos;yellow&apos;]
+const colorful = [...color, &apos;green&apos;, &apos;pink&apos;]
+console.log(colorful) //[red, yellow, green, pink]
+
+//对象
+const alp = { fist: &apos;a&apos;, second: &apos;b&apos;}
+const alphabets = { ...alp, third: &apos;c&apos; }
+console.log(alphabets) //{ &quot;fist&quot;: &quot;a&quot;, &quot;second&quot;: &quot;b&quot;, &quot;third&quot;: &quot;c&quot;
+}
+</code></pre><p>有时候我们想获取数组或者对象除了前几项或者除了某几项的其他项</p>
+<pre><code>//数组
+const number = [1,2,3,4,5]
+const [first, ...rest] = number
+console.log(rest) //2,3,4,5
+//对象
+const user = {
+    username: &apos;lux&apos;,
+    gender: &apos;female&apos;,
+    age: 19,
+    address: &apos;peking&apos;
+}
+const { username, ...rest } = user
+console.log(rest) //{&quot;address&quot;: &quot;peking&quot;, &quot;age&quot;: 19, &quot;gender&quot;: &quot;female&quot;
+}
+</code></pre><p>对于 Object 而言，还可以用于组合成新的 Object 。(ES2017 stage-2 proposal) 当然如果有重复的属性名，右边覆盖左边</p>
+<pre><code>const first = {
+    a: 1,
+    b: 2,
+    c: 6,
+}
+const second = {
+    c: 3,
+    d: 4
+}
+const total = { ...first, ...second }
+console.log(total) // { a: 1, b: 2, c: 3, d: 4 }
+</code></pre><h3 id="7-import-和-export"><a href="#7-import-和-export" class="headerlink" title="7.import 和 export"></a>7.import 和 export</h3><p>import导入模块、export导出模块</p>
+<h3 id="8-Promise"><a href="#8-Promise" class="headerlink" title="8. Promise"></a>8. Promise</h3><p>在promise之前代码过多的回调或者嵌套，可读性差、耦合度高、扩展性低。通过Promise机制，扁平化的代码机构，大大提高了代码可读性；用同步编程的方式来编写异步代码，保存线性的代码逻辑，极大的降低了代码耦合性而提高了程序的可扩展性。<br>说白了就是用同步的方式去写异步代码。</p>
+<p>发起异步请求</p>
+<pre><code>fetch(&apos;/api/todos&apos;)
+  .then(res =&gt; res.json())
+  .then(data =&gt; ({ data }))
+  .catch(err =&gt; ({ err }));
+</code></pre><p>今天看到一篇关于面试题的很有意思。</p>
+<pre><code>setTimeout(function() {
+  console.log(1)
+}, 0);
+new Promise(function executor(resolve) {
+  console.log(2);
+  for( var i=0 ; i&lt;10000 ; i++ ) {
+    i == 9999 &amp;&amp; resolve();
+  }
+  console.log(3);
+}).then(function() {
+  console.log(4);
+});
+console.log(5);
+</code></pre><p>Excuse me？这个前端面试在搞事！</p>
+<p>当然以上promise的知识点，这个只是冰山一角。需要更多地去学习应用。</p>
+<h3 id="9-Generators"><a href="#9-Generators" class="headerlink" title="9.Generators"></a>9.Generators</h3><p>生成器（ generator）是能返回一个迭代器的函数。生成器函数也是一种函数，最直观的表现就是比普通的function多了个星号*，在其函数体内可以使用yield关键字,有意思的是函数会在每个yield后暂停。</p>
+<p>这里生活中有一个比较形象的例子。咱们到银行办理业务时候都得向大厅的机器取一张排队号。你拿到你的排队号，机器并不会自动为你再出下一张票。也就是说取票机“暂停”住了，直到下一个人再次唤起才会继续吐票。</p>
+<p>OK。说说迭代器。当你调用一个generator时，它将返回一个迭代器对象。这个迭代器对象拥有一个叫做next的方法来帮助你重启generator函数并得到下一个值。next方法不仅返回值，它返回的对象具有两个属性：done和value。value是你获得的值，done用来表明你的generator是否已经停止提供值。继续用刚刚取票的例子，每张排队号就是这里的value，打印票的纸是否用完就这是这里的done。</p>
+<pre><code>// 生成器
+function *createIterator() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+
+// 生成器能像正规函数那样被调用，但会返回一个迭代器
+let iterator = createIterator();
+
+console.log(iterator.next().value); // 1
+console.log(iterator.next().value); // 2
+console.log(iterator.next().value); // 3
+</code></pre><p>那生成器和迭代器又有什么用处呢？</p>
+<p>围绕着生成器的许多兴奋点都与异步编程直接相关。异步调用对于我们来说是很困难的事，我们的函数并不会等待异步调用完再执行，你可能会想到用回调函数，（当然还有其他方案比如Promise比如Async/await）。</p>
+<p>生成器可以让我们的代码进行等待。就不用嵌套的回调函数。使用generator可以确保当异步调用在我们的generator函数运行一下行代码之前完成时暂停函数的执行。</p>
+<p>那么问题来了，咱们也不能手动一直调用next()方法，你需要一个能够调用生成器并启动迭代器的方法。就像这样子的</p>
+<pre><code>function run(taskDef) { //taskDef即一个生成器函数
+
+    // 创建迭代器，让它在别处可用
+    let task = taskDef();
+
+    // 启动任务
+    let result = task.next();
+
+    // 递归使用函数来保持对 next() 的调用
+    function step() {
+
+        // 如果还有更多要做的
+        if (!result.done) {
+            result = task.next();
+            step();
+        }
+    }
+
+    // 开始处理过程
+    step();
+
+}
+</code></pre><p>生成器与迭代器最有趣、最令人激动的方面，或许就是可创建外观清晰的异步操作代码。你不必到处使用回调函数，而是可以建立貌似同步的代码，但实际上却使用 yield 来等待异步操作结束。</p>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><pre><code>var f = () =&gt; 5;
+// 等同于
+var f = function () { return 5 };
+
+var sum = (num1, num2) =&gt; num1 + num2;
+// 等同于
+var sum = function(num1, num2) {
+  return num1 + num2;
+};
+</code></pre><p>如果箭头函数的代码块部分多于一条语句，就要使用大括号将它们括起来，并且使用return语句返回。</p>
+<pre><code>var sum = (num1, num2) =&gt; { return num1 + num2; }
+</code></pre><p>由于大括号被解释为代码块，所以如果箭头函数直接返回一个对象，必须在对象外面加上括号。</p>
+<pre><code>var getTempItem = id =&gt; ({ id: id, name: &quot;Temp&quot; });
+</code></pre><p>箭头函数有几个使用注意点。</p>
+<p>1 箭头函数没有自己的 this，其内部的 this 绑定到它的外围作用域。对象内部的箭头函数若有this，则指向对象的外围作用域。</p>
+<pre><code>window.color = &quot;red&quot;;
+//let 声明的全局变量不具有全局属性，即不能用window.访问
+let color = &quot;green&quot;;
+let obj = {
+    color: &quot;blue&quot;,
+　　 getColor: () =&gt; {
+　　　　 return this.color;//this指向window
+　　 }
+};
+let sayColor = () =&gt; {
+    return this.color;//this指向window
+};
+obj.getColor();//red
+sayColor();//red
+</code></pre><p>2 箭头函数无法使用 call（）或 apply（）来改变其运行的作用域。</p>
+<h2 id="export-default-和-export-区别："><a href="#export-default-和-export-区别：" class="headerlink" title="export default 和 export 区别："></a>export default 和 export 区别：</h2><ul>
+<li>1.export与export default均可用于导出常量、函数、文件、模块等</li>
+<li>2.你可以在其它文件或模块中通过import+(常量 | 函数 | 文件 | 模块)名的方式，将其导入，以便能够对其进行使用</li>
+<li>3.在一个文件或模块中，export、import可以有多个，export default仅有一个</li>
+<li>4.通过export方式导出，在导入时要加{ }，export default则不需要</li>
+</ul>
+<hr>
+<pre><code>1.export
+//a.js
+export const str = &quot;blablabla~&quot;;
+export function log(sth) { 
+  return sth;
+}
+对应的导入方式：
+
+//b.js
+import { str, log } from &apos;a&apos;; //也可以分开写两次，导入的时候带花括号
+
+2.export default
+//a.js
+const str = &quot;blablabla~&quot;;
+export default str;
+对应的导入方式：
+
+//b.js
+import str from &apos;a&apos;; //导入的时候没有花括号
+</code></pre><p><strong>使用export default命令，为模块指定默认输出，这样就不需要知道所要加载模块的变量名</strong></p>
+<pre><code>//a.js
+let sex = &quot;boy&quot;;
+export default sex（sex不能加大括号）
+//原本直接export sex外部是无法识别的，加上default就可以了.但是一个文件内最多只能有一个export default。
+其实此处相当于为sex变量值&quot;boy&quot;起了一个系统默认的变量名default，自然default只能有一个值，所以一个文件内不能有多个export default。
+</code></pre><hr>
+<pre><code>// b.js
+本质上，a.js文件的export default输出一个叫做default的变量，然后系统允许你为它取任意名字。所以可以为import的模块起任何变量名，且不需要用大括号包含
+import any from &quot;./a.js&quot;
+import any12 from &quot;./a.js&quot; 
+console.log(any,any12)   // boy,boy
+</code></pre><h2 id="函数调用中使用展开运算符"><a href="#函数调用中使用展开运算符" class="headerlink" title="函数调用中使用展开运算符"></a>函数调用中使用展开运算符</h2><p>在以前我们会使用apply方法来将一个数组展开成多个参数：</p>
+<pre><code>function test(a, b, c) { }
+var args = [0, 1, 2];
+test.apply(null, args);
+</code></pre><p>如上，我们把args数组当作实参传递给了a,b,c，这边正是利用了Function.prototype.apply的特性。</p>
+<h3 id="不过有了ES6，我们就可以更加简洁地来传递数组参数："><a href="#不过有了ES6，我们就可以更加简洁地来传递数组参数：" class="headerlink" title="不过有了ES6，我们就可以更加简洁地来传递数组参数："></a>不过有了ES6，我们就可以更加简洁地来传递数组参数：</h3><pre><code>function test(a,b,c) { }
+var args = [0,1,2];
+test(...args);
+</code></pre><p>我们使用…展开运算符就可以把args直接传递给test()函数。</p>
+<h3 id="数组字面量中使用展开运算符"><a href="#数组字面量中使用展开运算符" class="headerlink" title="数组字面量中使用展开运算符"></a>数组字面量中使用展开运算符</h3><p>在ES6的世界中，我们可以直接加一个数组直接合并到另外一个数组当中：</p>
+<pre><code>var arr1=[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;];
+var arr2=[...arr1,&apos;d&apos;,&apos;e&apos;]; //[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+</code></pre><h3 id="展开运算符也可以用在push函数中，可以不用再用apply-函数来合并两个数组："><a href="#展开运算符也可以用在push函数中，可以不用再用apply-函数来合并两个数组：" class="headerlink" title="展开运算符也可以用在push函数中，可以不用再用apply()函数来合并两个数组："></a>展开运算符也可以用在push函数中，可以不用再用apply()函数来合并两个数组：</h3><pre><code>var arr1=[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;];
+var arr2=[&apos;d&apos;,&apos;e&apos;];
+arr1.push(...arr2); //[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+</code></pre><h3 id="用于解构赋值"><a href="#用于解构赋值" class="headerlink" title="用于解构赋值"></a>用于解构赋值</h3><p>解构赋值也是ES6中的一个特性，而这个展开运算符可以用于部分情景：</p>
+<pre><code>let [arg1,arg2,...arg3] = [1, 2, 3, 4];
+arg1 //1
+arg2 //2
+arg3 //[&apos;3&apos;,&apos;4&apos;]
+</code></pre><p>展开运算符在解构赋值中的作用跟之前的作用看上去是相反的，将多个数组项组合成了一个新数组。</p>
+<p>不过要注意，解构赋值中展开运算符只能用在最后：</p>
+<pre><code>let [arg1,...arg2,arg3] = [1, 2, 3, 4]; //报错
+</code></pre><p>类数组对象变成数组<br>展开运算符可以将一个类数组对象变成一个真正的数组对象：</p>
+<pre><code>var list=document.getElementsByTagName(&apos;div&apos;);
+var arr=[..list];
+</code></pre><p>list是类数组对象，而我们通过使用展开运算符使之变成了数组。</p>
+<h2 id="CommonJs模块规范和ES6模块规范"><a href="#CommonJs模块规范和ES6模块规范" class="headerlink" title="CommonJs模块规范和ES6模块规范"></a>CommonJs模块规范和ES6模块规范</h2><h4 id="一-CommonJs模块："><a href="#一-CommonJs模块：" class="headerlink" title="一.CommonJs模块："></a>一.CommonJs模块：</h4><p>模块化规范中，每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。</p>
+<p>首先我们要明白一个前提，CommonJS模块规范和ES6模块规范完全是两种不同的概念。</p>
+<p>CommonJS规范规定，每个模块内部，module变量代表当前模块。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。</p>
+<p><strong>加载某个模块，其实是加载该模块的module.exports属性</strong></p>
+<p>Node应用由模块组成，采用CommonJS模块规范。</p>
+<ul>
+<li><p>module.exports =  …   :      ‘只能输出一个，且后面的会覆盖上面的’ ，</p>
+</li>
+<li><p>exports. …  : ‘ 可以输出多个’，</p>
+</li>
+<li><p>运行阶段确定接口，运行时才会加载模块，</p>
+</li>
+<li><p>模块是对象，加载的是该对象，</p>
+</li>
+<li><p>加载的是整个模块，即将所有的接口全部加载进来，</p>
+</li>
+<li><p>输出是值的拷贝，即原来模块中的值改变不会影响已经加载的该值，</p>
+</li>
+<li><p>this 指向当前模块</p>
+</li>
+</ul>
+<h4 id="二-ES6模块："><a href="#二-ES6模块：" class="headerlink" title="二.ES6模块："></a>二.ES6模块：</h4><p>模块输出方式：export  和 export default</p>
+<p>模块输入方式：import … from …</p>
+<ul>
+<li><p>export   :      ‘可以输出多个，输出方式为 {}’ ，</p>
+</li>
+<li><p>export  default : ‘ 只能输出一个 ，可以与export 同时输出，但是不建议这么做’，</p>
+</li>
+<li><p>解析阶段确定对外输出的接口，解析阶段生成接口，</p>
+</li>
+<li><p>模块不是对象，加载的不是对象，</p>
+</li>
+<li><p>可以单独加载其中的某个接口（方法），</p>
+</li>
+<li><p>静态分析，动态引用，输出的是值的引用，值改变，引用也改变，即原来模块中的值改变则该加载的值也改变，</p>
+</li>
+<li><p>this 指向undefined</p>
+</li>
+</ul>
+<p>需要特别注意的是，<strong>export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。</strong></p>
+<pre><code>// 报错
+export 1;
+
+// 报错
+var m = 1;
+export m;
+
+</code></pre><p>上面两种写法都会报错，因为没有提供对外的接口。第一种写法直接输出 1，第二种写法通过变量m，还是直接输出 1。<strong>1只是一个值，不是接口</strong>。</p>
+<p>正确的写法是下面这样。</p>
+<pre><code>// 写法一
+export var m = 1;
+
+// 写法二
+var m = 1;
+export {m};
+
+// 写法三
+var n = 1;
+export {n as m};
+</code></pre><h2 id="Promise的基本用法"><a href="#Promise的基本用法" class="headerlink" title="Promise的基本用法"></a>Promise的基本用法</h2><p>声明一个Promise对象</p>
+<pre><code>// 方法1
+let promise = new Promise ( (resolve, reject) =&gt; {
+    if ( success ) {
+        resolve(a) // pending ——&gt; resolved 参数将传递给对应的回调方法
+    } else {
+        reject(err) // pending ——&gt; rejectd
+    }
+} )
+
+// 方法2
+function promise () {
+    return new Promise ( function (resolve, reject) {
+        if ( success ) {
+            resolve(a)
+        } else {
+            reject(err)
+        }
+    } )
+}
+</code></pre><hr>
+<pre><code>The woods are lovely,dark and deep.
+But I have promises to keep.
+And miles to go before I sleep。        
+
+--Robert Frost
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="https://whuper.github.io/2020/04/12/ECMAScript6/" data-id="cl71xrtmo0001ifwmm2hq2k8x" class="article-share-link">Share</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/05/back/amd和cmd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          AMD和CMD规范
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/27/设计模式与算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Javascript的设计模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/english/">english</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/english/" style="font-size: 10px;">english</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/30/mac常用命令/">mac命令</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/pandocs/">pandoc</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/11/back/angular-ngMaxlength/">ng-maxlength screws up my model</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 wenhao wang<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

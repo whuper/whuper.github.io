@@ -63,10 +63,10 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-ack" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-back/匿名函数" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/01/12/ack/" class="article-date">
-  <time datetime="2018-01-11T16:00:00.000Z" itemprop="datePublished">2018-01-12</time>
+    <a href="/2018/07/22/back/匿名函数/" class="article-date">
+  <time datetime="2018-07-21T16:00:00.000Z" itemprop="datePublished">2018-07-22</time>
 </a>
     
   </div>
@@ -77,7 +77,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/12/ack/">vim安装ack</a>
+      <a class="article-title" href="/2018/07/22/back/匿名函数/">函数声明、函数表达式、匿名函数</a>
     </h1>
   
 
@@ -85,30 +85,95 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="vim安装ack-brew安装"><a href="#vim安装ack-brew安装" class="headerlink" title="vim安装ack(brew安装)"></a>vim安装ack(brew安装)</h1><h3 id="brew"><a href="#brew" class="headerlink" title="brew"></a>brew</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew update  更新brew；</span><br><span class="line"></span><br><span class="line">brew install &#123;应用名，如git&#125; 安装软件</span><br></pre></td></tr></table></figure>
-<p>Ack.vim主要用来在项目里全局搜索某个单词,比如搜索函数名的时候.</p>
-<p>实现类似Ctrl + shift + f 全局搜索的功能</p>
-<p>安装ack:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ack</span><br></pre></td></tr></table></figure>
-<p>安装ack.vim插件:</p>
-<p>进入./vim/bundle目录:<br>bundle安装</p>
-<p>在.vimrc中加入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin ‘mileszs/ack.vim’</span><br></pre></td></tr></table></figure>
-<p>执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:BundleInstall</span><br></pre></td></tr></table></figure>
-<p>此时已可以使用ack命令;</p>
-<p>:Ack xxx * ,在项目里搜索xxx单词.<br>每次手动输入:Ack xxx还是很不方便的</p>
-<p>可以在.vimrc文件里设置快捷键：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map &lt;Leader&gt;f :Ack! -i&lt;Space&gt;</span><br></pre></td></tr></table></figure>
-<p>-i 参数表示忽略大小写. 以后在项目里,只需要按<code>,+f</code>,即可全局搜索单词了.</p>
+        <blockquote>
+<p>( function(){…} )()和( function (){…} () )是两种javascript立即执行函数的常见写法，最初我以为是一个括号包裹匿名函数，再在后面加个括号调用函数，最后达到函数定义后立即执行的目的，后来发现加括号的原因并非如此。要理解立即执行函数，需要先理解一些函数的基本概念。</p>
+</blockquote>
+<h3 id="函数声明、函数表达式、匿名函数"><a href="#函数声明、函数表达式、匿名函数" class="headerlink" title="函数声明、函数表达式、匿名函数"></a>函数声明、函数表达式、匿名函数</h3><p><strong>函数声明</strong>：function fnName () {…};使用function关键字声明一个函数，再指定一个函数名，叫函数声明。</p>
+<p><strong>函数表达式</strong> var fnName = function () {…};使用function关键字声明一个函数，但未给函数命名，最后将匿名函数赋予一个变量，叫函数表达式，这是最常见的函数表达式语法形式。</p>
+<p><strong>匿名函数</strong>：function () {}; 使用function关键字声明一个函数，但未给函数命名，所以叫匿名函数，匿名函数属于函数表达式，匿名函数有很多作用，赋予一个变量则创建函数，赋予一个事件则成为事件处理程序或创建闭包等等。</p>
+<p>函数声明和函数表达式不同</p>
+<p>一、Javascript引擎在解析javascript代码时会<strong>‘函数声明提升’（Function declaration Hoisting）</strong>当前执行环境（作用域）上的函数声明，而函数表达式必须等到Javascirtp引擎执行到它所在行时，才会从上而下一行一行地解析函数表达式，</p>
+<p>二、函数表达式后面可以加括号立即调用该函数，函数声明不可以，只能以fnName()形式调用 。以下是两者差别的两个例子。</p>
+<pre><code>fnName();
+function fnName(){
+    ...
+}//正常，因为‘提升’了函数声明，函数调用可在函数声明之前
+
+fnName();
+var fnName=function(){
+    ...
+}//报错，变量fnName还未保存对函数的引用，函数调用必须在函数表达式之后
+
+var fnName=function(){
+    alert(&apos;Hello World&apos;);
+}();//函数表达式后面加括号，当javascript引擎解析到此处时能立即调用函数
+
+function fnName(){
+    alert(&apos;Hello World&apos;);
+}();//语法错误，Uncaught SyntaxError: Unexpected token ),这个函数会被js引擎解析为两部分：
+    //1.函数声明 function fnName(){ alert(&apos;Hello World&apos;); } 
+    //2.分组表达式 () 但是第二部分作为分组表达式语法出现了错误，因为括号内没有表达式，把“()”改为“(1)”就不会报错
+    //但是这么做没有任何意义，只不过不会报错,分组表达式请见:
+    //分组中的函数表达式http://www.nowamagic.net/librarys/veda/detail/1664
+
+function(){
+    console.log(&apos;Hello World&apos;);    
+}();//语法错误，Uncaught SyntaxError: Unexpected token (
+</code></pre><p>在理解了一些函数基本概念后，回头看看( function(){…} )()和( function (){…} () )这两种立即执行函数的写法</p>
+<p>最初我以为是一个括号包裹匿名函数，并后面加个括号立即调用函数，当时不知道为什么要加括号，后来明白，<strong>要在函数体后面加括号就能立即调用，则这个函数必须是函数表达式</strong>，不能是函数声明。</p>
+<pre><code>function(a){
+        console.log(a);   //报错,Uncaught SyntaxError: Unexpected token (
+}(12);
+(function(a){
+    console.log(a);   //firebug输出123,使用（）运算符
+})(123);
+
+(function(a){
+    console.log(a);   //firebug输出1234，使用（）运算符
+}(1234));
+
+!function(a){
+    console.log(a);   //firebug输出12345,使用！运算符
+}(12345);
+
++function(a){
+    console.log(a);   //firebug输出123456,使用+运算符
+}(123456);
+
+-function(a){
+    console.log(a);   //firebug输出1234567,使用-运算符
+}(1234567);
+
+var fn=function(a){
+    console.log(a);   //firebug输出12345678，使用=运算符
+}(12345678)           
+//需要注意的是:这么写只是一个赋值语句,即把函数匿名函数function(a){...}()的返回值赋值给了fn,如果函数没有返回值,那么fn为undefined,
+//下面给出2个例子,用来解答读者的疑惑:
+var fn=function(a){
+    console.log(a);   //firebug输出12345678，使用=运算符
+}(12345678);
+console.info(fn);//控制台显示为undefined;
+fn(123);//函数未定义报错,fn is undefiend 
+
+var fn=function(a){
+    console.log(a);   //firebug输出12345678，使用=运算符
+    return 111;
+}(12345678);
+console.info(fn);//会发现fn就是一个返回值111,而不是一个函数
+fn(123);//报错,因为fn不是一个函数
+</code></pre><p>可以看到输出结果，在function前面加！、+、 -甚至是逗号等到都可以起到函数定义后立即执行的效果，<strong>而（）、！、+、-、=等运算符，都将函数声明转换成函数表达式，消除了javascript引擎识别函数表达式和函数声明的歧义</strong>，告诉javascript引擎这是一个函数表达式，不是函数声明，可以在后面加括号，并立即执行函数的代码。 </p>
+<p>加括号是最安全的做法，因为！、+、-等运算符还会和函数的返回值进行运算，有时造成不必要的麻烦。</p>
+<p>不过这样的写法有什么用呢？</p>
+<blockquote>
+<p>javascript中没用私有作用域的概念，如果在多人开发的项目上，你在全局或局部作用域中声明了一些变量，可能会被其他人不小心用同名的变量给覆盖掉，根据javascript函数作用域链的特性，可以使用这种技术可以模仿一个私有作用域，用匿名函数作为一个“容器”，“容器”内部可以访问外部的变量，而外部环境不能访问“容器”内部的变量，所以( function(){…} )()内部定义的变量不会和外部的变量发生冲突，俗称“匿名包裹器”或“命名空间”。</p>
+</blockquote>
+<p>JQuery使用的就是这种方法，将JQuery代码包裹在 ( function (window,undefined){…jquery代码…} (window))中，在全局作用域中调用JQuery代码时，可以达到保护JQuery内部变量的作用。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2018/01/12/ack/" data-id="cl6x1i0vk0002jzwmbbrqgmd1" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/07/22/back/匿名函数/" data-id="cl71xrto9000rifwmyr8apos2" class="article-share-link">Share</a>
       
 
       
@@ -121,10 +186,10 @@
 
 
   
-    <article id="post-web实时通讯技术总结" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-back/模拟事件和自定义事件" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/11/11/web实时通讯技术总结/" class="article-date">
-  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">2017-11-11</time>
+    <a href="/2018/07/06/back/模拟事件和自定义事件/" class="article-date">
+  <time datetime="2018-07-05T16:00:00.000Z" itemprop="datePublished">2018-07-06</time>
 </a>
     
   </div>
@@ -135,7 +200,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/11/web实时通讯技术总结/">Web端即时通讯技术</a>
+      <a class="article-title" href="/2018/07/06/back/模拟事件和自定义事件/">模拟事件和自定义事件</a>
     </h1>
   
 
@@ -143,158 +208,239 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Web端即时通讯技术"><a href="#Web端即时通讯技术" class="headerlink" title="Web端即时通讯技术"></a>Web端即时通讯技术</h2><blockquote>
-<p>传统Web的通信原理</p>
-<p>浏览器本身作为一个瘦客户端，不具备直接通过系统调用来达到和处于异地的另外一个客户端浏览器通信的功能。这和我们桌面应用的工作方式是不同的，通常桌面应用通过socket可以和远程主机上另外一端的一个进程建立TCP连接，从而达到全双工的即时通信。</p>
-<p>浏览器从诞生开始一直走的是客户端请求服务器，服务器返回结果的模式，即使发展至今仍然没有任何改变。所以可以肯定的是，要想实现两个客户端的通信，必然要通过服务器进行信息的转发。例如A要和B通信，则应该是A先把信息发送给IM应用服务器，服务器根据A信息中携带的接收者将它再转发给B，同样B到A也是这种模式，如下所示：</p>
-</blockquote>
-<p>常见的实现即时通讯实现方法</p>
-<blockquote>
-<p>轮询：客户端定时向服务器发送Ajax请求，服务器接到请求后马上返回响应信息并关闭连接。<br>优点：后端程序编写比较容易。<br>缺点：请求中有大半是无用，浪费带宽和服务器资源。<br>实例：适于小型应用。</p>
-<p>长轮询：客户端向服务器发送Ajax请求，服务器接到请求后hold住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。<br>优点：在无消息的情况下不会频繁的请求，耗费资源小。<br>缺点：服务器hold连接会消耗资源，返回数据顺序无保证，难于管理维护。<br>实例：WebQQ、Hi网页版、Facebook IM。</p>
-<p>长连接：在页面里嵌入一个隐蔵iframe，将这个隐蔵iframe的src属性设为对一个长连接的请求或是采用xhr请求，服务器端就能源源不断地往客户端输入数据。<br>优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>缺点：服务器维护一个长连接会增加开销。<br>实例：Gmail聊天</p>
-</blockquote>
-<p>基于web实现IM软件依然要走浏览器请求服务器的模式，这种方式下，针对IM软件的开发需要解决如下三个问题：</p>
-<h4 id="1-双全工通信："><a href="#1-双全工通信：" class="headerlink" title="1 双全工通信："></a>1 双全工通信：</h4><p>即达到浏览器拉取（pull）服务器数据，服务器推送（push）数据到浏览器；</p>
-<h4 id="2-低延迟："><a href="#2-低延迟：" class="headerlink" title="2 低延迟："></a>2 低延迟：</h4><p>即浏览器A发送给B的信息经过服务器要快速转发给B，同理B的信息也要快速交给A，实际上就是要求任何浏览器能够快速请求服务器的数据，服务器能够快速推送数据到浏览器；</p>
-<h4 id="3-支持跨域："><a href="#3-支持跨域：" class="headerlink" title="3 支持跨域："></a>3 支持跨域：</h4><p>通常客户端浏览器和服务器都是处于网络的不同位置，浏览器本身不允许通过脚本直接访问不同域名下的服务器，即使IP地址相同域名不同也不行，域名相同端口不同也不行，这方面主要是为了安全考虑。</p>
-<h3 id="从技术实现上，大致有4种："><a href="#从技术实现上，大致有4种：" class="headerlink" title="从技术实现上，大致有4种："></a>从技术实现上，大致有4种：</h3><ol>
-<li>Ajax短轮询</li>
-<li>Comet 别名叫(彗星)</li>
-<li>Websocket</li>
-<li>SSE（Server-sent Events）</li>
-</ol>
-<h2 id="1-Ajax短轮询"><a href="#1-Ajax短轮询" class="headerlink" title="1. Ajax短轮询"></a>1. Ajax短轮询</h2><p>传统的web应用要想与服务器交互，必须提交一个表单（form），服务器接收并处理传来的表单，然后返回全新的页面，因为前后两个页面的数据大部分都是相同的，这个过程传输了很多冗余的数据、浪费了带宽。于是Ajax技术便应运而生。</p>
-<blockquote>
-<p>Ajax是Asynchronous JavaScript and XML的简称，由Jesse James Garrett 首先提出。这种技术开创性地允许浏览器脚本（JS）发送http请求。</p>
-</blockquote>
-<blockquote>
-<p>XMLHttpRequest 是 AJAX 的基础。<br>XMLHttpRequest 对象<br>所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。</p>
-</blockquote>
-<p>创建 XMLHttpRequest 对象：</p>
-<pre><code>var xml = new XMLHttpRequest();
-</code></pre><p>老版本的ie就不再列举了，毕竟是快要被淘汰的东西，不具有可持续性。。。</p>
-<p>这种浏览器端的小技术毕竟还是基于http协议，http协议要求的请求/响应的模式也是无法改变的，除非http协议本身有所改变。</p>
-<p><strong>具体实现：用定时器，每间隔一定的时间，就发送请求，获取数据。。。简单粗暴，造成很多资源浪费</strong></p>
+        <h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><ul>
+<li>事件类型 ：表示事件的类型。如：MouseEvent(鼠标事件)、KeyboardEvent(键盘事件)</li>
+<li>事件名称 ：表示事件的名称。如：click(单击)、dblclick(双击)。</li>
+<li>事件目标 ： 表示与发生事件相关的目标对象。</li>
+<li>事件处理程序(event handler)：指处理事件的函数，即发生事件时，需调用的函数。</li>
+</ul>
+<p>常用方法</p>
+<ul>
+<li>addEventListener()</li>
+<li>removeEventListener()</li>
+<li>dispatchEvent()</li>
+<li>detachEvent()</li>
+</ul>
+<h4 id="Event对象"><a href="#Event对象" class="headerlink" title="Event对象"></a>Event对象</h4><p>属性：</p>
+<p>bubbles、cancelable、currentTarget、eventPhase、target、timeStamp、type</p>
+<p>方法：</p>
+<p>preventDefault()<br>阻止默认事件的方法，调用此方法是，连接不会被打开，但是会发生冒泡，冒泡会传递到上一层的父元素；</p>
+<h4 id="stopPropagation-："><a href="#stopPropagation-：" class="headerlink" title="stopPropagation()："></a>stopPropagation()：</h4><p>阻止事件的冒泡方法，不让事件向documen上蔓延，但是默认事件任然会执行，当你掉用这个方法的时候，如果点击一个连接，这个连接仍然会被打开</p>
+<h4 id="stopImmediatePropagation"><a href="#stopImmediatePropagation" class="headerlink" title="stopImmediatePropagation():"></a>stopImmediatePropagation():</h4><p>阻止事件捕获 </p>
 <hr>
-<h2 id="Comet-基于-HTTP长连接的“服务器推”技术"><a href="#Comet-基于-HTTP长连接的“服务器推”技术" class="headerlink" title="Comet(基于 HTTP长连接的“服务器推”技术)"></a>Comet(基于 HTTP长连接的“服务器推”技术)</h2><p>是一种hack技术</p>
 <blockquote>
-<p>Ajax通信方式是http协议的经典使用方式，要想取得数据，必须首先发送请求。在Low Latency要求比较高的web应用中，只能增加服务器请求的频率。</p>
-<p>Comet则不同，客户端与服务器端保持一个长连接，只有客户端需要的数据更新时，服务器才主动将数据推送给客户端。<br>Comet的实现主要有两种方式：</p>
+<p><strong>另外：</strong><br>return false  ；</p>
+<p>同时阻止事件冒泡也会阻止默认事件；连接不会被打开，事件也不会传递到上一层的父元素；可以理解为return false就等于同时调用了event.stopPropagation()和event.preventDefault()</p>
 </blockquote>
-<ol>
-<li>基于Ajax的长轮询（long-polling）</li>
-<li>基于 Iframe 及 htmlfile 的流（http streaming）</li>
-</ol>
-<h4 id="1-基于Ajax的长轮询（long-polling）方式"><a href="#1-基于Ajax的长轮询（long-polling）方式" class="headerlink" title="1 基于Ajax的长轮询（long-polling）方式"></a>1 基于Ajax的长轮询（long-polling）方式</h4><p>浏览器发出XMLHttpRequest 请求，服务器端接收到请求后，会阻塞请求直到有数据或者超时才返回，浏览器JS在处理请求返回信息（超时或有效数据）后再次发出请求，重新建立连接。在此期间服务器端可能已经有新的数据到达，服务器会选择把数据保存，直到重新建立连接，浏览器会把所有数据一次性取回。</p>
-<p>在XHR对象的readySate为4的时候，表示服务器已经返回数据，本次连接已断开，再次请求服务器建立连接。</p>
-<h4 id="2-基于-Iframe-及-htmlfile-的流（http-streaming）方式"><a href="#2-基于-Iframe-及-htmlfile-的流（http-streaming）方式" class="headerlink" title="2 基于 Iframe 及 htmlfile 的流（http streaming）方式"></a>2 基于 Iframe 及 htmlfile 的流（http streaming）方式</h4><p>iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，然后将这个隐蔵帧的 <strong>SRC 属性设为对一个长连接的请求</strong>，服务器端就能源源不断地往客户端输入数据。</p>
-<p>在第一种方式中，浏览器在收到数据后会直接调用JS回调函数，但是这种方式该如何响应数据呢？可以通过在返回数据中嵌入JS脚本的方式，如<code>&lt;script type=&quot;text/javascript&quot;&gt;js_func(“data from server ”)&lt;/script&gt;</code>，服务器端将返回的数据作为回调函数的参数，浏览器在收到数据后就会执行这段JS脚本。</p>
-<p>但是这种方式有一个明显的不足之处：IE、Morzilla Firefox 下端的进度栏都会显示加载没有完成，而且 IE 上方的图标会不停的转动，表示加载正在进行，并且底部也显示正在加载，这对于一个产品来讲用户体验是不好的</p>
-<h4 id="2-1-基于-Iframe的优化"><a href="#2-1-基于-Iframe的优化" class="headerlink" title="2.1 基于 Iframe的优化"></a>2.1 基于 Iframe的优化</h4><p>谷歌想出了一中hack方式。就是在IE中，动态生成一个<strong>htmlfile对象</strong>，这个对象ActiveX形式的com组件，它实际上就是一个在内存中实现的HTML文档，通过将生成的iframe添加到这个内存中的HTMLfile中，并利用iframe的数据流通信方式达到上面的效果。同时由于HTMLfile对象并不是直接添加到页面上的，所以并没有造成浏览器显示正在加载的现象。</p>
-<p>这种方法应用到了 gmail+gtalk 产品中</p>
-<p><a href="http://www.52im.net/thread-334-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-334-1-1.html</a></p>
-<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>在上面的这些解决方案中，都是利用浏览器单向请求服务器或者服务器单向推送数据到浏览器这些技术组合在一起而形成的hack技术，在HTML5中，为了加强web的功能，提供了websocket技术，它不仅是一种web通信方式，也是一种应用层协议。</p>
-<p>它提供了浏览器和服务器之间原生的双全工跨域通信，通过浏览器和服务器之间建立websocket连接（实际上是TCP连接）,在同一时刻能够实现客户端到服务器和服务器到客户端的数据发送。</p>
-<p>首先是客户端new 一个websocket对象，该对象会发送一个http请求到服务端，服务端发现这是个webscoket请求，会同意协议转换，发送回客户端一个101状态码的response，以上过程称之为一次握手，经过这次握手之后，客户端就和服务端建立了一条TCP连接，在该连接上，服务端和客户端就可以进行双向通信了。</p>
-<p>这时的双向通信在应用层走的就是ws或者wss协议了，和http就没有关系了。</p>
-<p>所谓的ws协议，就是要求客户端和服务端遵循某种格式发送数据报文（帧），然后对方才能够理解。</p>
-<p>客户端参考代码</p>
-<pre><code>window.onload=function(){
-        var ws=new WebSocket(&quot;ws://127.0.0.1:8088&quot;);
-        var oText=document.getElementById(&apos;message&apos;);
-        var oSend=document.getElementById(&apos;send&apos;);
-        var oClose=document.getElementById(&apos;close&apos;);
-        var oUl=document.getElementsByTagName(&apos;ul&apos;)[0];
-        ws.onopen=function(){
-            oSend.onclick=function(){
-                if(!/^\s*$/.test(oText.value)){
-                    ws.send(oText.value);
-                }
-            };
+<h4 id="currentTarget-与-target-属性的区别"><a href="#currentTarget-与-target-属性的区别" class="headerlink" title="currentTarget 与 target 属性的区别"></a>currentTarget 与 target 属性的区别</h4><p>currentTarget ：获取正在处理此事件的对象(也可以理解为绑定此事件的对象)</p>
+<p>target ：获取触发此事件的对象。</p>
+<p>冒泡阶段时两者的区别： </p>
+<p>假设body和Button元素都注册了click事件；当点击Button元素时，body的click事件也会触发，此时在body的click事件内，currentTarget指向body元素，target指向Button元素。</p>
+<p>示例：点击Button元素时的显示结果</p>
+<pre><code>document.body.onclick = function (e) {
+    console.log(e.currentTarget); // 指向body元素
+    console.log(e.target); // 若是冒泡事件时，指向最开始触发的元素。否则为元素自身。
+};
 
-        };
-        ws.onmessage=function(msg){
-          var str=&quot;&lt;li&gt;&quot;+msg.data+&quot;&lt;/li&gt;&quot;;
-          oUl.innerHTML+=str;
-        };
-        ws.onclose=function(e){
-            console.log(&quot;已断开与服务器的连接&quot;);
-            ws.close();
-        }
-    }
-</code></pre><hr>
-<p>WebSocket在支持它的浏览器上确实提供了一种全双工跨域的通信方案，所以在各以上各种方案中，我们的首选无疑是WebSocket。</p>
+document.getElementById(&apos;btn&apos;).onclick = function (e) {
+    console.log(e.currentTarget);
+    console.log(e.target);
+};
+</code></pre><h2 id="事件的注册与注销"><a href="#事件的注册与注销" class="headerlink" title="事件的注册与注销"></a>事件的注册与注销</h2><p>注册事件：<br>addEventListener()，attachEvent()</p>
+<p>注销事件：<br>removeEventListener()、detachEvent()</p>
+<p><strong>注册事件的方式大致有2种：一种属性注册，另一种通过方法注册。</strong></p>
+<ul>
+<li><p>属性注册方式又可分<strong>为在HTML元素内的事件属性赋值</strong>和通过<strong>JS指定元素对象的事件属性</strong>。</p>
+<pre><code>&lt;button onclick=&quot;sayHello()&quot;&gt;点击&lt;/button&gt;
+</code></pre></li>
+</ul>
+<ul>
+<li>方法注册方式可通过addEventListener()或attachEvent()方法进行事件的注册</li>
+</ul>
+<h4 id="通过JS设置元素对象的属性为事件处理程序"><a href="#通过JS设置元素对象的属性为事件处理程序" class="headerlink" title="通过JS设置元素对象的属性为事件处理程序"></a>通过JS设置元素对象的属性为事件处理程序</h4><p>示例1：事件属性注册的演示</p>
+<pre><code>// 注册body的click事件
+document.body.onclick = function (e) {
+    alert(1);
+};
+</code></pre><p>示例2：事件属性注册的唯一性</p>
+<pre><code>document.body.onclick=function(e){
+    console.log(1);
+}
+
+// 会覆盖前面注册的事件处理程序
+document.body.onclick=function(e){
+    console.log(2);
+}
+
+document.body.click(); // =&gt; 2 ：只输出后面属性注册的
+</code></pre><h4 id="addEventListener-方法注册事件"><a href="#addEventListener-方法注册事件" class="headerlink" title="addEventListener()方法注册事件"></a>addEventListener()方法注册事件</h4><p>示例1：多次注册同一事件，按注册顺序执行，先输出1，再输出2</p>
+<pre><code>document.body.addEventListener(&apos;click&apos;,function(e){
+     console.log(&apos;1&apos;);
+});
+
+document.body.addEventListener(&apos;click&apos;,function(e){
+    console.log(&apos;2&apos;);
+});
+
+document.body.click(); // =&gt; 1,2
+</code></pre><p>示例2：使用函数对象多次注册同一事件：只当注册一次</p>
+<pre><code>function sayHello(){
+    console.log(&apos;hello&apos;);
+}
+
+document.body.addEventListener(&apos;click&apos;,sayHello);
+// 使用处理程序多次注册同一事件，只当注册一次
+document.body.addEventListener(&apos;click&apos;,sayHello);
+
+document.body.click(); // =&gt; hello ：只输出一遍
+</code></pre><p><strong>IE9之前的IE版本可通过attachEvent()方法注册事件。</strong></p>
+<h3 id="注销事件"><a href="#注销事件" class="headerlink" title="注销事件"></a>注销事件</h3><p>示例1：通过removeEventListener()注销事件</p>
+<pre><code>function sayHello(e) {
+    console.log(&apos;1&apos;);
+}
+
+// 注册body click事件
+document.body.addEventListener(&apos;click&apos;, sayHello);
+
+// 注销body click事件的sayHello函数
+document.body.removeEventListener(&apos;click&apos;,sayHello);
+
+document.body.click(); // 触发click事件，不输出任何结果
+</code></pre><p>若第二个参数为函数体，将不会注销</p>
+<h3 id="detachEvent-eventName-function-Object"><a href="#detachEvent-eventName-function-Object" class="headerlink" title="detachEvent(eventName, function Object)"></a>detachEvent(eventName, function Object)</h3><p>说明：注销通过attachEvent()注册的事件处理程序。</p>
+<p>语法：EventTarget.detachEvent(eventName, eventHandlerObj)</p>
+<p>参数：</p>
+<ul>
+<li>eventName {string} ：所要注销的事件名称，区分大小写。这里的名称跟事件属性一样，以”on”开头，后面跟着事件名称。如：onclick、onload。</li>
+<li>eventHandlerObj {function Object} ：：函数对象。传入一个函数体是没有效果的。</li>
+</ul>
+<h5 id="通过detachEvent-注销事件"><a href="#通过detachEvent-注销事件" class="headerlink" title="通过detachEvent()注销事件"></a>通过detachEvent()注销事件</h5><pre><code>function sayHello() {
+    console.log(&apos;1&apos;);
+}
+document.body.attachEvent(&apos;onclick&apos;, sayHello);
+
+document.body.detachEvent(&apos;onclick&apos;, sayHello); // 注销事件
+
+document.body.click(); // 不输出结果     
+</code></pre><p><strong>若第二个参数为函数体，将不会注销</strong></p>
+<h4 id="多次注册与多次注销"><a href="#多次注册与多次注销" class="headerlink" title="多次注册与多次注销"></a>多次注册与多次注销</h4><p>因为attachEvent()可以把一个函数对象多次注册到元素同一个事件上，所以调用一次detachEvent()只能注销掉一次。</p>
+<pre><code>function sayHello() {
+    console.log(&apos;1&apos;);
+}
+document.body.attachEvent(&apos;onclick&apos;, sayHello);
+document.body.attachEvent(&apos;onclick&apos;, sayHello); // 注册了2次
+
+document.body.click(); // =&gt; 1 1：输出2次
+
+document.body.detachEvent(&apos;onclick&apos;, sayHello); // 注销1次
+
+document.body.click(); // =&gt; 1 ：输出结果为1，只注销了1次
+</code></pre><h5 id="给对象的事件属性赋值为null，可取消此事件的所有注册过的处理事件程序。"><a href="#给对象的事件属性赋值为null，可取消此事件的所有注册过的处理事件程序。" class="headerlink" title="给对象的事件属性赋值为null，可取消此事件的所有注册过的处理事件程序。"></a>给对象的事件属性赋值为null，可取消此事件的所有注册过的处理事件程序。</h5><p>示例：</p>
+<pre><code>document.body.addEventListener(&apos;onclick&apos;, function(e){
+    console.log(1);
+});
+document.body.addEventListener(&apos;onclick&apos;, function(e){
+    console.log(2);
+});
+
+document.body.onclick=null; // onclick属性赋值为null，相当于注销了onclick事件
+
+document.body.click(); // 无操作
+</code></pre><h3 id="事件流与事件委托"><a href="#事件流与事件委托" class="headerlink" title="事件流与事件委托"></a>事件流与事件委托</h3><p>三个阶段</p>
+<ul>
+<li>捕获阶段(Capture Phase)：事件从最外层的window对象到目标节点的父节点依次触发的阶段。(从外到内)</li>
+<li>目标阶段(Target Phase)：事件在目标节点上触发时的阶段。</li>
+<li>冒泡阶段(Bubbing Phase)：事件从目标节点的父节点到最外层的window对象依次触发的阶段。(从内到外)</li>
+</ul>
+<h4 id="阻止事件流的传播"><a href="#阻止事件流的传播" class="headerlink" title="阻止事件流的传播"></a>阻止事件流的传播</h4><p>Event 事件对象的stopPropagation()、stopImmediatePropagation()方法可阻止事件流的后续传播。</p>
+<h4 id="1-在捕获阶段调用"><a href="#1-在捕获阶段调用" class="headerlink" title="1.在捕获阶段调用"></a>1.在捕获阶段调用</h4><p>说明：在捕获阶段调用stopPropagation()方法时，此元素后续的事件流都会阻止，包括捕获阶段、目标阶段、冒泡阶段。</p>
+<pre><code>document.body.addEventListener(&apos;click&apos;,function(e){
+    console.log(&quot;事件阶段:&quot;+e.eventPhase+&apos;;target:&apos;+e.target+&apos;;currentTarget:&apos;+e.currentTarget)
+    e.stopPropagation();
+},true);
+</code></pre><p>结果：事件流在body的捕获阶段就截至了，后续的阶段都没有执行</p>
+<h3 id="2-在目标阶段调用"><a href="#2-在目标阶段调用" class="headerlink" title="2.在目标阶段调用"></a>2.在目标阶段调用</h3><p>说明：在目标段调用stopPropagation()方法时，捕获阶段和目标阶段会执行完毕，冒泡阶段不会被执行。</p>
+<pre><code>document.getElementById(&apos;btn&apos;).addEventListener(&apos;click&apos;,function(e){
+console.log(&quot;捕获阶段注册：事件阶段:&quot;+e.eventPhase+&apos;;target:&apos;+e.target+&apos;;currentTarget:&apos;+e.currentTarget)
+e.stopPropagation();
+    },false);
+    document.getElementById(&apos;btn&apos;).addEventListener(&apos;click&apos;,function(e){
+console.log(&quot;冒泡阶段注册：事件阶段:&quot;+e.eventPhase+&apos;;target:&apos;+e.target+&apos;;currentTarget:&apos;+e.currentTarget)
+e.stopPropagation();
+    },true);
+</code></pre><p>结果：捕获阶段和目标阶段执行完毕，冒泡阶段未被执行。</p>
+<h4 id="3-在冒泡阶段调用"><a href="#3-在冒泡阶段调用" class="headerlink" title="3.在冒泡阶段调用"></a>3.在冒泡阶段调用</h4><p>说明：在冒泡段调用stopPropagation()方法时，捕获阶段和目标阶段会执行完毕，元素后续的冒泡阶段不会被执行。</p>
+<pre><code>document.body.addEventListener(&apos;click&apos;,function(e){
+    console.log(&quot;事件阶段:&quot;+e.eventPhase+&apos;;target:&apos;+e.target+&apos;;currentTarget:&apos;+e.currentTarget)
+    e.stopPropagation();
+},false);
+</code></pre><p>结果：捕获阶段和目标阶段执行完毕，body后续的冒泡阶段未被执行</p>
+<h2 id="事件委托-Event-Delegate"><a href="#事件委托-Event-Delegate" class="headerlink" title="事件委托(Event Delegate)"></a>事件委托(Event Delegate)</h2><blockquote>
+<p>HTML元素含有嵌套关系，并且事件流含有冒泡阶段。子元素的触发事件会冒泡到父元素的相同事件上。</p>
+<p>一般情况只需给子元素注册特定的事件处理程序即可，但当子元素过多或频繁的进行增减操作怎么办？</p>
+<p>比如一个ul包含了几十个li元素，对每个li元素进行单独的事件注册会影响性能。而现只要在父元素注册事件监听器，等待li事件触发后的冒泡阶段即可。</p>
+</blockquote>
+<p><strong>简单来说事件委托就是父元素监听子元素的冒泡事件。</strong></p>
+<p>Div容器包含了多个li子元素，在Div容器注册事件委托。</p>
+<p>HTML代码：</p>
+<pre><code>&lt;div id=&quot;div&quot;&gt;
+    &lt;ul id=&quot;ul&quot; &gt;
+        &lt;li data-key=&quot;北京&quot;&gt;北京&lt;/li&gt;
+        &lt;li data-key=&quot;上海&quot;&gt;上海&lt;/li&gt;
+        &lt;li data-key=&quot;杭州&quot;&gt;杭州&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre><p>JS代码：</p>
+<pre><code>document.getElementById(&apos;div&apos;).addEventListener(&apos;click&apos;,function(e){
+            var value=e.target.attributes[&apos;data-key&apos;].value; // 获取目标阶段元素的&apos;data-key&apos;属性的值
+        console.log(value);
+            });
+</code></pre><p> 顺便附上jquery的方法</p>
+<pre><code>$(&apos;#div&apos;).on(&apos;click&apos;,&apos;li&apos;,function(e) {
+    var v = $(this).data(&apos;key&apos;);
+    console.log(v);
+});
+</code></pre><h2 id="模拟事件"><a href="#模拟事件" class="headerlink" title="模拟事件"></a>模拟事件</h2><p>模拟事件，即非实际操作去触发元素的事件。如按钮的点击，不需要实际用鼠标去点击此按钮，而是采用模拟触发此按钮的点击事件。</p>
+<p>触发元素的事件可以直接调用事件方法(如：click()触发元素的click事件)。</p>
+<p>为何还要单独的模拟触发呢？</p>
+<p>与直接触发相比，模拟事件包含以下特点：</p>
+<ul>
+<li>模拟特定场景：如触发click事件，可同时模拟是否按下Ctrl、Alt等按键。</li>
+<li>可触发<strong>自定义事件</strong>。</li>
+</ul>
+<p>模拟事件的创建方式：</p>
+<ol>
+<li>老版：通过document.createEvent()方法创建各事件类型对象。1. </li>
+<li>新版：通过各事件的构造函数创建事件类型对象。</li>
+</ol>
+<p>老版本方式将会被新版本方式所替代,不再记录。。</p>
+<h3 id="新版创建步骤"><a href="#新版创建步骤" class="headerlink" title="新版创建步骤"></a>新版创建步骤</h3><ol>
+<li>通过各事件类型的构造函数创建一个event对象。</li>
+<li>在元素上注册监听</li>
+<li><p>调用元素对象的<strong>dispatchEvent</strong>(event对象)方法进行派发。</p>
+<pre><code>//1、创建事件
+var clickElem = new Event(&quot;clickElem&quot;);
+
+//2、注册事件监听器
+elem.addEventListener(&quot;clickElem&quot;,function(e){
+    //干点事
+})
+
+//3、触发事件
+elem.dispatchEvent(clickElem);
+</code></pre></li>
+</ol>
 <blockquote>
-<p>socket.io介绍</p>
-<p>socket.io封装了websocket，同时包含了其它的连接方式，比如Ajax。原因在于不是所有的浏览器都支持websocket，通过socket.io的封装，不用关心里面用了什么连接方式。</p>
-<p>在任何浏览器里都可以使用socket.io来建立异步的连接。socket.io包含了服务端和客户端的库，如果在浏览器中使用了socket.io的js，服务端也必须同样适用。如果你很清楚你需要的就是websocket，那可以直接使用websocket。</p>
+<p>上面用到的Event属于基本事件类型</p>
 </blockquote>
-<h2 id="SSE"><a href="#SSE" class="headerlink" title="SSE"></a>SSE</h2><p>SSE（Server-Sent Event，服务端推送事件）是一种允许服务端向客户端推送新数据的HTML5技术。与由客户端每隔几秒从服务端轮询拉取新数据相比，这是一种更优的解决方案。</p>
-<p>与WebSocket相比，它也能从服务端向客户端推送数据。那如何决定你是用SSE还是WebSocket呢？概括来说，WebSocket能做的，SSE也能做，反之亦然，但在完成某些任务方面，它们各有千秋。</p>
-<p>SSE技术提供的是从服务器单向推送数据给浏览器的功能，但是配合浏览器主动请求，实际上就实现了客户端和服务器的双向通信。它的原理是在客户端构造一个eventSource对象，该对象具有readySate属性，分别表示如下：</p>
-<ol>
-<li>正在连接到服务器；</li>
-<li>打开了连接；</li>
-<li>关闭了连接。</li>
-</ol>
-<p>同时eventSource对象会保持与服务器的长连接，断开后会自动重连，如果要强制断开可以调用它的close方法。</p>
-<p>监听onmessage事件，服务端遵循SSE数据传输的格式给客户端，客户端在onmessage事件触发时就能够接收到数据，从而进行某种处理，代码如下。</p>
-<p>客户端</p>
-<pre><code>var source=new EventSource(&apos;http://localhost:8088/evt&apos;);
-    source.addEventListener(&apos;message&apos;, function(e) {
-        console.log(e.data);
-    }, false);
-    source.onopen=function(){
-        console.log(&apos;connected&apos;);
-    }
-    source.onerror=function(err){
-        console.log(err);
-    }
-</code></pre><p>服务端</p>
-<pre><code>var http=require(&apos;http&apos;);
-var fs = require(&quot;fs&quot;);
-var count=0;
-var server=http.createServer(function(req,res){
-    if(req.url==&apos;/evt&apos;){
-        //res.setHeader(&apos;content-type&apos;, &apos;multipart/octet-stream&apos;);
-        res.writeHead(200, {&quot;Content-Type&quot;:&quot;tex&quot; +
-            &quot;t/event-stream&quot;, &quot;Cache-Control&quot;:&quot;no-cache&quot;,
-            &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;,
-            &quot;Connection&quot;:&quot;keep-alive&quot;});
-        var timer=setInterval(function(){
-            if(++count==10){
-                clearInterval(timer);
-                res.end();
-            }else{
-                res.write(&apos;id: &apos; + count + &apos;\n&apos;);
-                res.write(&quot;data: &quot; + new Date().toLocaleString() + &apos;\n\n&apos;);
-            }
-        },2000);
-
-    };
-    if(req.url==&apos;/&apos;){
-        fs.readFile(&quot;./sse.html&quot;, &quot;binary&quot;, function(err, file) {
-            if (!err) {
-                res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/html&apos;});
-                res.write(file, &quot;binary&quot;);
-                res.end();
-            }
-        });
-    }
-}).listen(8088,&apos;localhost&apos;);
-</code></pre><p>WebSocket是一种更为复杂的服务端实现技术，但它是真正的双向传输技术，既能从服务端向客户端推送数据，也能从客户端向服务端推送数据。</p>
-<p>与WebSocket相比，SSE有一些显著的优势，便利：不需要添加任何新组件，用任何你习惯的后端语言和框架就能继续使用。你不用为新建虚拟机、弄一个新的IP或新的端口号而劳神，就像在现有网站中新增一个页面那样简单。我喜欢把这称为既存基础设施优势。</p>
-<p>SSE的第二个优势是服务端的简洁。相对而言，WebSocket则很复杂，不借助辅助类库基本搞不定</p>
-<p>WebSocket和SSE（Server-sent Events）两种技术方案都是html5引进的</p>
-<p>参考：<br><a href="http://www.52im.net/thread-338-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-338-1-1.html</a></p>
-<p><a href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=338" target="_blank" rel="noopener">http://www.52im.net/forum.php?mod=viewthread&amp;tid=338</a></p>
+<h3 id="另外有一种自定义事件的方法叫-观察者模式"><a href="#另外有一种自定义事件的方法叫-观察者模式" class="headerlink" title="另外有一种自定义事件的方法叫 观察者模式"></a>另外有一种自定义事件的方法叫 观察者模式</h3><p>即JS设计模式种的 发布者订阅模式</p>
+<p>vue的双向数据绑定就用到了此设计模式</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/11/11/web实时通讯技术总结/" data-id="cl6x1i0wd000cjzwm2oilm1yi" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/07/06/back/模拟事件和自定义事件/" data-id="cl71xrtpn000yifwm6b285as6" class="article-share-link">Share</a>
       
 
       
@@ -307,10 +453,10 @@ var server=http.createServer(function(req,res){
 
 
   
-    <article id="post-terminal" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-back/js中数组的合并和对象的合并" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/11/terminal/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
+    <a href="/2018/05/29/back/js中数组的合并和对象的合并/" class="article-date">
+  <time datetime="2018-05-28T16:00:00.000Z" itemprop="datePublished">2018-05-29</time>
 </a>
     
   </div>
@@ -321,7 +467,7 @@ var server=http.createServer(function(req,res){
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/terminal/">终端常用的快捷键</a>
+      <a class="article-title" href="/2018/05/29/back/js中数组的合并和对象的合并/">js中数组的合并和对象的合并</a>
     </h1>
   
 
@@ -329,34 +475,87 @@ var server=http.createServer(function(req,res){
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h1><h3 id="终端常用的快捷键："><a href="#终端常用的快捷键：" class="headerlink" title="终端常用的快捷键："></a>终端常用的快捷键：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + d        删除一个字符，相当于通常的Delete键（命令行若无所有字符，则相当于exit；处理多行标准输入时也表示eof）</span><br><span class="line">Ctrl + h        退格删除一个字符，相当于通常的Backspace键</span><br><span class="line">Ctrl + u        删除光标之前到行首的字符</span><br><span class="line">Ctrl + k        删除光标之前到行尾的字符</span><br><span class="line">Ctrl + c        取消当前行输入的命令，相当于Ctrl + Break</span><br><span class="line">Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键</span><br><span class="line">Ctrl + e        光标移动到行尾（End of line）</span><br><span class="line">Ctrl + f        光标向前(Forward)移动一个字符位置</span><br><span class="line">Ctrl + b        光标往回(Backward)移动一个字符位置</span><br><span class="line">Ctrl + l        清屏，相当于执行clear命令</span><br><span class="line">Ctrl + p        调出命令历史中的前一条（Previous）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + n        调出命令历史中的下一条（Next）命令，相当于通常的上箭头</span><br><span class="line">Ctrl + r        显示：号提示，根据用户输入查找相关历史命令（reverse-i-search）</span><br><span class="line"></span><br><span class="line">次常用快捷键：</span><br><span class="line">Alt + f         光标向前（Forward）移动到下一个单词</span><br><span class="line">Alt + b         光标往回（Backward）移动到前一个单词</span><br><span class="line">Ctrl + w        删除从光标位置前到当前所处单词（Word）的开头</span><br><span class="line">Alt + d         删除从光标位置到当前所处单词的末尾</span><br><span class="line">Ctrl + y        粘贴最后一次被删除的单词</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*蝙蝠侠*&quot;</span><br><span class="line"></span><br><span class="line"># 找出当前目录以及其所有子目录下所有名字中包含“蝙蝠侠”三字的文件</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.rmvb&quot; -maxdepth 1</span><br><span class="line"># 找出当前目录（不包括子目录）下所有名字中后缀为&quot;.rmvb&quot;的文件</span><br></pre></td></tr></table></figure>
-<p>mac下，有个locate命令，它自动建立和维护文件的索引，所以找起来非常快</p>
-<p>例如：要找redis</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate redis</span><br></pre></td></tr></table></figure>
-<p>mac 显示隐藏文件<br>打开终端，输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure>
-<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可</p>
-<p>Mac 更新系统后无法使用git</p>
-<p>解决方案：</p>
-<p>在终端输入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-<p>据说原因是因为每次更新系统之后xcode就被卸载了，因此需要重新安装一次。特此记录，以便查阅</p>
-<p>如果需要禁止spotlight, 在终端中运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil  -a -i off</span><br></pre></td></tr></table></figure>
-<p>开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -a -i on</span><br></pre></td></tr></table></figure>
-<p>有的时候，它可能会造成问题，需要先关闭再开启，让他重新建立索引，可以运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -E</span><br></pre></td></tr></table></figure>
-<p>为了查看它的状态，可以运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mdutil -s</span><br></pre></td></tr></table></figure>
+        <h2 id="数组合并"><a href="#数组合并" class="headerlink" title="数组合并"></a>数组合并</h2><h3 id="concat-方法"><a href="#concat-方法" class="headerlink" title="concat 方法"></a>concat 方法</h3><pre><code>var a=[1,2,3],b=[4,5,6];
+var c=a.concat(b);
+console.log(c);// 1,2,3,4,5,6
+console.log(a);// 1,2,3  不改变本身
+</code></pre><h3 id="循环遍历"><a href="#循环遍历" class="headerlink" title="循环遍历"></a>循环遍历</h3><pre><code>var arr1=[&apos;a&apos;,&apos;b&apos;];
+var arr2=[&apos;c&apos;,&apos;d&apos;,&apos;e&apos;];
 
+for(var i=0;i&lt;arr2.length;i++){
+      arr1.push(arr2[i]) 
+}
+
+console.log(arr1);//[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+</code></pre><h3 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h3><p>合并数组arr1和数组arr2,使用Array.prototype.push.apply(arr1,arr2)  or arr1.push.apply(arr1,arr2);</p>
+<pre><code>var arr1=[&apos;a&apos;,&apos;b&apos;];
+var arr2=[&apos;c&apos;,&apos;d&apos;,&apos;e&apos;];
+
+Array.prototype.push.apply(arr1,arr2);
+
+//或者
+
+arr1.push.apply(arr1,arr2);
+
+console.log(arr1) //[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+</code></pre><h2 id="对象合并"><a href="#对象合并" class="headerlink" title="对象合并"></a>对象合并</h2><h3 id="extend"><a href="#extend" class="headerlink" title="$.extend()"></a>$.extend()</h3><pre><code>var obj1= {&apos;a&apos;: 1};
+var obj2= {&apos;b&apos;: 1};
+var c = $.extend(obj1, obj2);
+1
+console.log(obj1); // {a: 1, b: 1}  obj1已被修改
+1
+//或者 &lt;br&gt;var obj3 = $.extend({}, obj1, obj2) &lt;br&gt;console.log(obj3); //{a: 1, b: 1} 不会改变obj1,obj2
+</code></pre><h3 id="遍历赋值"><a href="#遍历赋值" class="headerlink" title="遍历赋值"></a>遍历赋值</h3><pre><code>var obj1={&apos;a&apos;:1};
+var obj2={&apos;b&apos;:2,&apos;c&apos;:3};
+for(var key in obj2){
+     if(obj2.hasOwnProperty(key)===true){    
+   //此处hasOwnProperty是判断自有属性，使用 for in 循环遍历对象的属性时，原型链上的所有属性都将被访问会避免原型对象扩展带来的干扰
+           obj1[key]=obj2[key];
+} 
+}
+
+console.log(obj1);//{&apos;a&apos;:1,&apos;b&apos;:2,&apos;c&apos;:3};
+　　
+</code></pre><h3 id="Obj-assign"><a href="#Obj-assign" class="headerlink" title="Obj.assign()"></a>Obj.assign()</h3><p>可以把任意多个的源对象自身的可枚举属性拷贝给目标对象，然后返回目标对象。</p>
+<pre><code>　　Object.assign(target, ...sources)
+
+//a. 复制一个对象&lt;br&gt;var obj = { a: 1 ,b:2};
+var copyObj = Object.assign({}, obj);
+console.log(copyObj); // { a: 1,b:2 }&lt;br&gt;&lt;br&gt;//b.合并多个对象
+
+var o1 = { a: 1 };
+var o2 = { b: 2 };
+var o3 = { c: 3 };
+
+var obj = Object.assign(o1, o2, o3);
+console.log(obj); // { a: 1, b: 2, c: 3 }
+console.log(o1);  // { a: 1, b: 2, c: 3 }, 且目标对象自身也会改变。　
+</code></pre><h2 id="对象的深拷贝和浅拷贝"><a href="#对象的深拷贝和浅拷贝" class="headerlink" title="对象的深拷贝和浅拷贝"></a>对象的深拷贝和浅拷贝</h2><h3 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h3><pre><code>var obj1={&apos;a&apos;:1};
+var obj2={&apos;b&apos;:{&apos;b1&apos;:22,&apos;b2&apos;:33}};
+
+$.extend(obj1, obj2);   //obj1拷贝了obj2的属性
+
+console.log(obj1)  // {&apos;a&apos;:1,&apos;b&apos;{&apos;b1&apos;:22,&apos;b2&apos;:33}}
+console.log(obj1.b.b1)  // 22
+
+obj2.b.b1=44;   //obj2重新赋值
+console.log(obj1.b.b1)  // 44  obj1.b仅拷贝了对象的指引，所以受原obj2的影响
+</code></pre><h3 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h3><pre><code>var obj1={&apos;a&apos;:1};
+var obj2={&apos;b&apos;:{&apos;b1&apos;:22,&apos;b2&apos;:33}};
+
+$.extend(true,obj1, obj2);   //第一个参数设为true表示深复制
+
+console.log(obj1)  // {&apos;a&apos;:1,&apos;b&apos;{&apos;b1&apos;:22,&apos;b2&apos;:33}}
+console.log(obj1.b.b1)  // 22
+
+obj2.b.b1=44;   //obj2重新赋值
+console.log(obj1.b.b1)  // 22 obj1拷贝了obj2的所有属性以及值，并不受obj2的影响
+</code></pre>
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="https://whuper.github.io/2017/10/11/terminal/" data-id="cl6x1i0wb000ajzwmfpdfblf1" class="article-share-link">Share</a>
+        <a data-url="https://whuper.github.io/2018/05/29/back/js中数组的合并和对象的合并/" data-id="cl71xrtoz000sifwmxmuzbe0c" class="article-share-link">Share</a>
       
 
       
@@ -372,7 +571,7 @@ var server=http.createServer(function(req,res){
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 </section>
       
@@ -402,7 +601,7 @@ var server=http.createServer(function(req,res){
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -414,7 +613,15 @@ var server=http.createServer(function(req,res){
       <ul>
         
           <li>
+            <a href="/2021/12/30/mac常用命令/">mac命令</a>
+          </li>
+        
+          <li>
             <a href="/2021/10/03/vue与react/">Vue 与 React各方面对比</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/pandocs/">pandoc</a>
           </li>
         
           <li>
@@ -423,14 +630,6 @@ var server=http.createServer(function(req,res){
         
           <li>
             <a href="/2020/11/16/typescript/">TypeScript 和 JavaScript</a>
-          </li>
-        
-          <li>
-            <a href="/2020/08/05/back/amd和cmd/">AMD和CMD规范</a>
-          </li>
-        
-          <li>
-            <a href="/2019/05/29/back/js中数组的合并和对象的合并/">js中数组的合并和对象的合并</a>
           </li>
         
       </ul>
